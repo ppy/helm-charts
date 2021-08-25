@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osu-notification-server-chart.fullname" . }}
+  labels:
+    {{- include "osu-notification-server-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "osu-notification-server-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "osu-notification-server-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "osu-notification-server-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: basedir
+          secret:
+            secretName: {{ include "osu-notification-server-chart.fullname" . }}
+            items:
+              - key: laravelOauthPublicKey
+                path: oauth-public.key
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 2345
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: basedir
+              mountPath: /basedir
+              readOnly: true
+          env:
+            - name: WEBSOCKET_BASEDIR
+              value: /basedir
+            - name: NOTIFICATION_SERVER_LISTEN_HOST
+              value: 0.0.0.0
+            - name: APP_DEBUG
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: notificationServerDebug
+                  optional: true
+            - name: APP_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: notificationServerEnv
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbDatabase
+                  optional: true
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbHost
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbPassword
+                  optional: true
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbPort
+                  optional: true
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbUser
+                  optional: true
+            - name: DB_NAME_CHAT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: dbNameChat
+                  optional: true
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: laravelAppKey
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: redisAppHost
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: redisAppPort
+                  optional: true
+            - name: NOTIFICATION_REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: redisNotificationHost
+            - name: NOTIFICATION_REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-notification-server-chart.fullname" . }}
+                  key: redisNotificationPort
+                  optional: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
