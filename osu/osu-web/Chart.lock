@@ -1,0 +1,6 @@
+dependencies:
+- name: osu-notification-server
+  repository: file://../osu-notification-server
+  version: 0.1.0
+digest: sha256:0732eb733888721cacdde5a7b7d0942d4f23355cf9fa1bac58c2791fa6de8c1d
+generated: "2021-08-26T01:49:11.45292631+02:00"

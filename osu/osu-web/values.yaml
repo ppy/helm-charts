@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  chartName: osu-web
+
 config:
   laravel:
     url: http://localhost:8080 # APP_URL
@@ -183,6 +186,10 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+
+osu-notification-server:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
 
 imagePullSecrets: []
 nameOverride: ""

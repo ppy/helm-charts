@@ -2,6 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# config object will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
+useSharedSecretsFromOsuWebChart: false
 config:
   notificationServer:
     debug: "" # default to false in app
@@ -10,7 +12,6 @@ config:
     database: "" # default to osu in app
     host: "" # required
     password: "" # default to empty
-    port: "" # default to default mysql port
     user: "" # default to osuweb
   dbName:
     chat: "" # default to osu_chat

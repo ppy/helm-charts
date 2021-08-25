@@ -1,5 +1,5 @@
 apiVersion: v2
-name: osu-web-chart
+name: osu-web
 description: production osu!web deployment in Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -22,3 +22,9 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: 0.1.0
+
+dependencies:
+  - name: osu-notification-server
+    version: 0.1.0
+    repository: "file://../osu-notification-server"
+    condition: osu-notification-server.enabled

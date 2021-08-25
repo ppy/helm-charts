@@ -1,5 +1,5 @@
 apiVersion: v2
-name: osu-notification-server-chart
+name: osu-notification-server
 description: production osu-notification-server deployment in Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.

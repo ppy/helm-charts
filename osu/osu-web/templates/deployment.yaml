@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "osu-web-chart.fullname" . }}
+  name: {{ include "osu-web-chart.fullname" . }}-octane
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
 spec:
@@ -55,20 +55,29 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            - mountPath: /app/storage/passport/oauth-public.key
+              name: oauth-public-key-secret
+              subPath: laravelOauthPublicKey
+              readOnly: true
+            - mountPath: /app/storage/passport/oauth-private.key
+              name: oauth-private-key-secret
+              subPath: laravelOauthPrivateKey
+              readOnly: true
             - mountPath: /app/.env
               name: env-secret
               subPath: .env
               readOnly: true
-            - mountPath: /app/storage/passport
-              name: oauth-secret
-              readOnly: true
       volumes:
-        - name: oauth-secret
+        - name: oauth-public-key-secret
           secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}-shared
+            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
             items:
               - key: laravelOauthPublicKey
                 path: oauth-public.key
+        - name: oauth-private-key-secret
+          secret:
+            secretName: {{ include "osu-web-chart.fullname" . }}
+            items:
               - key: laravelOauthPrivateKey
                 path: oauth-private.key
         - name: env-secret
