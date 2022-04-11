@@ -1,6 +1,6 @@
 apiVersion: v2
-name: osu-web
-description: production osu-web deployment in Kubernetes
+name: osu-server-spectator
+description: production osu-server-spectator deployment in Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -21,26 +21,4 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: 0.1.0
-
-dependencies:
-  - name: osu-notification-server
-    version: 0.1.0
-    repository: "file://../osu-notification-server"
-    condition: osu-notification-server.enabled
-  - name: osu-server-spectator
-    version: 0.1.0
-    repository: "file://../osu-server-spectator"
-    condition: osu-server-spectator.enabled
-  - name: mysql
-    version: 8.5.6
-    repository: https://charts.bitnami.com/bitnami
-    condition: mysql.enabled
-  - name: redis
-    version: 14.1.0
-    repository: https://charts.bitnami.com/bitnami
-    condition: redis.enabled
-  - name: elasticsearch
-    version: 6.8.18
-    repository: https://helm.elastic.co
-    condition: elasticsearch.enabled
+appVersion: "0.1.0"

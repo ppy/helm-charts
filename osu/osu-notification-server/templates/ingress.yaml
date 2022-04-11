@@ -1,11 +1,15 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "osu-notification-server-chart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
+{{- $apiVersion := "" -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+  {{- $apiVersion = "networking.k8s.io/v1" -}}
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+  {{- $apiVersion = "networking.k8s.io/v1beta1" -}}
 {{- else -}}
-apiVersion: extensions/v1beta1
+  {{- $apiVersion = "extensions/v1beta1" -}}
 {{- end }}
+apiVersion: {{ $apiVersion }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -33,9 +37,19 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
+            {{- if eq $apiVersion "networking.k8s.io/v1" }}
+            pathType: Prefix
+            {{- end }}
             backend:
+              {{- if not (eq $apiVersion "networking.k8s.io/v1") }}
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
+              {{- else }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: http
+              {{- end }}
           {{- end }}
     {{- end }}
   {{- end }}

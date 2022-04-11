@@ -2,5 +2,17 @@ dependencies:
 - name: osu-notification-server
   repository: file://../osu-notification-server
   version: 0.1.0
-digest: sha256:0732eb733888721cacdde5a7b7d0942d4f23355cf9fa1bac58c2791fa6de8c1d
-generated: "2021-08-26T01:49:11.45292631+02:00"
+- name: osu-server-spectator
+  repository: file://../osu-server-spectator
+  version: 0.1.0
+- name: mysql
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.5.6
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 14.1.0
+- name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 6.8.18
+digest: sha256:1dc9bf4d047bf6a8ae8e7fea5d718923446d42d0f965a5938b25891ba6112fdc
+generated: "2022-04-11T16:21:51.25362378+02:00"

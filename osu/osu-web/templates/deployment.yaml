@@ -57,11 +57,11 @@ spec:
           volumeMounts:
             - mountPath: /app/storage/passport/oauth-public.key
               name: oauth-public-key-secret
-              subPath: laravelOauthPublicKey
+              subPath: oauth-public.key
               readOnly: true
             - mountPath: /app/storage/passport/oauth-private.key
               name: oauth-private-key-secret
-              subPath: laravelOauthPrivateKey
+              subPath: oauth-private.key
               readOnly: true
             - mountPath: /app/.env
               name: env-secret
@@ -72,13 +72,13 @@ spec:
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
             items:
-              - key: laravelOauthPublicKey
+              - key: oauth-public.key
                 path: oauth-public.key
         - name: oauth-private-key-secret
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}
             items:
-              - key: laravelOauthPrivateKey
+              - key: oauth-private.key
                 path: oauth-private.key
         - name: env-secret
           secret:

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "osu-notification-server-chart.fullname" . }}
+  name: {{ include "osu-server-spectator-chart.fullname" . }}
   labels:
-    {{- include "osu-notification-server-chart.labels" . | nindent 4 }}
+    {{- include "osu-server-spectator-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "osu-notification-server-chart.selectorLabels" . | nindent 6 }}
+      {{- include "osu-server-spectator-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,22 +18,22 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "osu-notification-server-chart.selectorLabels" . | nindent 8 }}
+        {{- include "osu-server-spectator-chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "osu-notification-server-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "osu-server-spectator-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: basedir
+        - name: oauth-public-key-secret
           secret:
             {{- if .Values.useSharedSecretsFromOsuWebChart }}
             secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
             {{- else }}
-            secretName: {{ include "osu-notification-server-chart.fullname" . }}-oauth-public-key
+            secretName: {{ include "osu-server-spectator-chart.fullname" . }}-oauth-public-key
             {{- end }}
             items:
               - key: oauth-public.key
@@ -46,7 +46,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 2345
+              containerPort: 80
               protocol: TCP
           livenessProbe:
             tcpSocket:
@@ -57,20 +57,16 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: basedir
-              mountPath: /basedir
+            - mountPath: /app/oauth-public.key
+              name: oauth-public-key-secret
+              subPath: oauth-public.key
               readOnly: true
-          env:
-            - name: WEBSOCKET_BASEDIR
-              value: /basedir
-            - name: NOTIFICATION_SERVER_LISTEN_HOST
-              value: 0.0.0.0
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}
                 name: {{ include "osu-web-chart.fullname" . }}-shared
                 {{- else }}
-                name: {{ include "osu-notification-server-chart.fullname" . }}
+                name: {{ include "osu-server-spectator-chart.fullname" . }}
                 {{- end }}
                 optional: false
       {{- with .Values.nodeSelector }}

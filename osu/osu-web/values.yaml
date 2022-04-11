@@ -110,6 +110,9 @@ config:
       serverUrl: "" # SCORES_RANK_CACHE_SERVER_URL
       timeout: 10 # SCORES_RANK_CACHE_TIMEOUT
 
+  spectatorServer: {}
+    # env: Development # ASPNETCORE_ENVIRONMENT
+
   db:
     host: localhost # DB_HOST
     database: osu # DB_DATABASE
@@ -190,6 +193,53 @@ image:
 osu-notification-server:
   enabled: true
   useSharedSecretsFromOsuWebChart: true
+
+osu-server-spectator:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
+
+mysql:
+  architecture: standalone
+  auth:
+    forcePassword: false
+    database: osu
+    username: osuweb
+    password: mandatory-but-set-to-empty-in-env # bitnami chart will create a random password and complain in upgrades if not provided
+    rootPassword: changeme # required, recommended to use a random string
+  primary:
+    extraEnvVars:
+      - name: MYSQL_PASSWORD
+        value: ""
+      - name: ALLOW_EMPTY_PASSWORD
+        value: "true"
+  secondary:
+    extraEnvVars:
+      - name: MYSQL_PASSWORD
+        value: ""
+      - name: ALLOW_EMPTY_PASSWORD
+        value: "true"
+
+redis:
+  architecture: standalone
+  auth:
+    enabled: false
+
+elasticsearch:
+  clusterName: osu-web-elasticsearch # must be unique inside namespace!
+  extraEnvs:
+  - name: discovery.type
+    value: single-node
+  - name: action.auto_create_index
+    value: "false"
+  image: docker.elastic.co/elasticsearch/elasticsearch-oss
+  imageTag: 6.8.12
+  minimumMasterNodes: 1
+  nodeGroup: master
+  replicas: 1
+  roles:
+    data: "true"
+    ingest: "true"
+    master: "true"
 
 imagePullSecrets: []
 nameOverride: ""
