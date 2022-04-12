@@ -7,14 +7,14 @@ useSharedSecretsFromOsuWebChart: false
 config:
   spectatorServer: {}
     # env: Development # ASPNETCORE_ENVIRONMENT
-  db:
-    host: "" # required
+  db: {}
+    # host: "" # required
     # database: "" # default to osu in app
     # user: osuweb # default to osuweb
     # port: 3306
   laravel:
-    oauth:
-      publicKey: "" # required
+    oauth: {}
+      # publicKey: "" # required
 
 replicaCount: 1
 

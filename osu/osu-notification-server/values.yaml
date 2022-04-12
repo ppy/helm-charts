@@ -6,26 +6,26 @@
 useSharedSecretsFromOsuWebChart: false
 config:
   notificationServer:
-    debug: "" # default to false in app
+    # debug: "" # default to false in app
     env: production
-  db:
-    database: "" # default to osu in app
-    host: "" # required
-    password: "" # default to empty
-    user: "" # default to osuweb
-  dbName:
-    chat: "" # default to osu_chat
+  db: {}
+    # database: "" # default to osu in app
+    # host: "" # required
+    # password: "" # default to empty
+    # user: "" # default to osuweb
+  dbName: {}
+    # chat: "" # default to osu_chat
   laravel:
-    appKey: "" # required
-    oauth:
-      publicKey: "" # required
+    # appKey: "" # required
+    oauth: {}
+      # publicKey: "" # required
   redis:
-    app:
-      host: "" # required
-      port: "" # default to default redis port
+    app: {}
+      # host: "" # required
+      # port: "" # default to default redis port
     notification:
-      host: "" # required
-      port: "" # default to default redis port
+      # host: "" # required
+      # port: "" # default to default redis port
 
 replicaCount: 1
 
