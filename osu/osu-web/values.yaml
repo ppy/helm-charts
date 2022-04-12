@@ -110,13 +110,13 @@ config:
     # env: Development # ASPNETCORE_ENVIRONMENT
 
   db:
-    host: localhost # DB_HOST
+    # host: localhost # DB_HOST
     database: osu # DB_DATABASE
     user: osuweb # DB_USERNAME
-    # password: "" # DB_PASSWORD
+    password: "" # DB_PASSWORD
 
-  dbName:
-    chat: "" # default to osu_chat
+  dbName: {}
+    # chat: "" # defaults to osu_chat
 
   redis:
     app: {}
@@ -127,10 +127,10 @@ config:
       # host: 127.0.0.1 # CACHE_REDIS_HOST
       # port: 6379 # CACHE_REDIS_PORT
       # db: 0 # CACHE_REDIS_DB
-    notification:
-      host: 127.0.0.1 # NOTIFICATION_REDIS_HOST
-      port: 6379 # NOTIFICATION_REDIS_PORT
-      db: 0 # NOTIFICATION_REDIS_DB
+    notification: {}
+      # host: 127.0.0.1 # NOTIFICATION_REDIS_HOST
+      # port: 6379 # NOTIFICATION_REDIS_PORT
+      # db: 0 # NOTIFICATION_REDIS_DB
 
   memcache: {}
     # persistent_id: "" # MEMCACHED_PERSISTENT_ID
@@ -222,32 +222,42 @@ osu-server-spectator:
   useSharedSecretsFromOsuWebChart: true
 
 mysql:
+  enabled: true
   architecture: standalone
+
   auth:
-    forcePassword: false
-    database: osu
-    username: osuweb
-    password: mandatory-but-set-to-empty-in-env # bitnami chart will create a random password and complain in upgrades if not provided
     rootPassword: changeme # required, recommended to use a random string
-  primary:
-    extraEnvVars:
-      - name: MYSQL_PASSWORD
-        value: ""
-      - name: ALLOW_EMPTY_PASSWORD
-        value: "true"
-  secondary:
-    extraEnvVars:
-      - name: MYSQL_PASSWORD
-        value: ""
-      - name: ALLOW_EMPTY_PASSWORD
-        value: "true"
+    forcePassword: false
+
+    # default db, username and password are unused and deleted in initDbScripts.
+    database: ""
+    username: defaultuser
+    password: defaultpw
+
+  initdbScripts:
+    00-remove-default-user.sql: |
+      DROP USER defaultuser;
+    01-init-osu.sql: |
+      CREATE DATABASE osu DEFAULT CHARSET utf8mb4;
+      CREATE DATABASE osu_store DEFAULT CHARSET utf8mb4;
+      CREATE DATABASE osu_mp DEFAULT CHARSET utf8mb4;
+      CREATE DATABASE osu_chat DEFAULT CHARSET utf8mb4;
+      CREATE DATABASE osu_charts DEFAULT CHARSET utf8mb4;
+      CREATE DATABASE osu_updates DEFAULT CHARSET utf8mb4;
+
+      CREATE USER 'osuweb'@'%' IDENTIFIED BY '';
+      GRANT ALL PRIVILEGES ON *.* TO 'osuweb'@'%' WITH GRANT OPTION;
+
+      FLUSH PRIVILEGES;
 
 redis:
+  enabled: true
   architecture: standalone
   auth:
     enabled: false
 
 elasticsearch:
+  enabled: true
   clusterName: osu-web-elasticsearch # must be unique inside namespace!
   extraEnvs:
   - name: discovery.type

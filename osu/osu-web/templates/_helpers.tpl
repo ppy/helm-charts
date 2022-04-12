@@ -77,14 +77,16 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Return the MySQL Hostname
 */}}
 {{- define "osu-web.databaseHost" -}}
-{{- if .Values.mysql.enabled }}
-  {{- if eq .Values.mysql.architecture "replication" }}
+{{- if .Values.config.db.host -}}
+  {{- .Values.config.db.host -}}
+{{- else if .Values.mysql.enabled -}}
+  {{- if eq .Values.mysql.architecture "replication" -}}
     {{- printf "%s-%s" (include "osu-web.mysql.fullname" .) "primary" | trunc 63 | trimSuffix "-" -}}
   {{- else -}}
     {{- printf "%s" (include "osu-web.mysql.fullname" .) -}}
   {{- end -}}
 {{- else -}}
-  {{- printf "%s" (required "Missing db host" .Values.config.db.host) -}}
+  {{- fail "Missing db host" -}}
 {{- end -}}
 {{- end -}}
 
@@ -92,10 +94,12 @@ Return the MySQL Hostname
 Return the MySQL Database Name
 */}}
 {{- define "osu-web.databaseName" -}}
-{{- if .Values.mysql.enabled }}
-  {{- printf "%s" .Values.mysql.auth.database -}}
+{{- if .Values.config.db.database -}}
+  {{- .Values.config.db.database -}}
+{{- else if and (.Values.mysql.enabled) -}}
+  osu
 {{- else -}}
-  {{- printf "%s" .Values.config.db.database -}}
+  {{- fail "Missing db database" -}}
 {{- end -}}
 {{- end -}}
 
@@ -103,10 +107,12 @@ Return the MySQL Database Name
 Return the MySQL default user username
 */}}
 {{- define "osu-web.databaseUsername" -}}
-{{- if .Values.mysql.enabled }}
-  {{- printf "%s" .Values.mysql.auth.username -}}
+{{- if .Values.config.db.username -}}
+  {{- .Values.config.db.username -}}
+{{- else if and (.Values.mysql.enabled) -}}
+  osuweb
 {{- else -}}
-  {{- printf "%s" .Values.config.db.username -}}
+  {{- fail "Missing db username" -}}
 {{- end -}}
 {{- end -}}
 
@@ -114,9 +120,166 @@ Return the MySQL default user username
 Return the MySQL default user password
 */}}
 {{- define "osu-web.databasePassword" -}}
-{{- if .Values.mysql.enabled }}
-  {{- printf "%s" .Values.mysql.auth.password -}}
+{{- if not (kindIs "invalid" .Values.config.db.password) -}}
+  {{- .Values.config.db.password -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "osu-web.redis.fullname" -}}
+{{- printf "%s-%s" .Release.Name "redis-master" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the Redis App Hostname
+*/}}
+{{- define "osu-web.redisAppHost" -}}
+{{- if .Values.config.redis.app.host -}}
+  {{- .Values.config.redis.app.host -}}
+{{- else if .Values.redis.enabled -}}
+  {{- printf "%s" (include "osu-web.redis.fullname" .) -}}
 {{- else -}}
-  {{- printf "%s" .Values.config.db.password -}}
+  {{- fail "Missing redis app host" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis App Port
+*/}}
+{{- define "osu-web.redisAppPort" -}}
+{{- if .Values.config.redis.app.port -}}
+  {{- .Values.config.redis.app.port -}}
+{{- else if .Values.redis.enabled -}}
+  6379
+{{- else -}}
+  {{- fail "Missing redis app port" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis App DB
+*/}}
+{{- define "osu-web.redisAppDb" -}}
+{{- if .Values.config.redis.app.db -}}
+  {{- .Values.config.redis.app.db -}}
+{{- else if .Values.redis.enabled -}}
+  0
+{{- else -}}
+  {{- fail "Missing redis app DB" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Cache Hostname
+*/}}
+{{- define "osu-web.redisCacheHost" -}}
+{{- if .Values.config.redis.cache.host -}}
+  {{- .Values.config.redis.cache.host -}}
+{{- else if .Values.redis.enabled -}}
+  {{- printf "%s" (include "osu-web.redis.fullname" .) -}}
+{{- else -}}
+  {{- fail "Missing redis cache host" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Cache Port
+*/}}
+{{- define "osu-web.redisCachePort" -}}
+{{- if .Values.config.redis.cache.port -}}
+  {{- .Values.config.redis.cache.port -}}
+{{- else if .Values.redis.enabled -}}
+  6379
+{{- else -}}
+  {{- fail "Missing redis cache port" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Cache DB
+*/}}
+{{- define "osu-web.redisCacheDb" -}}
+{{- if .Values.config.redis.cache.db -}}
+  {{- .Values.config.redis.cache.db -}}
+{{- else if .Values.redis.enabled -}}
+  0
+{{- else -}}
+  {{- fail "Missing redis cache DB" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Notification Hostname
+*/}}
+{{- define "osu-web.redisNotificationHost" -}}
+{{- if .Values.config.redis.notification.host -}}
+  {{- .Values.config.redis.notification.host -}}
+{{- else if .Values.redis.enabled -}}
+  {{- printf "%s" (include "osu-web.redis.fullname" .) -}}
+{{- else -}}
+  {{- fail "Missing redis notification host" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Notification Port
+*/}}
+{{- define "osu-web.redisNotificationPort" -}}
+{{- if .Values.config.redis.notification.port -}}
+  {{- .Values.config.redis.notification.port -}}
+{{- else if .Values.redis.enabled -}}
+  6379
+{{- else -}}
+  {{- fail "Missing redis notification port" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Redis Notification DB
+*/}}
+{{- define "osu-web.redisNotificationDb" -}}
+{{- if .Values.config.redis.notification.db -}}
+  {{- .Values.config.redis.notification.db -}}
+{{- else if .Values.redis.enabled -}}
+  0
+{{- else -}}
+  {{- fail "Missing redis notification DB" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "osu-web.elasticsearch.fullname" -}}
+{{- printf "%s-%s" .Release.Name "elasticsearch-master" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the Elasticsearch Hostname
+*/}}
+{{- define "osu-web.elasticsearchHost" -}}
+{{- if .Values.config.elasticsearch.host -}}
+  {{- .Values.config.elasticsearch.host -}}
+{{- else if .Values.elasticsearch.enabled -}}
+  {{- printf "%s" (include "osu-web.elasticsearch.fullname" .) -}}
+{{- else -}}
+  {{- fail "Missing elasticsearch host" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Elasticsearch Scores Hostname
+*/}}
+{{- define "osu-web.elasticsearchScoresHost" -}}
+{{- if .Values.config.elasticsearch.scores.host -}}
+  {{- .Values.config.elasticsearch.scores.host -}}
+{{- else if .Values.elasticsearch.enabled -}}
+  {{- printf "%s" (include "osu-web.elasticsearch.fullname" .) -}}
+{{- else -}}
+  {{- fail "Missing elasticsearch scores host" -}}
 {{- end -}}
 {{- end -}}
