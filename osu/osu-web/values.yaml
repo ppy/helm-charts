@@ -34,10 +34,6 @@ config:
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
       banchoBotUserId: "" # BANCHO_BOT_USER_ID
 
-    filesystem: {}
-      # disk: local # FILESYSTEM_DISK
-
-    # scoreReplaysStorage: local # SCORE_REPLAYS_STORAGE # Either "s3" or "local".
     # queueDriver: "" # QUEUE_DRIVER
 
     camo: {}
@@ -156,19 +152,46 @@ config:
     # thumbnailer: http://localhost:4001 # BM_PROCESSOR_THUMBNAILER
     # sentry: "" # BM_PROCESSOR_SENTRY
 
-  s3:
-    default: {}
-      # key: "" # S3_KEY
-      # secret: "" # S3_SECRET
-      # region: "" # S3_REGION
-      # bucket: "" # S3_BUCKET
-    avatar: {}
-      # key: "" # S3_AVATAR_KEY
-      # secret: "" # S3_AVATAR_SECRET
-      # region: "" # S3_AVATAR_REGION
-      # bucket: "" # S3_AVATAR_BUCKET
-      # storage: local-avatar # AVATAR_STORAGE
-      # cache_purge_prefix: "" # AVATAR_CACHE_PURGE_PREFIX
+  storage:
+    general:
+      driver: local # FILESYSTEM_DISK
+      local:
+        # storageClassName:
+        # volumeName:
+        accessModes:
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+        size: 1Gi
+      s3:
+        key: "" # S3_KEY
+        secret: "" # S3_SECRET
+        region: "" # S3_REGION
+        bucket: "" # S3_BUCKET
+        baseUrl: "" # S3_BASE_URL
+        miniUrl: "" # S3_MINI_URL
+    avatar:
+      driver: local # AVATAR_STORAGE
+      local:
+        # storageClassName:
+        # volumeName:
+        accessModes:
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+        size: 1Gi
+      s3:
+        key: "" # S3_AVATAR_KEY
+        secret: "" # S3_AVATAR_SECRET
+        region: "" # S3_AVATAR_REGION
+        bucket: "" # S3_AVATAR_BUCKET
+        baseUrl: "" # S3_AVATAR_BASE_URL
+        cachePurgePrefix: "" # AVATAR_CACHE_PURGE_PREFIX
+    replay:
+      driver: local # SCORE_REPLAYS_STORAGE
+      local:
+        # storageClassName:
+        # volumeName:
+        accessModes:
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+        size: 1Gi
+      # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
   elasticsearch:
     # host: localhost:9200 # ES_HOST

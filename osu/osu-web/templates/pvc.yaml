@@ -1,0 +1,26 @@
+{{- range $storageName, $storage := .Values.config.storage }}
+{{- if eq "local" $storage.driver }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
+  labels:
+    {{- include "osu-web-chart.labels" $ | nindent 4 }}
+spec:
+  volumeMode: Filesystem
+  {{- with $storage.local.storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with $storage.local.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+  accessModes:
+    {{- range $storage.local.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ $storage.local.size | quote }}
+{{- end }}
+{{- end }}

@@ -67,6 +67,12 @@ spec:
             - mountPath: /secret-shared-oauth-public-key
               name: secret-shared-oauth-public-key
               readOnly: true
+            {{- range $storageName, $storage := .Values.config.storage }}
+            {{- if eq "local" $storage.driver }}
+            - mountPath: /app/public/uploads{{- if not (eq "general" $storageName) -}}-{{ $storageName }}{{- end }}
+              name: pvc-{{ $storageName }}
+            {{- end }}
+            {{- end }}
       volumes:
         - name: secret-shared-oauth-public-key
           secret:
@@ -74,6 +80,13 @@ spec:
         - name: secret
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}
+        {{- range $storageName, $storage := .Values.config.storage }}
+        {{- if eq "local" $storage.driver }}
+        - name: pvc-{{ $storageName }}
+          persistentVolumeClaim:
+            claimName: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
+        {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
