@@ -34,8 +34,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /app/docker/deployment/entrypoint.sh
-            - octane
+            - /bin/bash
+            - -c
+            - |
+              mkdir -p /app/storage/passport && \
+              ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/passport/oauth-public.key && \
+              ln -s /secret/oauth-private.key /app/storage/passport/oauth-private.key && \
+              ln -s /secret/.env /app/.env && \
+              su osuweb -c '/app/docker/deployment/entrypoint.sh octane'
           ports:
             - name: http
               containerPort: 8000
@@ -55,37 +61,19 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /app/storage/passport/oauth-public.key
-              name: oauth-public-key-secret
-              subPath: oauth-public.key
+            - mountPath: /secret
+              name: secret
               readOnly: true
-            - mountPath: /app/storage/passport/oauth-private.key
-              name: oauth-private-key-secret
-              subPath: oauth-private.key
-              readOnly: true
-            - mountPath: /app/.env
-              name: env-secret
-              subPath: .env
+            - mountPath: /secret-shared-oauth-public-key
+              name: secret-shared-oauth-public-key
               readOnly: true
       volumes:
-        - name: oauth-public-key-secret
+        - name: secret-shared-oauth-public-key
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
-            items:
-              - key: oauth-public.key
-                path: oauth-public.key
-        - name: oauth-private-key-secret
+        - name: secret
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}
-            items:
-              - key: oauth-private.key
-                path: oauth-private.key
-        - name: env-secret
-          secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}
-            items:
-              - key: .env
-                path: .env
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
