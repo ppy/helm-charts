@@ -231,6 +231,8 @@ elasticsearch:
     value: single-node
   - name: action.auto_create_index
     value: "false"
+  - name: ES_JAVA_OPTS
+    value: "-Xms512m -Xmx512m"
   image: docker.elastic.co/elasticsearch/elasticsearch-oss
   imageTag: 6.8.12
   minimumMasterNodes: 1
