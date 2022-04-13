@@ -283,3 +283,39 @@ Return the Elasticsearch Scores Hostname
   {{- fail "Missing elasticsearch scores host" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the notification server public url
+*/}}
+{{- define "osu-web.notificationServerPublicUrl" -}}
+{{- $osuNotificationServer := (index .Values "osu-notification-server") -}}
+{{- if .Values.config.notificationServer.publicUrl -}}
+  {{- .Values.config.notificationServer.publicUrl -}}
+{{- else if and
+  $osuNotificationServer.enabled
+  $osuNotificationServer.ingress.enabled
+  $osuNotificationServer.ingress.hosts
+-}}
+  {{- $mainHost := index $osuNotificationServer.ingress.hosts 0 -}}
+  ws{{- if $osuNotificationServer.ingress.tls -}}s{{- end -}}://{{- $mainHost.host -}}{{- (index $mainHost.paths 0).path -}}
+{{- else -}}
+  {{- fail "Missing notification server public url" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Laravel app URL
+*/}}
+{{- define "osu-web.laravelAppUrl" -}}
+{{- if .Values.config.laravel.url -}}
+  {{- .Values.config.laravel.url -}}
+{{- else if and
+  .Values.ingress.enabled
+  .Values.ingress.hosts
+-}}
+  {{- $mainHost := index .Values.ingress.hosts 0 -}}
+  http{{- if .Values.ingress.tls -}}s{{- end -}}://{{- $mainHost.host -}}{{- (index $mainHost.paths 0).path -}}
+{{- else -}}
+  {{- fail "Missing laravel app url" -}}
+{{- end -}}
+{{- end -}}
