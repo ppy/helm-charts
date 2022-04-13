@@ -36,6 +36,9 @@ config:
 
     # queueDriver: "" # QUEUE_DRIVER
 
+    schedule:
+      cron: "*/5 * * * *"
+
     camo: {}
       # key: "" # CAMO_KEY
       # prefix: "" # CAMO_PREFIX

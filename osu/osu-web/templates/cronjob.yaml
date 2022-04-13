@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-schedule
+  labels:
+    {{- include "osu-web-chart.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.config.laravel.schedule.cron | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "osu-web-chart.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: {{ .Chart.Name }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  mkdir -p /app/storage/passport && \
+                  ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/passport/oauth-public.key && \
+                  ln -s /secret/oauth-private.key /app/storage/passport/oauth-private.key && \
+                  ln -s /secret/.env /app/.env && \
+                  su osuweb -c '/app/artisan schedule:run'
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              volumeMounts:
+                - mountPath: /secret
+                  name: secret
+                  readOnly: true
+                - mountPath: /secret-shared-oauth-public-key
+                  name: secret-shared-oauth-public-key
+                  readOnly: true
+          volumes:
+            - name: secret-shared-oauth-public-key
+              secret:
+                secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
+            - name: secret
+              secret:
+                secretName: {{ include "osu-web-chart.fullname" . }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
