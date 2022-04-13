@@ -34,7 +34,18 @@ config:
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
       banchoBotUserId: "" # BANCHO_BOT_USER_ID
 
-    # queueDriver: "" # QUEUE_DRIVER
+    queue:
+      # driver: "" # QUEUE_DRIVER
+      workers:
+        general:
+          replicaCount: 1
+          queues:
+            - beatmap_default
+            - beatmap_high
+            - default
+            - notification
+            - store-notifications
+          additionalOptions: ""
 
     schedule:
       cron: "*/5 * * * *"

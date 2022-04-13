@@ -1,0 +1,76 @@
+{{- if .Values.config.laravel.queue.workers -}}
+apiVersion: v1
+kind: List
+items:
+{{- range $workerName, $workerConfig := .Values.config.laravel.queue.workers }}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{ include "osu-web-chart.fullname" $ }}-workers-{{ $workerName }}
+    labels:
+      {{- include "osu-web-chart.labels" $ | nindent 6 }}
+      tier: worker
+  spec:
+    replicas: {{ $workerConfig.replicas }}
+    selector:
+      matchLabels:
+        {{- include "osu-web-chart.selectorLabels" $ | nindent 8 }}
+        tier: worker
+    template:
+      metadata:
+        {{- with $.Values.podAnnotations }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        labels:
+          {{- include "osu-web-chart.selectorLabels" $ | nindent 10 }}
+          tier: worker
+      spec:
+        {{- with $.Values.imagePullSecrets }}
+        imagePullSecrets:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        serviceAccountName: {{ include "osu-web-chart.serviceAccountName" $ }}
+        securityContext:
+          {{- toYaml $.Values.podSecurityContext | nindent 10 }}
+        containers:
+          - name: {{ $.Chart.Name }}
+            securityContext:
+              {{- toYaml $.Values.securityContext | nindent 14 }}
+            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+            imagePullPolicy: {{ $.Values.image.pullPolicy }}
+            command:
+              - /bin/bash
+              - -c
+              - |
+                mkdir -p /app/storage/passport && \
+                ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/passport/oauth-public.key && \
+                ln -s /secret/oauth-private.key /app/storage/passport/oauth-private.key && \
+                ln -s /secret/.env /app/.env && \
+                su osuweb -c '/app/artisan queue:work --queue={{- join "," $workerConfig.queues }} {{ $workerConfig.additionalOptions -}}'
+            resources:
+              {{- toYaml $.Values.resources | nindent 14 }}
+            volumeMounts:
+              - mountPath: /secret
+                name: secret
+                readOnly: true
+              - mountPath: /secret-shared-oauth-public-key
+                name: secret-shared-oauth-public-key
+                readOnly: true
+        volumes:
+          - name: secret-shared-oauth-public-key
+            secret:
+              secretName: {{ include "osu-web-chart.fullname" $ }}-shared-oauth-public-key
+          - name: secret
+            secret:
+              secretName: {{ include "osu-web-chart.fullname" $ }}
+        {{- with $.Values.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with $.Values.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+{{- end -}}
+{{- end -}}
