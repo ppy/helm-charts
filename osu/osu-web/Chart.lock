@@ -1,4 +1,7 @@
 dependencies:
+- name: osu-beatmap-difficulty-lookup-cache
+  repository: file://../osu-beatmap-difficulty-lookup-cache
+  version: 0.1.0
 - name: osu-notification-server
   repository: file://../osu-notification-server
   version: 0.1.0
@@ -14,5 +17,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 6.8.18
-digest: sha256:3a0bad1c15a907d26215bc8906ee4e1c11770138e4640561e744a9ff8a09f76e
-generated: "2022-04-13T13:48:58.355674793+02:00"
+digest: sha256:e64abe9add9c3632b7f6291a99cf69c6d0a2d419ef4b7659969a906b65e0843d
+generated: "2022-04-13T19:26:27.680753979+02:00"

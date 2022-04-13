@@ -220,6 +220,9 @@ config:
   notificationServer: {}
     # publicUrl: /home/notifications/feed # NOTIFICATION_ENDPOINT
 
+  beatmapsDifficultyLookupCache: {}
+    # serverUrl: "" # BEATMAPS_DIFFICULTY_CACHE_SERVER_URL
+
 replicaCount: 1
 
 image:
@@ -227,6 +230,13 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+
+osu-beatmap-difficulty-lookup-cache:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
+  config:
+    beatmapDifficultyLookupCache: {}
+      # useDatabaseLookups: false
 
 osu-notification-server:
   enabled: true

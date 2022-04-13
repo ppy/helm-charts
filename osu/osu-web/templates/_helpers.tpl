@@ -341,3 +341,23 @@ Return the Laravel session secure cookies boolean
   {{- eq "https" (urlParse (include "osu-web.laravelAppUrl" .)).scheme -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "osu-web.osu-beatmap-difficulty-lookup-cache.fullname" -}}
+{{- printf "%s-%s" .Release.Name "osu-beatmap-difficulty-lookup-cache" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the beatmaps difficulty lookup cache server url
+*/}}
+{{- define "osu-web.beatmapsDifficultyLookupCacheServerUrl" -}}
+{{- $osuBeatmapsDifficultyLookupCache := (index .Values "osu-beatmap-difficulty-lookup-cache") -}}
+{{- if .Values.config.beatmapsDifficultyLookupCache.serverUrl -}}
+  {{- .Values.config.beatmapsDifficultyLookupCache.serverUrl -}}
+{{- else if $osuBeatmapsDifficultyLookupCache.enabled -}}
+  http://{{- include "osu-web.osu-beatmap-difficulty-lookup-cache.fullname" . -}}
+{{- end -}}
+{{- end -}}
