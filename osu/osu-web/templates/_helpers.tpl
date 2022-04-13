@@ -319,3 +319,25 @@ Return the Laravel app URL
   {{- fail "Missing laravel app url" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the Laravel session domain
+*/}}
+{{- define "osu-web.laravelSessionDomain" -}}
+{{- if .Values.config.laravel.session.domain -}}
+  {{- .Values.config.laravel.session.domain -}}
+{{- else -}}
+  {{- (urlParse (include "osu-web.laravelAppUrl" .)).host -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Laravel session secure cookies boolean
+*/}}
+{{- define "osu-web.laravelSessionSecureCookie" -}}
+{{- if .Values.config.laravel.session.secureCookie -}}
+  {{- .Values.config.laravel.session.secureCookie -}}
+{{- else -}}
+  {{- eq "https" (urlParse (include "osu-web.laravelAppUrl" .)).scheme -}}
+{{- end -}}
+{{- end -}}
