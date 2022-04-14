@@ -31,9 +31,8 @@ spec:
             - /bin/bash
             - -c
             - |
-              mkdir -p /app/storage/passport && \
-              ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/passport/oauth-public.key && \
-              ln -s /secret/oauth-private.key /app/storage/passport/oauth-private.key && \
+              ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/oauth-public.key && \
+              ln -s /secret/oauth-private.key /app/storage/oauth-private.key && \
               ln -s /secret/.env /app/.env && \
               su osuweb -c '/app/artisan migrate --force'
           resources:
