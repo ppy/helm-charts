@@ -229,7 +229,7 @@ image:
   repository: pppy/osu-web
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # tag: ""
 
 osu-beatmap-difficulty-lookup-cache:
   enabled: true
