@@ -18,7 +18,7 @@ config:
       # public_url: "" # APP_SENTRY_PUBLIC
 
     log:
-      driver: log # BROADCAST_DRIVER
+      driver: redis # BROADCAST_DRIVER
     logChannel: single # LOG_CHANNEL
 
     cache:
