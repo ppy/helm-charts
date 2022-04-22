@@ -19,7 +19,7 @@ config:
 
     log:
       driver: redis # BROADCAST_DRIVER
-    logChannel: single # LOG_CHANNEL
+    logChannel: stderr # LOG_CHANNEL
 
     cache:
       driver: file # CACHE_DRIVER
