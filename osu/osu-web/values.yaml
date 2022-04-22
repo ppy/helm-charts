@@ -10,7 +10,9 @@ config:
     # url: http://localhost:8080 # APP_URL
     env: production # APP_ENV
     debug: false # APP_DEBUG
-    # appKey: "" # APP_KEY, required
+    trustedProxies: "*" # TRUSTED_PROXIES
+    devDeploy: true # IS_DEVELOPMENT_DEPLOY
+    # appKey: "" # APP_KEY, required, see README
     extraEnv: {}
 
     sentry: {}

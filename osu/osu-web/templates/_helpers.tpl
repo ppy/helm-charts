@@ -208,6 +208,10 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "BEATMAPS_DIFFICULTY_CACHE_SERVER_URL" "value" (include "osu-web.beatmapsDifficultyLookupCacheServerUrl" .)) }}
 
+{{ template "osu-web-chart.env-var" (dict "name" "TRUSTED_PROXIES" "value" .Values.config.laravel.trustedProxies) }}
+
+{{ template "osu-web-chart.env-var" (dict "name" "IS_DEVELOPMENT_DEPLOY" "value" .Values.config.laravel.devDeploy) }}
+
 {{ .Values.config.laravel.extraEnv | toYaml }}
 {{- end -}}
 
