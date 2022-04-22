@@ -25,29 +25,29 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               command:
-                - /bin/bash
-                - -c
-                - |
-                  ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/oauth-public.key && \
-                  ln -s /secret/oauth-private.key /app/storage/oauth-private.key && \
-                  ln -s /secret/.env /app/.env && \
-                  su osuweb -c '/app/artisan schedule:run'
+                - /app/docker/deployment/entrypoint.sh
+                - schedule
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               volumeMounts:
-                - mountPath: /secret
-                  name: secret
-                  readOnly: true
-                - mountPath: /secret-shared-oauth-public-key
+                - mountPath: /app/storage/oauth-public.key
                   name: secret-shared-oauth-public-key
+                  subPath: oauth-public.key
                   readOnly: true
+                - mountPath: /app/storage/oauth-private.key
+                  name: secret-oauth-private-key
+                  subPath: oauth-private.key
+                  readOnly: true
+              envFrom:
+                - secretRef:
+                    name: {{ include "osu-web-chart.fullname" . }}-env
           volumes:
             - name: secret-shared-oauth-public-key
               secret:
                 secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
-            - name: secret
+            - name: secret-oauth-private-key
               secret:
-                secretName: {{ include "osu-web-chart.fullname" . }}
+                secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key
           {{- with .Values.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}

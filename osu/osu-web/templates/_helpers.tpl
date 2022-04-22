@@ -61,9 +61,11 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{- define "osu-web-chart.dotenv-var" -}}
-{{- if kindIs "invalid" .value }}#{{ end }}{{- .name | upper -}}={{- .value -}}
-{{- end }}
+{{- define "osu-web-chart.env-var" -}}
+{{- if not (kindIs "invalid" .value) -}}
+{{- .name | upper | quote -}}: {{ .value | quote }}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Create a default fully qualified app name.
