@@ -4,6 +4,8 @@ metadata:
   name: {{ include "osu-web-chart.fullname" . }}-octane
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
+  annotations:
+    checksum/config: {{ sha256sum (printf "%s-%s-%s" .Values.config.laravel.oauth.privateKey .Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" .)) }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -13,10 +15,11 @@ spec:
       {{- include "osu-web-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/config: {{ sha256sum (printf "%s-%s-%s" .Values.config.laravel.oauth.privateKey .Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" .)) }}
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key | quote }}: {{ $value | quote }}
+        {{- end }}
       labels:
         {{- include "osu-web-chart.selectorLabels" . | nindent 8 }}
     spec:
