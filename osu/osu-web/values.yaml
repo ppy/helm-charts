@@ -129,6 +129,7 @@ config:
     user: osuweb # DB_USERNAME
     password: "" # DB_PASSWORD
     migrate: true
+    seed: true
 
   dbName: {}
     # chat: "" # defaults to osu_chat

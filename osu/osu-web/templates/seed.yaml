@@ -1,14 +1,14 @@
-{{- if .Values.config.db.migrate -}}
+{{- if .Values.config.db.seed -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "osu-web-chart.fullname" . }}-migrate
+  name: {{ include "osu-web-chart.fullname" . }}-migrate-seed
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
     tier: migrate
   annotations:
-    "helm.sh/hook": post-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -34,7 +34,8 @@ spec:
               ln -s /secret-shared-oauth-public-key/oauth-public.key /app/storage/oauth-public.key && \
               ln -s /secret/oauth-private.key /app/storage/oauth-private.key && \
               ln -s /secret/.env /app/.env && \
-              su osuweb -c '/app/artisan migrate --force'
+              su osuweb -c '/app/artisan es:index-documents -n --yes' && \
+              su osuweb -c '/app/artisan db:seed --force'
           resources:
             {{- toYaml .Values.resources | nindent 16 }}
           volumeMounts:
