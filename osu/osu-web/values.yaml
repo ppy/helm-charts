@@ -28,7 +28,7 @@ config:
       # localDriver: file # CACHE_DRIVER_LOCAL
 
     session:
-      driver: file # SESSION_DRIVER
+      driver: redis # SESSION_DRIVER
       # domain: "" # SESSION_DOMAIN
       # secureCookie: false # SESSION_SECURE_COOKIE
 
