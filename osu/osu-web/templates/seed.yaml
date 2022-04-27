@@ -30,10 +30,12 @@ spec:
           command:
             - /bin/bash
             - -c
-            # initial ES indexing is needed, otherwise seeding fails at UserSeeder
+            # ES indexing needs to be done prior, otherwise seeding fails at UserSeeder due to missing indexes
             - |
               /app/artisan es:index-documents -n --yes && \
-              /app/artisan db:seed --force
+              /app/artisan db:seed --force && \
+              /app/artisan es:create-search-blacklist -n && \
+              /app/artisan es:index-wiki --create-only -n --yes
           resources:
             {{- toYaml .Values.resources | nindent 16 }}
           volumeMounts:
