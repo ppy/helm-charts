@@ -6,6 +6,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
   labels:
+    helm.sh/resource-policy: "keep"
     {{- include "osu-web-chart.labels" $ | nindent 4 }}
 spec:
   volumeMode: Filesystem
