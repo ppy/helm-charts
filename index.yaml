@@ -3,6 +3,16 @@ entries:
   osu-beatmap-difficulty-lookup-cache:
   - apiVersion: v2
     appVersion: latest
+    created: "2022-05-09T13:04:52.991355309Z"
+    description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
+    digest: a60d1df2c935aa8268623fd651cb9d486b0f621bf5bb8543fee52b22adb6910b
+    name: osu-beatmap-difficulty-lookup-cache
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-beatmap-difficulty-lookup-cache-2022.509.0/osu-beatmap-difficulty-lookup-cache-2022.509.0.tgz
+    version: 2022.509.0
+  - apiVersion: v2
+    appVersion: latest
     created: "2022-05-09T12:32:50.415454445Z"
     description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
     digest: 0f713fae1acc35571bc9253579926ff46c0a7732126de2910a33a6fb0edbd024
@@ -11,7 +21,64 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/osu-beatmap-difficulty-lookup-cache-2022.414.0/osu-beatmap-difficulty-lookup-cache-2022.414.0.tgz
     version: 2022.414.0
+  osu-notification-server:
+  - apiVersion: v2
+    appVersion: 2022.301.0
+    created: "2022-05-09T13:04:53.144537243Z"
+    description: production osu-notification-server deployment in Kubernetes
+    digest: 40af218a1198936b7a99571673b6fe51d06d515afed9eff5de2ba7e196ae2b18
+    name: osu-notification-server
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-notification-server-2022.509.0/osu-notification-server-2022.509.0.tgz
+    version: 2022.509.0
+  osu-server-spectator:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-05-09T13:04:53.308295035Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: cc9069fa7afc4a28014ac6c36cb234a1ca1718cb76bfb1fd51c4edd682516b0b
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
+    version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2022.508.0
+    created: "2022-05-09T13:04:53.497678967Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: file://../osu-beatmap-difficulty-lookup-cache
+      version: 2022.509.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: file://../osu-notification-server
+      version: 2022.509.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: file://../osu-server-spectator
+      version: 2022.509.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: fb9edc704ab6bd9bf33879bde10d9d09d2a95543cbb32c85b8255245a7b2f602
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.509.0/osu-web-2022.509.0.tgz
+    version: 2022.509.0
   - apiVersion: v2
     appVersion: 2022.405.0
     created: "2022-05-09T12:32:50.6688103Z"
@@ -47,4 +114,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.414.2/osu-web-2022.414.2.tgz
     version: 2022.414.2
-generated: "2022-05-09T12:32:50.668825001Z"
+generated: "2022-05-09T13:04:53.497702967Z"
