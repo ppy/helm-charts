@@ -25,7 +25,7 @@ appVersion: "2022.405.0"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
-    version: 2022.414.0
+    version: 2022.509.0
     repository: "file://../osu-beatmap-difficulty-lookup-cache"
     condition: osu-beatmap-difficulty-lookup-cache.enabled
   - name: osu-notification-server
