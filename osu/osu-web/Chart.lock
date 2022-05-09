@@ -4,10 +4,10 @@ dependencies:
   version: 2022.414.0
 - name: osu-notification-server
   repository: file://../osu-notification-server
-  version: 2022.414.0
+  version: 2022.509.0
 - name: osu-server-spectator
   repository: file://../osu-server-spectator
-  version: 2022.414.0
+  version: 2022.509.0
 - name: mysql
   repository: https://charts.bitnami.com/bitnami
   version: 8.5.6

@@ -29,11 +29,11 @@ dependencies:
     repository: "file://../osu-beatmap-difficulty-lookup-cache"
     condition: osu-beatmap-difficulty-lookup-cache.enabled
   - name: osu-notification-server
-    version: 2022.414.0
+    version: 2022.509.0
     repository: "file://../osu-notification-server"
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2022.414.0
+    version: 2022.509.0
     repository: "file://../osu-server-spectator"
     condition: osu-server-spectator.enabled
   - name: mysql
