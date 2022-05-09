@@ -1,12 +1,12 @@
 dependencies:
 - name: osu-beatmap-difficulty-lookup-cache
-  repository: file://../osu-beatmap-difficulty-lookup-cache
+  repository: https://ppy.github.io/helm-charts
   version: 2022.509.0
 - name: osu-notification-server
-  repository: file://../osu-notification-server
+  repository: https://ppy.github.io/helm-charts
   version: 2022.509.0
 - name: osu-server-spectator
-  repository: file://../osu-server-spectator
+  repository: https://ppy.github.io/helm-charts
   version: 2022.509.0
 - name: mysql
   repository: https://charts.bitnami.com/bitnami
@@ -17,5 +17,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:5f703854ca0e411ae2ce24cbf5892dea62178bcf4397d73c34a9b015b2145f5a
-generated: "2022-05-09T14:54:50.876290328+02:00"
+digest: sha256:c3899adeba0278f2c4f2b239756f162f1fe21da8c766bdcbdb51c25512a93a16
+generated: "2022-05-09T15:14:29.650312705+02:00"
