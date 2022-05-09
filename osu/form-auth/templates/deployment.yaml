@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "form-auth-chart.fullname" . }}
+  labels:
+    {{- include "form-auth-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "form-auth-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        config/checksum: {{ include "form-auth-chart.production.json" . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "form-auth-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "form-auth-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "form-auth-chart.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: DEPLOYMENT
+              value: production
+            - name: HTTP_HOST
+              value: 0.0.0.0
+            - name: HTTP_PORT
+              value: "80"
+            - name: HTTP_URL
+              value: https://{{ (first .Values.ingress.hosts).host }}
+            - name: COOKIES_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "form-auth-chart.fullname" . }}
+                  key: cookiesSecret
+            - name: TOKENS_PRIVATEKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "form-auth-chart.fullname" . }}
+                  key: tokensPrivateKey
+            - name: TOKENS_PUBLICKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "form-auth-chart.fullname" . }}
+                  key: tokensPublicKey
+            - name: OSU_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "form-auth-chart.fullname" . }}
+                  key: osuClientId
+            - name: OSU_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "form-auth-chart.fullname" . }}
+                  key: osuClientSecret
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /srv/config/deployment/production.json
+              subPath: production.json
+              readOnly: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
