@@ -77,17 +77,17 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "SENTRY_TRACES_SAMPLE_RATE" "value" .Values.config.laravel.sentry.tracesSampleRate) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "DB_HOST" "value" (include "osu-web.databaseHost" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "DB_DATABASE" "value" (include "osu-web.databaseName" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "DB_USERNAME" "value" (include "osu-web.databaseUsername" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "DB_PASSWORD" "value" (include "osu-web.databasePassword" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "DB_DATABASE" "value" .Values.config.db.database) }}
+{{ template "osu-web-chart.env-var" (dict "name" "DB_USERNAME" "value" .Values.config.db.username) }}
+{{ template "osu-web-chart.env-var" (dict "name" "DB_PASSWORD" "value" .Values.config.db.password) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "REDIS_HOST" "value" (include "osu-web.redisAppHost" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "REDIS_PORT" "value" (include "osu-web.redisAppPort" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "REDIS_DB" "value" (include "osu-web.redisAppDb" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "REDIS_PORT" "value" .Values.config.redis.app.port) }}
+{{ template "osu-web-chart.env-var" (dict "name" "REDIS_DB" "value" .Values.config.redis.app.db) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_HOST" "value" (include "osu-web.redisCacheHost" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_PORT" "value" (include "osu-web.redisCachePort" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_DB" "value" (include "osu-web.redisCacheDb" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_PORT" "value" .Values.config.redis.cache.port) }}
+{{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_DB" "value" .Values.config.redis.cache.db) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_PERSISTENT_ID" "value" .Values.config.memcache.persistentId) }}
 {{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_USERNAME" "value" .Values.config.memcache.username) }}
@@ -186,8 +186,8 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_QUEUE" "value" .Values.config.laravel.notifications.queue) }}
 {{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_REDIS_HOST" "value" (include "osu-web.redisNotificationHost" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_REDIS_PORT" "value" (include "osu-web.redisNotificationPort" .)) }}
-{{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_REDIS_DB" "value" (include "osu-web.redisNotificationDb" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_REDIS_PORT" "value" .Values.config.redis.notification.port) }}
+{{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_REDIS_DB" "value" .Values.config.redis.notification.db) }}
 {{ template "osu-web-chart.env-var" (dict "name" "NOTIFICATION_ENDPOINT" "value" (include "osu-web.notificationServerPublicUrl" .)) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "LOG_CHANNEL" "value" .Values.config.laravel.logChannel) }}
@@ -213,7 +213,10 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "IS_DEVELOPMENT_DEPLOY" "value" .Values.config.laravel.devDeploy) }}
 
-{{ .Values.config.laravel.extraEnv | toYaml }}
+# Extra env
+{{- range $name, $value := .Values.config.laravel.extraEnv }}
+{{ template "osu-web-chart.env-var" (dict "name" $name "value" $value) }}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -228,7 +231,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Return the MySQL Hostname
 */}}
 {{- define "osu-web.databaseHost" -}}
-{{- if .Values.config.db.host -}}
+{{- if not (eq nil .Values.config.db.host) -}}
   {{- .Values.config.db.host -}}
 {{- else if .Values.mysql.enabled -}}
   {{- if eq .Values.mysql.architecture "replication" -}}
@@ -238,41 +241,6 @@ Return the MySQL Hostname
   {{- end -}}
 {{- else -}}
   {{- fail "Missing db host" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the MySQL Database Name
-*/}}
-{{- define "osu-web.databaseName" -}}
-{{- if .Values.config.db.database -}}
-  {{- .Values.config.db.database -}}
-{{- else if and (.Values.mysql.enabled) -}}
-  osu
-{{- else -}}
-  {{- fail "Missing db database" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the MySQL default user username
-*/}}
-{{- define "osu-web.databaseUsername" -}}
-{{- if .Values.config.db.username -}}
-  {{- .Values.config.db.username -}}
-{{- else if and (.Values.mysql.enabled) -}}
-  osuweb
-{{- else -}}
-  {{- fail "Missing db username" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the MySQL default user password
-*/}}
-{{- define "osu-web.databasePassword" -}}
-{{- if not (kindIs "invalid" .Values.config.db.password) -}}
-  {{- .Values.config.db.password -}}
 {{- end -}}
 {{- end -}}
 
@@ -298,32 +266,6 @@ Return the Redis App Hostname
 {{- end -}}
 
 {{/*
-Return the Redis App Port
-*/}}
-{{- define "osu-web.redisAppPort" -}}
-{{- if .Values.config.redis.app.port -}}
-  {{- .Values.config.redis.app.port -}}
-{{- else if .Values.redis.enabled -}}
-  6379
-{{- else -}}
-  {{- fail "Missing redis app port" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the Redis App DB
-*/}}
-{{- define "osu-web.redisAppDb" -}}
-{{- if .Values.config.redis.app.db -}}
-  {{- .Values.config.redis.app.db -}}
-{{- else if .Values.redis.enabled -}}
-  0
-{{- else -}}
-  {{- fail "Missing redis app DB" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Return the Redis Cache Hostname
 */}}
 {{- define "osu-web.redisCacheHost" -}}
@@ -337,32 +279,6 @@ Return the Redis Cache Hostname
 {{- end -}}
 
 {{/*
-Return the Redis Cache Port
-*/}}
-{{- define "osu-web.redisCachePort" -}}
-{{- if .Values.config.redis.cache.port -}}
-  {{- .Values.config.redis.cache.port -}}
-{{- else if .Values.redis.enabled -}}
-  6379
-{{- else -}}
-  {{- fail "Missing redis cache port" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the Redis Cache DB
-*/}}
-{{- define "osu-web.redisCacheDb" -}}
-{{- if .Values.config.redis.cache.db -}}
-  {{- .Values.config.redis.cache.db -}}
-{{- else if .Values.redis.enabled -}}
-  0
-{{- else -}}
-  {{- fail "Missing redis cache DB" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Return the Redis Notification Hostname
 */}}
 {{- define "osu-web.redisNotificationHost" -}}
@@ -372,32 +288,6 @@ Return the Redis Notification Hostname
   {{- printf "%s" (include "osu-web.redis.fullname" .) -}}
 {{- else -}}
   {{- fail "Missing redis notification host" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the Redis Notification Port
-*/}}
-{{- define "osu-web.redisNotificationPort" -}}
-{{- if .Values.config.redis.notification.port -}}
-  {{- .Values.config.redis.notification.port -}}
-{{- else if .Values.redis.enabled -}}
-  6379
-{{- else -}}
-  {{- fail "Missing redis notification port" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return the Redis Notification DB
-*/}}
-{{- define "osu-web.redisNotificationDb" -}}
-{{- if .Values.config.redis.notification.db -}}
-  {{- .Values.config.redis.notification.db -}}
-{{- else if .Values.redis.enabled -}}
-  0
-{{- else -}}
-  {{- fail "Missing redis notification DB" -}}
 {{- end -}}
 {{- end -}}
 
