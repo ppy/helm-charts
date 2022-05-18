@@ -131,7 +131,7 @@ config:
   db:
     # host: localhost # DB_HOST
     database: osu # DB_DATABASE
-    user: osuweb # DB_USERNAME
+    username: osuweb # DB_USERNAME
     password: "" # DB_PASSWORD
     migrate: true
     seed: true
