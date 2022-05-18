@@ -38,7 +38,7 @@ config:
       banchoBotUserId: "" # BANCHO_BOT_USER_ID
 
     queue:
-      # driver: "" # QUEUE_DRIVER
+      driver: redis # QUEUE_DRIVER
       workers:
         general:
           replicaCount: 1
