@@ -73,7 +73,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "APP_DEBUG" "value" .Values.config.laravel.debug) }}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_KEY" "value" .Values.config.laravel.appKey) }}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY" "value" .Values.config.laravel.sentry.url) }}
-{{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY_PUBLIC" "value" .Values.config.laravel.sentry.public_url) }}
+{{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY_PUBLIC" "value" .Values.config.laravel.sentry.publicUrl) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "DB_HOST" "value" (include "osu-web.databaseHost" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "DB_DATABASE" "value" (include "osu-web.databaseName" .)) }}
@@ -88,7 +88,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_PORT" "value" (include "osu-web.redisCachePort" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CACHE_REDIS_DB" "value" (include "osu-web.redisCacheDb" .)) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_PERSISTENT_ID" "value" .Values.config.memcache.persistent_id) }}
+{{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_PERSISTENT_ID" "value" .Values.config.memcache.persistentId) }}
 {{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_USERNAME" "value" .Values.config.memcache.username) }}
 {{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_PASSWORD" "value" .Values.config.memcache.password) }}
 {{ template "osu-web-chart.env-var" (dict "name" "MEMCACHED_HOST" "value" .Values.config.memcache.host) }}
