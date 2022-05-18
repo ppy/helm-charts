@@ -51,6 +51,7 @@ config:
           additionalOptions: []
 
     schedule:
+      enabled: true
       cron: "*/5 * * * *"
 
     camo: {}
