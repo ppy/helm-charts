@@ -18,6 +18,7 @@ config:
     sentry: {}
       # url: "" # APP_SENTRY
       # publicUrl: "" # APP_SENTRY_PUBLIC
+      # tracesSampleRate: "" # SENTRY_TRACES_SAMPLE_RATE
 
     log:
       driver: redis # BROADCAST_DRIVER
