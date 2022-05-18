@@ -128,6 +128,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_SECRET" "value" .Values.config.storage.avatar.s3.secret) }}
 {{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_REGION" "value" .Values.config.storage.avatar.s3.region) }}
 {{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BUCKET" "value" .Values.config.storage.avatar.s3.bucket) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BASE_URL" "value" .Values.config.storage.avatar.s3.baseUrl) }}
 {{ template "osu-web-chart.env-var" (dict "name" "AVATAR_STORAGE" "value" .Values.config.storage.avatar.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_PREFIX" "value" .Values.config.storage.avatar.s3.cachePurgePrefix) }}
 
