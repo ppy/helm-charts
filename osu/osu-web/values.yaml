@@ -25,7 +25,7 @@ config:
     logChannel: stderr # LOG_CHANNEL
 
     cache:
-      driver: file # CACHE_DRIVER
+      driver: redis # CACHE_DRIVER
       # localDriver: file # CACHE_DRIVER_LOCAL
 
     session:
