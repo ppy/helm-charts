@@ -1,82 +1,82 @@
 {{- if .Values.config.laravel.queue.workers -}}
-apiVersion: v1
-kind: List
-items:
 {{- range $workerName, $workerConfig := .Values.config.laravel.queue.workers }}
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: {{ include "osu-web-chart.fullname" $ }}-workers-{{ $workerName }}
-    labels:
-      {{- include "osu-web-chart.labels" $ | nindent 6 }}
+{{- if $workerConfig.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osu-web-chart.fullname" $ }}-workers-{{ $workerName }}
+  labels:
+    {{- include "osu-web-chart.labels" $ | nindent 4 }}
+    tier: worker
+  annotations:
+    checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+spec:
+  replicas: {{ $workerConfig.replicas }}
+  selector:
+    matchLabels:
+      {{- include "osu-web-chart.selectorLabels" $ | nindent 6 }}
       tier: worker
-    annotations:
-      checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
-  spec:
-    replicas: {{ $workerConfig.replicas }}
-    selector:
-      matchLabels:
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+        {{- range $key, $value := $.Values.podAnnotations }}
+        {{ $key | quote }}: {{ $value | quote }}
+        {{- end }}
+      labels:
         {{- include "osu-web-chart.selectorLabels" $ | nindent 8 }}
         tier: worker
-    template:
-      metadata:
-        annotations:
-          checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
-          {{- range $key, $value := $.Values.podAnnotations }}
-          {{ $key | quote }}: {{ $value | quote }}
-          {{- end }}
-        labels:
-          {{- include "osu-web-chart.selectorLabels" $ | nindent 10 }}
-          tier: worker
-      spec:
-        {{- with $.Values.imagePullSecrets }}
-        imagePullSecrets:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        serviceAccountName: {{ include "osu-web-chart.serviceAccountName" $ }}
-        securityContext:
-          {{- toYaml $.Values.podSecurityContext | nindent 10 }}
-        containers:
-          - name: {{ $.Chart.Name }}
-            securityContext:
-              {{- toYaml $.Values.securityContext | nindent 14 }}
-            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
-            imagePullPolicy: {{ $.Values.image.pullPolicy }}
-            command:
-              - /app/artisan
-              - queue:work
-              - --queue={{- join "," $workerConfig.queues }}
-              {{- range $workerConfig.additionalOptions }}
-              - {{ . }}
-              {{- end }}
-            resources:
-              {{- toYaml $.Values.resources | nindent 14 }}
-            volumeMounts:
-              - mountPath: /app/storage/oauth-public.key
-                name: secret-shared-oauth-public-key
-                subPath: oauth-public.key
-                readOnly: true
-              - mountPath: /app/storage/oauth-private.key
-                name: secret-oauth-private-key
-                subPath: oauth-private.key
-                readOnly: true
-            envFrom:
-              - secretRef:
-                  name: {{ include "osu-web-chart.fullname" $ }}-env
-        volumes:
-          - name: secret-shared-oauth-public-key
-            secret:
-              secretName: {{ include "osu-web-chart.fullname" $ }}-shared-oauth-public-key
-          - name: secret-oauth-private-key
-            secret:
-              secretName: {{ include "osu-web-chart.fullname" $ }}-oauth-private-key
-        {{- with $.Values.nodeSelector }}
-        nodeSelector:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        {{- with $.Values.tolerations }}
-        tolerations:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "osu-web-chart.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $.Chart.Name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command:
+            - /app/artisan
+            - queue:work
+            - --queue={{- join "," $workerConfig.queues }}
+            {{- range $workerConfig.additionalOptions }}
+            - {{ . }}
+            {{- end }}
+          resources:
+            {{- toYaml $.Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/storage/oauth-public.key
+              name: secret-shared-oauth-public-key
+              subPath: oauth-public.key
+              readOnly: true
+            - mountPath: /app/storage/oauth-private.key
+              name: secret-oauth-private-key
+              subPath: oauth-private.key
+              readOnly: true
+          envFrom:
+            - secretRef:
+                name: {{ include "osu-web-chart.fullname" $ }}-env
+      volumes:
+        - name: secret-shared-oauth-public-key
+          secret:
+            secretName: {{ include "osu-web-chart.fullname" $ }}-shared-oauth-public-key
+        - name: secret-oauth-private-key
+          secret:
+            secretName: {{ include "osu-web-chart.fullname" $ }}-oauth-private-key
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

@@ -41,7 +41,8 @@ config:
       driver: redis # QUEUE_DRIVER
       workers:
         general:
-          replicaCount: 1
+          enabled: true
+          replicas: 1
           queues:
             - beatmap_default
             - beatmap_high
