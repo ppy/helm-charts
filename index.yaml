@@ -57,6 +57,41 @@ entries:
   osu-web:
   - apiVersion: v2
     appVersion: 2022.518.0
+    created: "2022-05-18T18:55:49.900168615Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.509.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.509.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.509.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: ecbbdfc8a4db248d1fd651769640fa391a6e29ce613dcbacb65014b60b8c6a4d
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.518.1/osu-web-2022.518.1.tgz
+    version: 2022.518.1
+  - apiVersion: v2
+    appVersion: 2022.518.0
     created: "2022-05-18T15:51:16.350979702Z"
     dependencies:
     - condition: osu-beatmap-difficulty-lookup-cache.enabled
@@ -241,4 +276,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-05-18T15:51:16.351015101Z"
+generated: "2022-05-18T18:55:49.900199615Z"
