@@ -214,6 +214,8 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "IS_DEVELOPMENT_DEPLOY" "value" .Values.config.laravel.devDeploy) }}
 
+{{ template "osu-web-chart.env-var" (dict "name" "CLIENT_CHECK_VERSION" "value" .Values.config.clientCheckVersion) }}
+
 # Extra env
 {{- range $name, $value := .Values.config.laravel.extraEnv }}
 {{ template "osu-web-chart.env-var" (dict "name" $name "value" $value) }}

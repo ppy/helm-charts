@@ -125,6 +125,8 @@ config:
       serverUrl: "" # SCORES_RANK_CACHE_SERVER_URL
       timeout: 10 # SCORES_RANK_CACHE_TIMEOUT
 
+  clientCheckVersion: false
+
   spectatorServer: {}
     # env: Development # ASPNETCORE_ENVIRONMENT
 
