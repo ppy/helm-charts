@@ -140,18 +140,18 @@ config:
     # chat: "" # defaults to osu_chat
 
   redis:
-    app: {}
+    app:
       # host: 127.0.0.1 # REDIS_HOST
-      # port: 6379 # REDIS_PORT
-      # db: 0 # REDIS_DB
-    cache: {}
+      port: 6379 # REDIS_PORT
+      db: 0 # REDIS_DB
+    cache:
       # host: 127.0.0.1 # CACHE_REDIS_HOST
-      # port: 6379 # CACHE_REDIS_PORT
-      # db: 0 # CACHE_REDIS_DB
-    notification: {}
+      port: 6379 # CACHE_REDIS_PORT
+      db: 0 # CACHE_REDIS_DB
+    notification:
       # host: 127.0.0.1 # NOTIFICATION_REDIS_HOST
-      # port: 6379 # NOTIFICATION_REDIS_PORT
-      # db: 0 # NOTIFICATION_REDIS_DB
+      port: 6379 # NOTIFICATION_REDIS_PORT
+      db: 0 # NOTIFICATION_REDIS_DB
 
   memcache: {}
     # persistentId: "" # MEMCACHED_PERSISTENT_ID
