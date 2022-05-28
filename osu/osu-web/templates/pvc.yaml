@@ -1,5 +1,5 @@
 {{- range $storageName, $storage := .Values.config.storage }}
-{{- if eq "local" $storage.driver }}
+{{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

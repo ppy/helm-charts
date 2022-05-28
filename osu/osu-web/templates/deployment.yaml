@@ -67,7 +67,7 @@ spec:
               subPath: oauth-private.key
               readOnly: true
             {{- range $storageName, $storage := .Values.config.storage }}
-            {{- if eq "local" $storage.driver }}
+            {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
             - mountPath: /app/public/uploads{{- if not (eq "general" $storageName) -}}-{{ $storageName }}{{- end }}
               name: pvc-{{ $storageName }}
             {{- end }}
@@ -83,7 +83,7 @@ spec:
           secret:
             secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key
         {{- range $storageName, $storage := .Values.config.storage }}
-        {{- if eq "local" $storage.driver }}
+        {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
         - name: pvc-{{ $storageName }}
           persistentVolumeClaim:
             claimName: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}

@@ -190,7 +190,7 @@ config:
         baseUrl: "" # S3_BASE_URL
         miniUrl: "" # S3_MINI_URL
     avatar:
-      driver: local # AVATAR_STORAGE
+      driver: local-avatar # AVATAR_STORAGE
       local:
         # storageClassName:
         # volumeName:
