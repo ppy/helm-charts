@@ -38,6 +38,9 @@ spec:
             items:
               - key: oauth-public.key
                 path: oauth-public.key
+      {{- with .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ toYaml . }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

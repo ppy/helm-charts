@@ -24,6 +24,9 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   # tag: latest
 
+# Override this to keep old versions in "Terminating" state for much longer until no player is left online on the old instance.
+terminationGracePeriodSeconds: 30
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
