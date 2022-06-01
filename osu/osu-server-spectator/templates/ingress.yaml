@@ -23,6 +23,7 @@ spec:
   {{- with .Values.ingress.ingressClassName }}
   ingressClassName: {{ toYaml . }}
   {{- end }}
+  {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:
