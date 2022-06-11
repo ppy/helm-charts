@@ -12,7 +12,7 @@ config:
     # database: "" # default to osu in app
     # host: "" # required
     # password: "" # default to empty
-    # user: "" # default to osuweb
+    # username: "" # default to osuweb
   dbName: {}
     # chat: "" # default to osu_chat
   laravel:

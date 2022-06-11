@@ -10,7 +10,7 @@ config:
   db: {}
     # host: "" # required
     # database: "" # default to osu in app
-    # user: osuweb # default to osuweb
+    # username: osuweb # default to osuweb
     # port: 3306
   laravel:
     oauth: {}

@@ -10,7 +10,7 @@ config:
     # useDatabaseLookups: false # USE_DATABASE_LOOKUPS
   db: {}
     # host: "" # required if useDatabaseLookups is set to true
-    # user: osuweb # default to osuweb
+    # username: osuweb # default to osuweb
     # port: 3306
 
 replicaCount: 1
