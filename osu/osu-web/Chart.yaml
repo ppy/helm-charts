@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2022.611.0
+version: 2022.611.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -25,24 +25,24 @@ appVersion: "2022.527.3"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
-    version: 2022.611.0
+    version: 2022.509.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-beatmap-difficulty-lookup-cache.enabled
   - name: osu-notification-server
-    version: 2022.611.0
+    version: 2022.509.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2022.611.0
+    version: 2022.601.2
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: mysql
     version: 8.5.6
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
     condition: mysql.enabled
   - name: redis
     version: 14.1.0
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
     condition: redis.enabled
   - name: elasticsearch
     version: 7.16.2

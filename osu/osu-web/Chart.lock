@@ -7,15 +7,15 @@ dependencies:
   version: 2022.509.0
 - name: osu-server-spectator
   repository: https://ppy.github.io/helm-charts
-  version: 2022.509.0
+  version: 2022.601.2
 - name: mysql
-  repository: https://charts.bitnami.com/bitnami
+  repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
   version: 8.5.6
 - name: redis
-  repository: https://charts.bitnami.com/bitnami
+  repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
   version: 14.1.0
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:c3899adeba0278f2c4f2b239756f162f1fe21da8c766bdcbdb51c25512a93a16
-generated: "2022-05-09T15:14:29.650312705+02:00"
+digest: sha256:ca3a635861b2e17068222f362357b9fc04fe5b3c7c8db2dc9ccd1319c5639455
+generated: "2022-06-11T16:12:47.124884793+02:00"
