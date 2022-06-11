@@ -33,7 +33,7 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2022.509.0
+    version: 2022.601.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: mysql
