@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2022.611.1
+version: 2022.611.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -25,15 +25,15 @@ appVersion: "2022.527.3"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
-    version: 2022.509.0
+    version: 2022.611.2
     repository: https://ppy.github.io/helm-charts
     condition: osu-beatmap-difficulty-lookup-cache.enabled
   - name: osu-notification-server
-    version: 2022.509.0
+    version: 2022.611.2
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2022.601.2
+    version: 2022.611.2
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: mysql
