@@ -16,6 +16,8 @@ config:
     oauth: {}
       # publicKey: "" # required
 
+extraEnv: []
+
 replicaCount: 1
 
 image:
