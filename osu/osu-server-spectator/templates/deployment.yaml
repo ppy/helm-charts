@@ -64,6 +64,8 @@ spec:
               name: oauth-public-key-secret
               subPath: oauth-public.key
               readOnly: true
+          env:
+            {{- toYaml .Values.extraEnv | nindent 12 }}
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}
