@@ -15,12 +15,14 @@ virtualHosts:
     defaultPath: /blank.png
     cache:
       200: 60m
+    secrets: s3
   - hostnames:
       - assets.ppy.sh
     bucket: assets.ppy.sh
     region: us-west-1
     cache:
       200: 336h
+    secrets: s3
 
 cache:
   # medium: Memory
