@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: s3-credentials
+        - name: secrets
           secret:
             secretName: {{ include "s3-nginx-proxy-chart.fullname" . }}
         - name: proxy-config
@@ -65,10 +65,15 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: s3-credentials
-              mountPath: /etc/s3-credentials
+            - name: secrets
+              mountPath: /etc/s3-credentials/secrets.json
+              key: secrets.json
             - name: proxy-config
-              mountPath: /etc/proxy-config
+              mountPath: /etc/proxy-config/virtualhosts.json
+              key: virtualhosts.json
+            - name: proxy-config
+              mountPath: /etc/proxy-config/cache.json
+              key: cache.json
             - name: nginx-confd
               mountPath: /etc/nginx/conf.d
             - name: nginx-cache
@@ -80,10 +85,15 @@ spec:
           command: ["/srv/config.sh"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - name: s3-credentials
-              mountPath: /etc/s3-credentials
+            - name: secrets
+              mountPath: /etc/proxy-config/secrets.json
+              key: secrets.json
             - name: proxy-config
-              mountPath: /etc/proxy-config
+              mountPath: /etc/proxy-config/virtualhosts.json
+              key: virtualhosts.json
+            - name: proxy-config
+              mountPath: /etc/proxy-config/cache.json
+              key: cache.json
             - name: nginx-confd
               mountPath: /etc/nginx/conf.d
       {{- with .Values.nodeSelector }}

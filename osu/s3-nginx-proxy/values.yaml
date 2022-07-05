@@ -2,9 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-s3:
-  accessKey: ""
-  secretKey: ""
+secrets:
+  s3:
+    accessKey: "acc"
+    secretKey: "sec"
 
 virtualHosts:
   - hostnames:
