@@ -15,13 +15,13 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2022.611.2
+version: 2022.707.0-dev
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2022.527.3"
+appVersion: "caa035f3c791d7496eea4264586370c2ea77ba2e"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
