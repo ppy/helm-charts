@@ -74,6 +74,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "APP_KEY" "value" .Values.config.laravel.appKey) }}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY" "value" .Values.config.laravel.sentry.url) }}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY_PUBLIC" "value" .Values.config.laravel.sentry.publicUrl) }}
+{{ template "osu-web-chart.env-var" (dict "name" "APP_SENTRY_ENVIRONMENT" "value" .Values.config.laravel.sentry.environment) }}
 {{ template "osu-web-chart.env-var" (dict "name" "SENTRY_TRACES_SAMPLE_RATE" "value" .Values.config.laravel.sentry.tracesSampleRate) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "DB_HOST" "value" (include "osu-web.databaseHost" .)) }}
