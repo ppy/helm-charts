@@ -132,6 +132,8 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BASE_URL" "value" .Values.config.storage.avatar.s3.baseUrl) }}
 {{ template "osu-web-chart.env-var" (dict "name" "AVATAR_STORAGE" "value" .Values.config.storage.avatar.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_PREFIX" "value" .Values.config.storage.avatar.s3.cachePurgePrefix) }}
+{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_METHOD" "value" .Values.config.storage.avatar.s3.cachePurgeMethod) }}
+{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_AUTHORIZATION_KEY" "value" .Values.config.storage.avatar.s3.cachePurgeAuthorizationKey) }}
 
 # Either "s3" or "local".
 {{ template "osu-web-chart.env-var" (dict "name" "SCORE_REPLAYS_STORAGE" "value" .Values.config.storage.replay.driver) }}

@@ -207,6 +207,8 @@ config:
         bucket: "" # S3_AVATAR_BUCKET
         baseUrl: "" # S3_AVATAR_BASE_URL
         cachePurgePrefix: "" # AVATAR_CACHE_PURGE_PREFIX
+        cachePurgeMethod: "" # AVATAR_CACHE_PURGE_METHOD
+        cachePurgeAuthorizationKey: "" # AVATAR_CACHE_PURGE_AUTHORIZATION_KEY
     replay:
       driver: local # SCORE_REPLAYS_STORAGE
       local:
