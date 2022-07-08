@@ -67,13 +67,13 @@ spec:
           volumeMounts:
             - name: secrets
               mountPath: /etc/s3-credentials/secrets.json
-              key: secrets.json
+              subPath: secrets.json
             - name: proxy-config
               mountPath: /etc/proxy-config/virtualhosts.json
-              key: virtualhosts.json
+              subPath: virtualhosts.json
             - name: proxy-config
               mountPath: /etc/proxy-config/cache.json
-              key: cache.json
+              subPath: cache.json
             - name: nginx-confd
               mountPath: /etc/nginx/conf.d
             - name: nginx-cache
@@ -87,13 +87,13 @@ spec:
           volumeMounts:
             - name: secrets
               mountPath: /etc/proxy-config/secrets.json
-              key: secrets.json
+              subPath: secrets.json
             - name: proxy-config
               mountPath: /etc/proxy-config/virtualhosts.json
-              key: virtualhosts.json
+              subPath: virtualhosts.json
             - name: proxy-config
               mountPath: /etc/proxy-config/cache.json
-              key: cache.json
+              subPath: cache.json
             - name: nginx-confd
               mountPath: /etc/nginx/conf.d
       {{- with .Values.nodeSelector }}
