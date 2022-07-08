@@ -65,6 +65,16 @@ entries:
     version: 2022.509.0
   osu-server-spectator:
   - apiVersion: v2
+    appVersion: 2022.709.0
+    created: "2022-07-08T19:35:40.451795246Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: 654628a9ef3fb5cf79bbec00390e1bc14822a4349c839fb3355b22665902ae3e
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.709.0/osu-server-spectator-2022.709.0.tgz
+    version: 2022.709.0
+  - apiVersion: v2
     appVersion: latest
     created: "2022-06-13T08:28:30.54876521Z"
     description: production osu-server-spectator deployment in Kubernetes
@@ -616,4 +626,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-07-08T17:58:25.718494636Z"
+generated: "2022-07-08T19:35:40.45200975Z"
