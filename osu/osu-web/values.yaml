@@ -332,9 +332,14 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($uri ~* "^/(assets|images)") {
+        expires 24h;
+      }
+
+      rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
+      rewrite ^/docs/$ /docs/index.html;
   hosts:
     - host: osu.ppy.sh
       paths:
