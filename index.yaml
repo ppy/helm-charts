@@ -136,6 +136,41 @@ entries:
     version: 2022.509.0
   osu-web:
   - apiVersion: v2
+    appVersion: 2022.707.0
+    created: "2022-07-11T10:02:04.646849441Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.611.2
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.611.2
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.709.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: bca2fbce3901f8e473f4110a6004c597a2c985d77210257a563e54fe7768c2be
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.711.0/osu-web-2022.711.0.tgz
+    version: 2022.711.0
+  - apiVersion: v2
     appVersion: 2022.709.0
     created: "2022-07-08T19:38:41.652439887Z"
     dependencies:
@@ -661,4 +696,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-07-08T19:38:41.65254679Z"
+generated: "2022-07-11T10:02:04.646971843Z"
