@@ -628,6 +628,16 @@ entries:
   s3-nginx-proxy-chart:
   - apiVersion: v2
     appVersion: 2022.725.1
+    created: "2022-07-25T14:49:26.525288163Z"
+    description: A Helm chart for Kubernetes
+    digest: 4710cce660d95888de8f878484da61c4ecc8a3cb8efefb0fb1b82a4956d4a44e
+    name: s3-nginx-proxy-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.725.1/s3-nginx-proxy-chart-2022.725.1.tgz
+    version: 2022.725.1
+  - apiVersion: v2
+    appVersion: 2022.725.1
     created: "2022-07-25T13:27:24.255372753Z"
     description: A Helm chart for Kubernetes
     digest: ef83af438e0e21b753f6aaaedb042b34c79206c8e70af92f041c25ad89e5c688
@@ -706,4 +716,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-07-25T13:27:24.255470152Z"
+generated: "2022-07-25T14:49:26.525406465Z"
