@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "s3-nginx-proxy-chart.fullname" . }}-config-validation
+  labels:
+    {{- include "s3-nginx-proxy-chart.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade,pre-rollback
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 30
+  template:
+    metadata:
+      name: {{ include "s3-nginx-proxy-chart.fullname" . }}-config-validation
+      labels:
+        {{- include "s3-nginx-proxy-chart.labels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "s3-nginx-proxy-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: secrets
+          secret:
+            secretName: {{ include "s3-nginx-proxy-chart.fullname" . }}
+        - name: proxy-config
+          configMap:
+            name: {{ include "s3-nginx-proxy-chart.fullname" . }}
+        - name: nginx-confd
+          emptyDir:
+            sizeLimit: 10Mi
+      restartPolicy: Never
+      containers:
+        - name: {{ .Chart.Name }}-config-validation
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ["/srv/prepare-nginx.sh"]
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: secrets
+              mountPath: /etc/proxy-config/secrets.json
+              subPath: secrets.json
+            - name: proxy-config
+              mountPath: /etc/proxy-config/virtualhosts.json
+              subPath: virtualhosts.json
+            - name: proxy-config
+              mountPath: /etc/proxy-config/cache.json
+              subPath: cache.json
+            - name: nginx-confd
+              mountPath: /etc/nginx/conf.d
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
