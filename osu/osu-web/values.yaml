@@ -257,6 +257,20 @@ osu-server-spectator:
   enabled: true
   useSharedSecretsFromOsuWebChart: true
 
+osu-elastic-indexer:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
+  config:
+    elasticIndexer:
+      schema: 1
+
+osu-queue-score-statistics:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
+  config:
+    queueScoreStatistics:
+      schema: 1
+
 mysql:
   enabled: true
   architecture: standalone
