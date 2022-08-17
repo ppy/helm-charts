@@ -31,6 +31,8 @@ cache:
   minFree: 4G
   defaultCacheLength: 15m
   purgeAuthorizationKey: ""
+  purgeCloudflareZoneId: ""
+  purgeCloudflareApiToken: ""
 
 kind: Deployment # DaemonSet is also supported
 replicaCount: 1
