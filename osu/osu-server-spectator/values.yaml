@@ -27,7 +27,7 @@ image:
   # tag: latest
 
 # Keep old versions in "Terminating" state for much longer until no player is left online on the old instance.
-terminationGracePeriodSeconds: 259200 # 72 hours
+terminationGracePeriodSeconds: 22500 # 6 hours and 15 minutes
 
 imagePullSecrets: []
 nameOverride: ""
