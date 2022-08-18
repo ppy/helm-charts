@@ -183,6 +183,7 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "ES_HOST" "value" (include "osu-web.elasticsearchHost" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "ES_SCORES_HOST" "value" (include "osu-web.elasticsearchScoresHost" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "ES_SOLO_SCORES_HOST" "value" (include "osu-web.elasticsearchSoloScoresHost" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "ES_INDEX_PREFIX" "value" .Values.config.elasticsearch.indexPrefix) }}
 {{ template "osu-web-chart.env-var" (dict "name" "ES_CLIENT_TIMEOUT" "value" .Values.config.elasticsearch.clientTimeout) }}
 {{ template "osu-web-chart.env-var" (dict "name" "ES_CLIENT_CONNECT_TIMEOUT" "value" .Values.config.elasticsearch.clientConnectTimeout) }}
@@ -328,6 +329,19 @@ Return the Elasticsearch Scores Hostname
   {{- printf "%s" (include "osu-web.elasticsearch.fullname" .) -}}
 {{- else -}}
   {{- fail "Missing elasticsearch scores host" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Elasticsearch Solo Scores Hostname
+*/}}
+{{- define "osu-web.elasticsearchSoloScoresHost" -}}
+{{- if .Values.config.elasticsearch.soloScores.host -}}
+  {{- .Values.config.elasticsearch.soloScores.host -}}
+{{- else if .Values.elasticsearch.enabled -}}
+  {{- printf "%s" (include "osu-web.elasticsearch.fullname" .) -}}
+{{- else -}}
+  {{- fail "Missing elasticsearch solo scores host" -}}
 {{- end -}}
 {{- end -}}
 

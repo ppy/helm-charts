@@ -223,6 +223,8 @@ config:
     # host: localhost:9200 # ES_HOST
     scores: {}
       # host: localhost:9200 # ES_SCORES_HOST
+    soloScores: {}
+      # host: localhost:9200 # ES_SOLO_SCORES_HOST
     # indexPrefix: "" # ES_INDEX_PREFIX
     # clientTimeout: 5 # ES_CLIENT_TIMEOUT
     # clientConnectTimeout: 0.5 # ES_CLIENT_CONNECT_TIMEOUT
