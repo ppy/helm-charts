@@ -42,6 +42,11 @@ spec:
               name: secret-oauth-private-key
               subPath: oauth-private.key
               readOnly: true
+          env:
+            - name: DATADOG_STATSD_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" . }}-env-migrate

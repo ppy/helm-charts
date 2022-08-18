@@ -72,6 +72,11 @@ spec:
               name: pvc-{{ $storageName }}
             {{- end }}
             {{- end }}
+          env:
+            - name: DATADOG_STATSD_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" . }}-env
