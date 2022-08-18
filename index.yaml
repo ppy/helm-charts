@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   form-auth-chart:
   - apiVersion: v2
+    appVersion: v0.1.0
+    created: "2022-08-18T13:26:53.474204109Z"
+    description: A Helm chart for Kubernetes
+    digest: e89eadfb5efea4cdf97ae505c044a85a5268c4ca9cac8401b52622d412d81e1d
+    name: form-auth-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.818.0/form-auth-chart-2022.818.0.tgz
+    version: 2022.818.0
+  - apiVersion: v2
     appVersion: latest
     created: "2022-05-09T19:35:54.696397545Z"
     description: A Helm chart for Kubernetes
@@ -12,6 +22,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.509.0/form-auth-chart-2022.509.0.tgz
     version: 2022.509.0
   osu-beatmap-difficulty-lookup-cache:
+  - apiVersion: v2
+    appVersion: 2022.615.1
+    created: "2022-08-18T13:26:53.746165843Z"
+    description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
+    digest: b88a428d46a180e8710f032de062715f8a9110239cfa38ebff448502ba0e0c65
+    name: osu-beatmap-difficulty-lookup-cache
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-beatmap-difficulty-lookup-cache-2022.818.0/osu-beatmap-difficulty-lookup-cache-2022.818.0.tgz
+    version: 2022.818.0
   - apiVersion: v2
     appVersion: latest
     created: "2022-06-11T14:16:39.981733587Z"
@@ -44,6 +64,16 @@ entries:
     version: 2022.414.0
   osu-elastic-indexer:
   - apiVersion: v2
+    appVersion: 2022.815.0
+    created: "2022-08-18T13:26:53.940850096Z"
+    description: production osu-elastic-indexer deployment in Kubernetes
+    digest: 3ae885bed740fafc511a27fa885a6732db123d4d44377f91a8a29c21a2e6ce56
+    name: osu-elastic-indexer
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2022.818.0/osu-elastic-indexer-2022.818.0.tgz
+    version: 2022.818.0
+  - apiVersion: v2
     appVersion: 2022.722.0
     created: "2022-08-18T00:31:13.41994413Z"
     description: production osu-elastic-indexer deployment in Kubernetes
@@ -54,6 +84,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2022.727.0/osu-elastic-indexer-2022.727.0.tgz
     version: 2022.727.0
   osu-notification-server:
+  - apiVersion: v2
+    appVersion: 2022.523.0
+    created: "2022-08-18T13:26:54.101654592Z"
+    description: production osu-notification-server deployment in Kubernetes
+    digest: 8a648837c8bc863bac4c02ea885bbffe343cb0d6c3f1ec714b2e231cca602009
+    name: osu-notification-server
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-notification-server-2022.818.0/osu-notification-server-2022.818.0.tgz
+    version: 2022.818.0
   - apiVersion: v2
     appVersion: 2022.301.0
     created: "2022-06-11T14:16:40.116197995Z"
@@ -76,6 +116,16 @@ entries:
     version: 2022.509.0
   osu-queue-score-statistics:
   - apiVersion: v2
+    appVersion: 2022.805.0
+    created: "2022-08-18T13:26:54.328828007Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: fcf0a303ec82c465585bfdd70c48d18cc32e7c9a2103d1cfef34a62391205a16
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2022.818.0/osu-queue-score-statistics-2022.818.0.tgz
+    version: 2022.818.0
+  - apiVersion: v2
     appVersion: latest
     created: "2022-08-18T00:31:13.599702928Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
@@ -86,6 +136,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2022.727.0/osu-queue-score-statistics-2022.727.0.tgz
     version: 2022.727.0
   osu-server-spectator:
+  - apiVersion: v2
+    appVersion: 2022.817.0
+    created: "2022-08-18T13:26:54.532636596Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: 3e1ce0f18b0e3f98d942d2ada035c7055cbdd214ef4ec60fbc55ad59e9cdcf2a
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.818.1/osu-server-spectator-2022.818.1.tgz
+    version: 2022.818.1
   - apiVersion: v2
     appVersion: 2022.709.0
     created: "2022-07-08T19:35:40.451795246Z"
@@ -157,6 +217,49 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
     version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2022.817.0
+    created: "2022-08-18T13:26:54.759550094Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.611.2
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.611.2
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.709.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.727.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.727.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: fa361d1aa072baa4c24e45cd205ef3b8b9ecf93e8850e743b2768e24c8f7b4f4
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.818.1/osu-web-2022.818.1.tgz
+    version: 2022.818.1
   - apiVersion: v2
     appVersion: 2022.707.0
     created: "2022-08-18T00:42:38.76294722Z"
@@ -692,6 +795,16 @@ entries:
     version: 2022.414.2
   s3-nginx-proxy-chart:
   - apiVersion: v2
+    appVersion: 2022.818.0
+    created: "2022-08-18T13:26:54.915448747Z"
+    description: A Helm chart for Kubernetes
+    digest: 99623f4601488485d2f8b678351a3529ee209d23bb920c7b1ccd5d0dc32551ef
+    name: s3-nginx-proxy-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.818.0/s3-nginx-proxy-chart-2022.818.0.tgz
+    version: 2022.818.0
+  - apiVersion: v2
     appVersion: 2022.725.2
     created: "2022-07-25T15:29:07.38801192Z"
     description: A Helm chart for Kubernetes
@@ -791,4 +904,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-08-18T00:42:38.763082821Z"
+generated: "2022-08-18T13:26:54.915840574Z"
