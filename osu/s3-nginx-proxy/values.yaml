@@ -39,7 +39,7 @@ replicaCount: 1
 
 image:
   repository: pppy/s3-nginx-proxy
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: latest
 
