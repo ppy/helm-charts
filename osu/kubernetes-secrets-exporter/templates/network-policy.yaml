@@ -1,0 +1,25 @@
+{{- if .Values.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "kubernetes-secrets-exporter.fullname" . }}
+  labels:
+    {{- include "kubernetes-secrets-exporter.labels" . | nindent 4 }}
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "kubernetes-secrets-exporter.selectorLabels" . | nindent 10 }}
+    {{- range .Values.networkPolicy.ingressSelectors }}
+    - {{ toYaml . | nindent 6 }}
+    {{- end }}
+    ports:
+    - port: 5000
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      {{- include "kubernetes-secrets-exporter.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+{{- end -}}
