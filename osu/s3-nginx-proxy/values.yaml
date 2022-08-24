@@ -14,7 +14,8 @@ virtualHosts:
     region: us-west-1
     defaultPath: /blank.png
     cache:
-      200: 60m
+      200: 48h
+      404: 2h
     secrets: s3
   - hostnames:
       - assets.ppy.sh
