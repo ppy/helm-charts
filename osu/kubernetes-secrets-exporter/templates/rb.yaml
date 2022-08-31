@@ -1,0 +1,16 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "kubernetes-secrets-exporter.fullname" . }}
+  labels:
+    {{- include "kubernetes-secrets-exporter.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "kubernetes-secrets-exporter.serviceAccountName" . }}
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: {{ include "kubernetes-secrets-exporter.fullname" . }}
+  apiGroup: ""
+{{- end }}

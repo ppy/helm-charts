@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "kubernetes-secrets-exporter.fullname" $ }}-ca
+  labels:
+    {{- include "kubernetes-secrets-exporter.labels" $ | nindent 4 }}
+type: Opaque
+stringData:
+  ca.crt: {{ index .Values.certificates "ca.crt" | quote }}
