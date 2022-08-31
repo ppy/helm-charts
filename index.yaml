@@ -21,6 +21,18 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.509.0/form-auth-chart-2022.509.0.tgz
     version: 2022.509.0
+  kubernetes-secrets-exporter:
+  - apiVersion: v2
+    appVersion: 2022.821.2
+    created: "2022-08-31T11:10:08.008041665Z"
+    description: Micro-service to expose Kubernetes secrets to clients using client
+      certifiates over HTTPS
+    digest: cf4e128100ec2a6184d72dd416d77d6ee868da11c91de80cfbca1277b88dfb16
+    name: kubernetes-secrets-exporter
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/kubernetes-secrets-exporter-2022.821.0/kubernetes-secrets-exporter-2022.821.0.tgz
+    version: 2022.821.0
   osu-beatmap-difficulty-lookup-cache:
   - apiVersion: v2
     appVersion: 2022.615.1
@@ -1096,4 +1108,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-08-31T11:09:59.207369151Z"
+generated: "2022-08-31T11:10:08.00861637Z"
