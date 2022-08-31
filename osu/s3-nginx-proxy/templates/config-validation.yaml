@@ -32,9 +32,6 @@ spec:
         - name: secrets
           secret:
             secretName: {{ include "s3-nginx-proxy-chart.fullname" . }}-config-validation
-        - name: proxy-config
-          configMap:
-            name: {{ include "s3-nginx-proxy-chart.fullname" . }}-config-validation
         - name: nginx-confd
           emptyDir:
             sizeLimit: 10Mi
@@ -50,14 +47,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: secrets
-              mountPath: /etc/proxy-config/secrets.json
-              subPath: secrets.json
-            - name: proxy-config
-              mountPath: /etc/proxy-config/virtualhosts.json
-              subPath: virtualhosts.json
-            - name: proxy-config
-              mountPath: /etc/proxy-config/cache.json
-              subPath: cache.json
+              mountPath: /etc/proxy-config
             - name: nginx-confd
               mountPath: /etc/nginx/conf.d
       {{- with .Values.nodeSelector }}
