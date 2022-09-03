@@ -6,12 +6,12 @@ metadata:
     {{- include "osu-elastic-indexer-chart.labels" . | nindent 4 }}
 data:
   {{- if not (eq nil .Values.config.elasticIndexer.batchSize) }}
-  batch_size: {{ .Values.config.elasticIndexer.batchSize | quote }}
+  BATCH_SIZE: {{ .Values.config.elasticIndexer.batchSize | quote }}
   {{- end }}
   {{- if not (eq nil .Values.config.elasticIndexer.bufferSize) }}
-  buffer_size: {{ .Values.config.elasticIndexer.bufferSize | quote }}
+  BUFFER_SIZE: {{ .Values.config.elasticIndexer.bufferSize | quote }}
   {{- end }}
-  schema: {{ required "Schema version is required" .Values.config.elasticIndexer.schema | quote }}
+  SCHEMA: {{ required "Schema version is required" .Values.config.elasticIndexer.schema | quote }}
   {{- if not (eq nil .Values.config.elasticIndexer.prefix) }}
-  prefix: {{ .Values.config.elasticIndexer.prefix | quote }}
+  ES_INDEX_PREFIX: {{ .Values.config.elasticIndexer.prefix | quote }}
   {{- end }}
