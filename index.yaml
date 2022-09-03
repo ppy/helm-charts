@@ -76,6 +76,16 @@ entries:
     version: 2022.414.0
   osu-elastic-indexer:
   - apiVersion: v2
+    appVersion: 2022.901.0
+    created: "2022-09-03T19:16:49.017411428Z"
+    description: production osu-elastic-indexer deployment in Kubernetes
+    digest: a5a563bb12faacbc80906d4ccdbf59a5179f606f5cc4c6838589cc61937c70af
+    name: osu-elastic-indexer
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2022.903.0/osu-elastic-indexer-2022.903.0.tgz
+    version: 2022.903.0
+  - apiVersion: v2
     appVersion: 2022.815.0
     created: "2022-08-18T13:26:53.940850096Z"
     description: production osu-elastic-indexer deployment in Kubernetes
@@ -239,6 +249,49 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
     version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2022.831.1
+    created: "2022-09-03T19:16:49.322293712Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.819.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.1
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: 3404d351c75abd62aa6b4b4bcf687ce4992490cf30420216c76a792e1801ddc1
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.903.0/osu-web-2022.903.0.tgz
+    version: 2022.903.0
   - apiVersion: v2
     appVersion: 2022.817.0
     created: "2022-08-18T21:53:22.311427186Z"
@@ -1118,4 +1171,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-08-31T18:23:06.313516155Z"
+generated: "2022-09-03T19:16:49.322889308Z"
