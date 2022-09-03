@@ -24,6 +24,17 @@ entries:
   kubernetes-secrets-exporter:
   - apiVersion: v2
     appVersion: 2022.821.2
+    created: "2022-09-03T20:06:42.537054281Z"
+    description: Micro-service to expose Kubernetes secrets to clients using client
+      certifiates over HTTPS
+    digest: 2a276e548f331ba5ad757e9c957d7b8e63d0a914115a89ec4e512325f1f8bbf1
+    name: kubernetes-secrets-exporter
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/kubernetes-secrets-exporter-2022.903.0/kubernetes-secrets-exporter-2022.903.0.tgz
+    version: 2022.903.0
+  - apiVersion: v2
+    appVersion: 2022.821.2
     created: "2022-08-31T11:10:08.008041665Z"
     description: Micro-service to expose Kubernetes secrets to clients using client
       certifiates over HTTPS
@@ -249,6 +260,49 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
     version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2022.831.1
+    created: "2022-09-03T20:06:42.685476372Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.819.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.1
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.903.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: 248cf8c535460616a0992558388b0141d7570d00b72e3bec0423bf91d4763675
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2022.903.2/osu-web-2022.903.2.tgz
+    version: 2022.903.2
   - apiVersion: v2
     appVersion: 2022.831.1
     created: "2022-09-03T19:16:49.322293712Z"
@@ -1171,4 +1225,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-09-03T19:16:49.322889308Z"
+generated: "2022-09-03T20:06:42.685709173Z"
