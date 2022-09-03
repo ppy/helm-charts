@@ -12,6 +12,3 @@ data:
   BUFFER_SIZE: {{ .Values.config.elasticIndexer.bufferSize | quote }}
   {{- end }}
   SCHEMA: {{ required "Schema version is required" .Values.config.elasticIndexer.schema | quote }}
-  {{- if not (eq nil .Values.config.elasticIndexer.prefix) }}
-  ES_INDEX_PREFIX: {{ .Values.config.elasticIndexer.prefix | quote }}
-  {{- end }}
