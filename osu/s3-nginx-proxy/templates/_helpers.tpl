@@ -71,3 +71,19 @@ Create the name of the service account to use for config validation in Helm hook
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Pod annotations, combining metrics config and .Values.podAnnotations
+*/}}
+{{- define "s3-nginx-proxy-chart.podAnnotations" -}}
+{{- if .Values.metrics.enabled -}}
+prometheus.io/scrape: {{ .Values.metrics.enabled | quote }}
+prometheus.io/path: {{ .Values.metrics.location | quote }}
+prometheus.io/port: {{ .Values.metrics.port | quote }}
+{{- with .Values.podAnnotations }}
+{{ toYaml . }}
+{{- end }}
+{{- else }}
+{{- toYaml .Values.podAnnotations }}
+{{- end }}
+{{- end }}

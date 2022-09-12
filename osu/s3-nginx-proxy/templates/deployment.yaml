@@ -14,10 +14,8 @@ spec:
       {{- include "s3-nginx-proxy-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "s3-nginx-proxy-chart.podAnnotations" . | nindent 8 }}
       labels:
         {{- include "s3-nginx-proxy-chart.selectorLabels" . | nindent 8 }}
     spec:
@@ -53,12 +51,19 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            {{- if .Values.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.metrics.port }}
+              protocol: TCP
+            {{- end }}
           livenessProbe:
-            tcpSocket:
-              port: 80
+            httpGet:
+              port: {{ .Values.metrics.enabled | ternary .Values.metrics.port 80 }}
+              path: {{ .Values.metrics.enabled | ternary .Values.metrics.location "/" }}
           readinessProbe:
-            tcpSocket:
-              port: 80
+            httpGet:
+              port: {{ .Values.metrics.enabled | ternary .Values.metrics.port 80 }}
+              path: {{ .Values.metrics.enabled | ternary .Values.metrics.location "/" }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

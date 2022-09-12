@@ -35,6 +35,13 @@ cache:
   purgeCloudflareZoneId: ""
   purgeCloudflareApiToken: ""
 
+metrics:
+  enabled: true
+  port: 8125
+  allow:
+    - 0.0.0.0/0
+  location: /metrics
+
 kind: Deployment # DaemonSet is also supported
 replicaCount: 1
 
