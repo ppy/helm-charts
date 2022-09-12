@@ -25,7 +25,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "s3-nginx-proxy-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "s3-nginx-proxy-chart.serviceAccountNameConfigValidation" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:

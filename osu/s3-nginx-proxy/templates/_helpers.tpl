@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the service account to use for config validation in Helm hook
+*/}}
+{{- define "s3-nginx-proxy-chart.serviceAccountNameConfigValidation" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "s3-nginx-proxy-chart.fullname" .) .Values.serviceAccount.name }}-config-validation
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
