@@ -34,6 +34,10 @@ spec:
           emptyDir:
             sizeLimit: 10Mi
         - name: nginx-cache
+          {{- if eq .Values.cache.volumeType "hostPath" }}
+          hostPath:
+            path: {{ required "cache.hostPath is missing" .Values.cache.hostPath }}
+          {{- else }}
           emptyDir:
             {{- with .Values.cache.medium }}
             medium: {{ . }}
@@ -41,6 +45,7 @@ spec:
             {{- with .Values.cache.sizeLimit }}
             sizeLimit: {{ . }}
             {{- end }}
+          {{- end }}
       containers:
         - name: {{ .Chart.Name }}-nginx
           securityContext:

@@ -26,6 +26,8 @@ virtualHosts:
     secrets: s3
 
 cache:
+  volumeType: hostPath
+  hostPath: /var/cache/s3-nginx-proxy
   # medium: Memory
   sizeLimit: 500M
   inactiveExpiry: 12h
