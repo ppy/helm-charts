@@ -1,0 +1,16 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "kubernetes-cloudflare-certificates-uploader.fullname" . }}
+  labels:
+    {{- include "kubernetes-cloudflare-certificates-uploader.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "kubernetes-cloudflare-certificates-uploader.serviceAccountName" . }}
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: {{ include "kubernetes-cloudflare-certificates-uploader.fullname" . }}
+  apiGroup: ""
+{{- end }}

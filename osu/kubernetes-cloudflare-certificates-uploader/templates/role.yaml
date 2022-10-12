@@ -1,0 +1,17 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "kubernetes-cloudflare-certificates-uploader.fullname" . }}
+  labels:
+    {{- include "kubernetes-cloudflare-certificates-uploader.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - {{ required "Secret name is required" .Values.config.secretName | quote }}
+    verbs:
+      - get
+{{- end }}
