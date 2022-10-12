@@ -21,6 +21,18 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.509.0/form-auth-chart-2022.509.0.tgz
     version: 2022.509.0
+  kubernetes-cloudflare-certificates-uploader:
+  - apiVersion: v2
+    appVersion: 2022.1012.0
+    created: "2022-10-12T07:49:52.449935948Z"
+    description: Just a cronjob-ed script to refresh our custom edge certificate on
+      Cloudflare
+    digest: f0f6ac123d8c29dc799abee21299dd4ff49492dc51c9d4560c378edfa81303c4
+    name: kubernetes-cloudflare-certificates-uploader
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/kubernetes-cloudflare-certificates-uploader-2022.1012.0/kubernetes-cloudflare-certificates-uploader-2022.1012.0.tgz
+    version: 2022.1012.0
   kubernetes-secrets-exporter:
   - apiVersion: v2
     appVersion: 2022.821.2
@@ -1288,4 +1300,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-09-13T00:33:25.878856162Z"
+generated: "2022-10-12T07:49:52.450130447Z"
