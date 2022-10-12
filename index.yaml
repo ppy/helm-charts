@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   form-auth-chart:
   - apiVersion: v2
+    appVersion: v0.2.1
+    created: "2022-10-12T10:42:26.930824537Z"
+    description: Web micro-service allowing users to authenticate via osu! before
+      being redirected to Google Forms with pre-filled authentication fields.
+    digest: 9634edd52f90b9a35e700bd3b404c87832be3bb9fa9364267b79239d6995ea47
+    name: form-auth-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.1012.0/form-auth-chart-2022.1012.0.tgz
+    version: 2022.1012.0
+  - apiVersion: v2
     appVersion: v0.1.0
     created: "2022-08-18T13:26:53.474204109Z"
     description: A Helm chart for Kubernetes
@@ -99,6 +110,16 @@ entries:
     version: 2022.414.0
   osu-elastic-indexer:
   - apiVersion: v2
+    appVersion: 2022.921.0
+    created: "2022-10-12T10:42:27.062304202Z"
+    description: production osu-elastic-indexer deployment in Kubernetes
+    digest: 63d177df56169eb191661b41848d2fc4647b0c33659a17bd8b1b09077e34624c
+    name: osu-elastic-indexer
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2022.1012.0/osu-elastic-indexer-2022.1012.0.tgz
+    version: 2022.1012.0
+  - apiVersion: v2
     appVersion: 2022.901.0
     created: "2022-09-03T19:16:49.017411428Z"
     description: production osu-elastic-indexer deployment in Kubernetes
@@ -191,6 +212,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2022.727.0/osu-queue-score-statistics-2022.727.0.tgz
     version: 2022.727.0
   osu-server-spectator:
+  - apiVersion: v2
+    appVersion: 2022.923.1
+    created: "2022-10-12T10:42:27.20344411Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: db358bef7e900007bfda7c5df9bce6a5d9b4a30132f208aafacd754b76b2f25c
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.1012.0/osu-server-spectator-2022.1012.0.tgz
+    version: 2022.1012.0
   - apiVersion: v2
     appVersion: 2022.817.0
     created: "2022-08-18T13:26:54.532636596Z"
@@ -1152,6 +1183,16 @@ entries:
   s3-nginx-proxy-chart:
   - apiVersion: v2
     appVersion: 2022.913.1
+    created: "2022-10-12T10:42:27.417018001Z"
+    description: A Helm chart for Kubernetes
+    digest: 2a25257a48420ba87fb2094a4a657964929a6fb3fe19f296add3874c6ffdcd36
+    name: s3-nginx-proxy-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.1012.0/s3-nginx-proxy-chart-2022.1012.0.tgz
+    version: 2022.1012.0
+  - apiVersion: v2
+    appVersion: 2022.913.1
     created: "2022-09-13T00:33:25.878501856Z"
     description: A Helm chart for Kubernetes
     digest: 0a4d9d688ecba7971ba5ddd5008c5b744585df58ab140e9e92e0fdc1407de6ab
@@ -1300,4 +1341,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-10-12T07:49:52.450130447Z"
+generated: "2022-10-12T10:42:27.417343706Z"
