@@ -9,6 +9,11 @@ spec:
   jobTemplate:
     spec:
       template:
+        {{- with .Values.podAnnotations }}
+        metadata:
+          annotations:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
         spec:
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
