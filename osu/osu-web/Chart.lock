@@ -7,10 +7,10 @@ dependencies:
   version: 2022.819.0
 - name: osu-server-spectator
   repository: https://ppy.github.io/helm-charts
-  version: 2022.818.1
+  version: 2022.1012.0
 - name: osu-elastic-indexer
   repository: https://ppy.github.io/helm-charts
-  version: 2022.903.0
+  version: 2022.1012.0
 - name: osu-queue-score-statistics
   repository: https://ppy.github.io/helm-charts
   version: 2022.818.0
@@ -23,5 +23,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:1ef4cd67eb589c40a16cc12d345ad64a0446b8a4b306700ae827c3c64091ef23
-generated: "2022-09-03T22:05:03.6224037+02:00"
+digest: sha256:6cba829f088e6d96689459eba94b0d4fb15a36ed71dacd48ce5195a0512f63f9
+generated: "2022-10-12T12:47:45.056454091+02:00"
