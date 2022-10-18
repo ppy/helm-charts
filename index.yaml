@@ -203,6 +203,16 @@ entries:
     version: 2022.509.0
   osu-queue-score-statistics:
   - apiVersion: v2
+    appVersion: 2022.1017.0
+    created: "2022-10-18T16:22:47.976603059Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: a734530866a2fc55519c66499d785623e99f2bece189cf3609b2414c8a0a4242
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2022.1018.0/osu-queue-score-statistics-2022.1018.0.tgz
+    version: 2022.1018.0
+  - apiVersion: v2
     appVersion: 2022.805.0
     created: "2022-08-18T13:26:54.328828007Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
@@ -1395,4 +1405,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2022-10-18T16:21:54.401698176Z"
+generated: "2022-10-18T16:22:47.976814159Z"
