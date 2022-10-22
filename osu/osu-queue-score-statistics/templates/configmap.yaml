@@ -8,7 +8,7 @@ data:
   {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
   DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}
   {{- end }}
-  schema: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
+  SCHEMA: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
   {{- if .Values.config.queueScoreStatistics.processUserTotals }}
   PROCESS_USER_TOTALS: "1"
   {{- end }}
