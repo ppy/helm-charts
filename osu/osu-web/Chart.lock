@@ -13,7 +13,7 @@ dependencies:
   version: 2022.1012.0
 - name: osu-queue-score-statistics
   repository: https://ppy.github.io/helm-charts
-  version: 2022.1018.0
+  version: 2022.1022.0
 - name: mysql
   repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
   version: 8.5.6
@@ -23,5 +23,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:253416c10af3323aa7aaef8d76cd452fe5f2be7802d374a46eff504741baf921
-generated: "2022-10-18T18:24:30.85724495+02:00"
+digest: sha256:5e499d34bb8dd43fa1221d71a7e5aa76c6bdce32a71eba8605b9784cea30040d
+generated: "2022-10-22T13:42:00.602838427+02:00"
