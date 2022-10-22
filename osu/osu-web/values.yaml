@@ -34,9 +34,9 @@ config:
       # domain: "" # SESSION_DOMAIN
       # secureCookie: false # SESSION_SECURE_COOKIE
 
-    legacy:
+    legacy: {}
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
-      banchoBotUserId: "" # BANCHO_BOT_USER_ID
+      # banchoBotUserId: "" # BANCHO_BOT_USER_ID
 
     queue:
       driver: redis # QUEUE_DRIVER
