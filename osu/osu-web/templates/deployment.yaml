@@ -39,6 +39,9 @@ spec:
           command:
             - /app/docker/deployment/entrypoint.sh
             - octane
+            {{- with .Values.config.laravel.octane.extraArgs }}
+            - {{ . | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8000

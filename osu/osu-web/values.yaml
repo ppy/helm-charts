@@ -15,6 +15,9 @@ config:
     # appKey: "" # APP_KEY, required, see README
     extraEnv: {}
 
+    octane: {}
+      # extraArgs: "" # extra arguments to pass to octane, see `/app/artisan octane:start --help`
+
     sentry: {}
       # url: "" # APP_SENTRY
       # publicUrl: "" # APP_SENTRY_PUBLIC
