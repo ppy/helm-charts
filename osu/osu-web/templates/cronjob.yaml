@@ -11,6 +11,15 @@ spec:
     spec:
       template:
         spec:
+          affinity:
+            podAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      {{- include "osu-web-chart.selectorLabels" . | nindent 22 }}
+                  topologyKey: kubernetes.io/hostname
+                weight: 50
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
