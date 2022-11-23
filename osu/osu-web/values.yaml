@@ -53,11 +53,14 @@ config:
             - default
             - notification
             - store-notifications
-          additionalOptions: []
+          # additionalOptions: []
+          # resources: {}
 
     schedule:
       enabled: true
       cron: "*/5 * * * *"
+      # additionalOptions: []
+      # resources: {}
 
     camo: {}
       # key: "" # CAMO_KEY

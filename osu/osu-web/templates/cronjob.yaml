@@ -28,8 +28,11 @@ spec:
               command:
                 - /app/artisan
                 - schedule:run
+                {{- range .Values.config.laravel.schedule.additionalOptions }}
+                - {{ . }}
+                {{- end }}
               resources:
-                {{- toYaml .Values.resources | nindent 16 }}
+                {{- toYaml (.Values.config.laravel.schedule.resources | default .Values.resources) | nindent 16 }}
               volumeMounts:
                 - mountPath: /app/storage/oauth-public.key
                   name: secret-shared-oauth-public-key
