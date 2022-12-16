@@ -59,6 +59,7 @@ config:
     schedule:
       enabled: true
       cron: "*/5 * * * *"
+      concurrencyPolicy: Forbid
       # additionalOptions: []
       # resources: {}
 

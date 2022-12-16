@@ -7,6 +7,7 @@ metadata:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.config.laravel.schedule.cron | quote }}
+  concurrencyPolicy: {{ .Values.config.laravel.schedule.concurrencyPolicy | quote }}
   jobTemplate:
     spec:
       template:
