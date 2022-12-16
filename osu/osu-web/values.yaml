@@ -145,6 +145,9 @@ config:
     password: "" # DB_PASSWORD
     migrate: true
     seed: true
+    insertOsuWebBuild:
+      enabled: false
+      streamId: 8
 
   dbName: {}
     # chat: "" # defaults to osu_chat

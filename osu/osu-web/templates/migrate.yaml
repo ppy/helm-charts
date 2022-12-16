@@ -1,4 +1,4 @@
-{{- if .Values.config.db.migrate -}}
+{{- if or .Values.config.db.insertOsuWebBuild.enabled .Values.config.db.migrate -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -16,23 +16,30 @@ spec:
       restartPolicy: Never
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 12 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "osu-web-chart.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 12 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 16 }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /app/artisan
-            - migrate
-            - --force
+            {{ $commands := list }}
+            {{- if .Values.config.db.insertOsuWebBuild.enabled -}}
+            {{- $commands = append $commands (printf "%s%s" "/app/artisan builds:create --stream-id=" (toString .Values.config.db.insertOsuWebBuild.streamId)) -}}
+            {{- end -}}
+            {{- if .Values.config.db.migrate -}}
+            {{- $commands = append $commands "/app/artisan migrate --force" -}}
+            {{- end -}}
+            - /bin/sh
+            - -c
+            - {{ join " && " $commands }}
           resources:
-            {{- toYaml .Values.resources | nindent 16 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /app/storage/oauth-public.key
               name: secret-shared-oauth-public-key
@@ -59,10 +66,10 @@ spec:
             secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key-migrate
       {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 12 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 12 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
 {{- end -}}
