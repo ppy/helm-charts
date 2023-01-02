@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-{{- $kind := .Values.kind | default "Deployment" | quote }}
+{{- $kind := .Values.kind | default "Deployment" }}
 kind: {{ $kind }}
 metadata:
   name: {{ include "s3-nginx-proxy-chart.fullname" . }}
