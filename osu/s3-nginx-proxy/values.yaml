@@ -36,6 +36,7 @@ cache:
   purgeAuthorizationKey: ""
   purgeCloudflareZoneId: ""
   purgeCloudflareApiToken: ""
+  resolvers: []
 
 metrics:
   enabled: true
