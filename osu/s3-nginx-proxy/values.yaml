@@ -45,6 +45,8 @@ metrics:
     - 0.0.0.0/0
   location: /metrics
 
+entrypointScripts: {}
+
 kind: Deployment # DaemonSet is also supported
 replicaCount: 1
 

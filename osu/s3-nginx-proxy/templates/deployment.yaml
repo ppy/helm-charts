@@ -27,6 +27,9 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
+        - name: entrypoint-scripts
+          configMap:
+            name: {{ include "s3-nginx-proxy-chart.fullname" . }}-entrypoint-scripts
         - name: secrets
           secret:
             secretName: {{ include "s3-nginx-proxy-chart.fullname" . }}
@@ -72,6 +75,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            - name: entrypoint-scripts
+              mountPath: /docker-entrypoint.d
             - name: secrets
               mountPath: /etc/proxy-config
             - name: nginx-confd
@@ -85,6 +90,8 @@ spec:
           command: ["/srv/config.sh"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
+            - name: entrypoint-scripts
+              mountPath: /docker-entrypoint.d
             - name: secrets
               mountPath: /etc/proxy-config
             - name: nginx-confd
