@@ -12,6 +12,8 @@ spec:
   selector:
     matchLabels:
       {{- include "s3-nginx-proxy-chart.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.updateStrategy | nindent 4 }}
   template:
     metadata:
       annotations:

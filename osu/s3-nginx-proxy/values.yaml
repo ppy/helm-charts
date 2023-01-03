@@ -50,6 +50,12 @@ entrypointScripts: {}
 kind: Deployment # DaemonSet is also supported
 replicaCount: 1
 
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+
 image:
   repository: pppy/s3-nginx-proxy
   pullPolicy: IfNotPresent
