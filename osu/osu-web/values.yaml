@@ -7,7 +7,7 @@ global:
 
 config:
   laravel:
-    # url: http://localhost:8080 # APP_URL
+    url: https://osu.ppy.sh # APP_URL
     env: production # APP_ENV
     debug: false # APP_DEBUG
     trustedProxies: 0.0.0.0/0,::/0 # TRUSTED_PROXIES
@@ -366,7 +366,7 @@ ingress:
       rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
       rewrite ^/docs/$ /docs/index.html;
   hosts:
-    - host: osu.ppy.sh
+    - host: REPLACE_BY_APP_URL
       paths:
         - path: /
   tls: []
@@ -384,7 +384,7 @@ ingressAssets:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       expires 24h;
   hosts:
-    - host: osu.ppy.sh
+    - host: REPLACE_BY_APP_URL
       paths:
         - path: /(assets/(?!images/flags/)|images/|favicon\.ico$|site\.webmanifest$)
   tls: []
@@ -402,7 +402,7 @@ ingressFlags:
       proxy_intercept_errors on;
       error_page 404 /images/flags/fallback.png;
   hosts:
-    - host: osu.ppy.sh
+    - host: REPLACE_BY_APP_URL
       paths:
         - path: /assets/images/flags/
   tls: []

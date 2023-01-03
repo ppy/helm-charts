@@ -370,12 +370,6 @@ Return the Laravel app URL
 {{- define "osu-web.laravelAppUrl" -}}
 {{- if .Values.config.laravel.url -}}
   {{- .Values.config.laravel.url -}}
-{{- else if and
-  .Values.ingress.enabled
-  .Values.ingress.hosts
--}}
-  {{- $mainHost := index .Values.ingress.hosts 0 -}}
-  http{{- if .Values.ingress.tls -}}s{{- end -}}://{{- $mainHost.host -}}{{- (index $mainHost.paths 0).path -}}
 {{- else -}}
   {{- fail "Missing laravel app url" -}}
 {{- end -}}
@@ -420,5 +414,17 @@ Return the beatmaps difficulty lookup cache server url
   {{- .Values.config.beatmapsDifficultyLookupCache.serverUrl -}}
 {{- else if $osuBeatmapsDifficultyLookupCache.enabled -}}
   http://{{- include "osu-web.osu-beatmap-difficulty-lookup-cache.fullname" . -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Ingress host helper.
+If the input host is REPLACE_BY_APP_URL, will urlparse defaultHost and return its host. Otherwise, return the input host (unparsed).
+*/}}
+{{- define "osu-web.ingress-host" -}}
+{{- if eq .host "REPLACE_BY_APP_URL" -}}
+{{- (urlParse .defaultHost).host -}}
+{{- else -}}
+{{- .host -}}
 {{- end -}}
 {{- end -}}

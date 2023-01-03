@@ -50,7 +50,7 @@ spec:
   {{- end }}
   rules:
     {{- range $config.ingressConfig.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ (include "osu-web.ingress-host" (dict "host" .host "defaultHost" (include "osu-web.laravelAppUrl" $))) | quote }}
       http:
         paths:
           {{- range .paths }}
