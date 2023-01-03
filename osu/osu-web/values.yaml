@@ -361,17 +361,50 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
+    nginx.ingress.kubernetes.io/session-cookie-path: /
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($uri ~* "^/(assets/|images/|favicon\.ico$|site\.webmanifest$)") {
-        expires 24h;
-      }
-
       rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
       rewrite ^/docs/$ /docs/index.html;
   hosts:
     - host: osu.ppy.sh
       paths:
         - path: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+ingressAssets:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
+    nginx.ingress.kubernetes.io/session-cookie-path: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      expires 24h;
+  hosts:
+    - host: osu.ppy.sh
+      paths:
+        - path: /(assets/(?!images/flags/)|images/|favicon\.ico$|site\.webmanifest$)
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+ingressFlags:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
+    nginx.ingress.kubernetes.io/session-cookie-path: /
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_intercept_errors on;
+      error_page 404 /images/flags/fallback.png;
+  hosts:
+    - host: osu.ppy.sh
+      paths:
+        - path: /assets/images/flags/
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

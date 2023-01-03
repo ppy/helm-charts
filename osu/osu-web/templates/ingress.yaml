@@ -1,4 +1,3 @@
-{{- if .Values.ingress.enabled -}}
 {{- $fullName := include "osu-web-chart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- $apiVersion := "" -}}
@@ -8,21 +7,40 @@
   {{- $apiVersion = "networking.k8s.io/v1beta1" -}}
 {{- else -}}
   {{- $apiVersion = "extensions/v1beta1" -}}
-{{- end }}
+{{- end -}}
+
+{{- $config := list
+  (dict
+    "ingressConfig" .Values.ingress
+    "suffix" ""
+  )
+  (dict
+    "ingressConfig" .Values.ingressAssets
+    "suffix" "-assets"
+  )
+  (dict
+    "ingressConfig" .Values.ingressFlags
+    "suffix" "-flags"
+  )
+-}}
+{{- range $config := $config -}}
+{{- with $ }}
+{{- if $config.ingressConfig.enabled }}
+---
 apiVersion: {{ $apiVersion }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}{{ $config.suffix }}
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with $config.ingressConfig.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.tls }}
+  {{- if $config.ingressConfig.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range $config.ingressConfig.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -31,7 +49,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
+    {{- range $config.ingressConfig.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -52,4 +70,6 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
-{{- end }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
