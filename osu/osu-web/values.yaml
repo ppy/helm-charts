@@ -359,6 +359,8 @@ service:
 ingress:
   enabled: true
   annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($uri ~* "^/(assets/|images/|favicon\.ico$|site\.webmanifest$)") {
         expires 24h;
