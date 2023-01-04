@@ -246,7 +246,8 @@ config:
   beatmapsDifficultyLookupCache: {}
     # serverUrl: "" # BEATMAPS_DIFFICULTY_CACHE_SERVER_URL
 
-replicaCount: 1
+# If replicaCount is set to 1, blank flags redirection will returns 502s when requesting without an INGRESSCOOKIE; see 
+replicaCount: 2
 
 image:
   repository: pppy/osu-web
