@@ -37,6 +37,7 @@ spec:
             - dotnet
             - osu.ElasticIndexer.dll
             - queue
+            - watch
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
