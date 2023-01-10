@@ -346,6 +346,49 @@ entries:
   osu-web:
   - apiVersion: v2
     appVersion: 2023.110.0
+    created: "2023-01-10T16:54:21.418760259Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.819.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.1012.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.110.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.1022.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: 4fd9e75a0b40c171ccf18e39f9d0339a3d5d7b610ad21b34a52610ecd785dd11
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2023.110.1/osu-web-2023.110.1.tgz
+    version: 2023.110.1
+  - apiVersion: v2
+    appVersion: 2023.110.0
     created: "2023-01-10T13:32:16.193399679Z"
     dependencies:
     - condition: osu-beatmap-difficulty-lookup-cache.enabled
@@ -1971,4 +2014,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2023-01-10T13:32:16.193841773Z"
+generated: "2023-01-10T16:54:21.41921066Z"
