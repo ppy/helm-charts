@@ -1,17 +1,22 @@
-{{- if or .Values.config.db.insertOsuWebBuild.enabled .Values.config.db.migrate -}}
+{{- if and .Values.config.upgradeJob.enabled (or .Values.config.upgradeJob.insertOsuWebBuild.enabled .Values.config.upgradeJob.migrate) -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "osu-web-chart.fullname" . }}-migrate
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
-    tier: migrate
+    tier: upgrade
   annotations:
     "helm.sh/hook": post-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
+    {{- with .Values.config.upgradeJob.podAnnotations }}
+    metadata:
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
       restartPolicy: Never
       {{- with .Values.imagePullSecrets }}
@@ -29,17 +34,17 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             {{ $commands := list }}
-            {{- if .Values.config.db.insertOsuWebBuild.enabled -}}
-            {{- $commands = append $commands (printf "%s%s" "/app/artisan builds:create --stream-id=" (toString .Values.config.db.insertOsuWebBuild.streamId)) -}}
+            {{- if .Values.config.upgradeJob.insertOsuWebBuild.enabled -}}
+            {{- $commands = append $commands (printf "%s%s" "/app/artisan builds:create --stream-id=" (toString .Values.config.upgradeJob.insertOsuWebBuild.streamId)) -}}
             {{- end -}}
-            {{- if .Values.config.db.migrate -}}
+            {{- if .Values.config.upgradeJob.migrate -}}
             {{- $commands = append $commands "/app/artisan migrate --force" -}}
             {{- end -}}
             - /bin/sh
             - -c
             - {{ join " && " $commands }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml (.Values.config.upgradeJob.resources | default .Values.resources) | nindent 12 }}
           volumeMounts:
             - mountPath: /app/storage/oauth-public.key
               name: secret-shared-oauth-public-key
@@ -56,14 +61,14 @@ spec:
                   fieldPath: status.hostIP
           envFrom:
             - secretRef:
-                name: {{ include "osu-web-chart.fullname" . }}-env-migrate
+                name: {{ include "osu-web-chart.fullname" . }}-env-upgrade
       volumes:
         - name: secret-shared-oauth-public-key
           secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key-migrate
+            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key-upgrade
         - name: secret-oauth-private-key
           secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key-migrate
+            secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key-upgrade
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

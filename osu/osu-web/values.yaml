@@ -143,11 +143,19 @@ config:
     database: osu # DB_DATABASE
     username: osuweb # DB_USERNAME
     password: "" # DB_PASSWORD
+
+  upgradeJob: # Post-install & Pre-upgrade hook
+    enabled: true
+    # podAnnotations: {}
+    # resources: {}
     migrate: true
-    seed: true
     insertOsuWebBuild:
       enabled: false
       streamId: 8
+
+  seedingJob: # Post-install hook
+    enabled: true
+    apiKey: ""
 
   dbName: {}
     # chat: "" # defaults to osu_chat

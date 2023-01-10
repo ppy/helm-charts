@@ -1,15 +1,15 @@
-{{- if (and .Values.config.db.migrate .Values.config.db.seed) -}}
+{{- if and .Values.config.seedingJob.enabled (and .Values.config.upgradeJob.enabled .Values.config.upgradeJob.migrate) -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "osu-web-chart.fullname" . }}-migrate-seed
+  name: {{ include "osu-web-chart.fullname" . }}-seed
   labels:
     {{- include "osu-web-chart.labels" . | nindent 4 }}
-    tier: migrate
+    tier: seed
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "-1"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
     spec:
@@ -52,16 +52,18 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: OSU_API_KEY
+              value: {{ .Values.config.seedingJob.apiKey | quote }}
           envFrom:
             - secretRef:
-                name: {{ include "osu-web-chart.fullname" . }}-env-migrate
+                name: {{ include "osu-web-chart.fullname" . }}-env-seed
       volumes:
         - name: secret-shared-oauth-public-key
           secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key-migrate
+            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key-seed
         - name: secret-oauth-private-key
           secret:
-            secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key-migrate
+            secretName: {{ include "osu-web-chart.fullname" . }}-oauth-private-key-seed
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 12 }}
