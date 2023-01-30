@@ -1,0 +1,115 @@
+# This hook ensures the assets deployment is upgraded before octane to avoid serving 404s. Older assets should be cached using ingress-nginx (enable caching in ingress-nginx config and osu-web ingress annotations) or/and by CDN (Cloudflare).
+{{- if .Values.assets.upgradeJob.enabled -}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+  labels:
+    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+  labels:
+    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    resourceNames:
+      - {{ include "osu-web-chart.fullname" . }}-assets
+    verbs:
+      - get
+      - patch
+      - watch
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+  labels:
+    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+  apiGroup: ""
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+  labels:
+    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
+      securityContext:
+        {{- toYaml .Values.assets.upgradeJob.podSecurityContext | nindent 8 }}
+      containers:
+        - name: kubectl
+          securityContext:
+            {{- toYaml .Values.assets.upgradeJob.securityContext | nindent 12 }}
+          image: {{ .Values.assets.upgradeJob.image }}
+          {{- with .Values.assets.upgradeJob.imagePullPolicy }}
+          imagePullPolicy: {{ . }}
+          {{- end }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              # Skip the patching process if the assets deployment doesn't exist ()
+              DEPLOYMENT=$(kubectl get deploy/osu-web-assets 2>&1)
+              EXIT_CODE=$?
+
+              if [ $EXIT_CODE -ne 0 ] && [[ "$DEPLOYMENT" =~ "NotFound" ]]; then
+                echo "Assets deployment doesn't exist, probably upgrading from an older version of the chart; skipping patching"
+                exit 0
+              fi
+              echo $DEPLOYMENT
+              if [ $EXIT_CODE -ne 0 ]; then
+                exit $EXIT_CODE
+              fi
+
+              kubectl patch 'deploy/{{ include "osu-web-chart.fullname" . }}-assets' --type json -p '[{"op": "replace", "path":"/spec/template/spec/containers/0/image", "value": "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"}]' && \
+              kubectl rollout status 'deploy/{{ include "osu-web-chart.fullname" . }}-assets'
+          resources:
+            {{- toYaml (.Values.assets.upgradeJob.resources | default .Values.resources) | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 12 }}
+      {{- end }}
+{{- end -}}

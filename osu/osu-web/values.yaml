@@ -383,6 +383,23 @@ ingress:
 assets:
   replicas: 2
   podAnnotations: {}
+  upgradeJob:
+    enabled: true
+    image: bitnami/kubectl:1.26
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi
+    podSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
+    securityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
 
 ingressAssets:
   enabled: true
