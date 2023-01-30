@@ -367,10 +367,6 @@ service:
 
 ingress:
   enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
-    nginx.ingress.kubernetes.io/session-cookie-path: /
   hosts:
     - host: REPLACE_BY_APP_URL
       paths:
@@ -404,9 +400,6 @@ assets:
 ingressAssets:
   enabled: true
   annotations:
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
-    nginx.ingress.kubernetes.io/session-cookie-path: /
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
@@ -423,9 +416,6 @@ ingressAssets:
 ingressFlags:
   enabled: true
   annotations:
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
-    nginx.ingress.kubernetes.io/session-cookie-path: /
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_intercept_errors on;
       error_page 404 /images/flags/fallback.png;
