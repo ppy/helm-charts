@@ -51,6 +51,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Common labels
+*/}}
+{{- define "osu-web-chart.labelsAssets" -}}
+helm.sh/chart: {{ include "osu-web-chart.chart" . }}
+{{ include "osu-web-chart.selectorLabelsAssets" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "osu-web-chart.selectorLabelsAssets" -}}
+app.kubernetes.io/name: {{ include "osu-web-chart.name" . }}-assets
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "osu-web-chart.serviceAccountName" -}}

@@ -371,9 +371,6 @@ ingress:
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
     nginx.ingress.kubernetes.io/session-cookie-path: /
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
-      rewrite ^/docs/$ /docs/index.html;
   hosts:
     - host: REPLACE_BY_APP_URL
       paths:
@@ -383,6 +380,10 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+assets:
+  replicas: 2
+  podAnnotations: {}
+
 ingressAssets:
   enabled: true
   annotations:
@@ -391,11 +392,12 @@ ingressAssets:
     nginx.ingress.kubernetes.io/session-cookie-path: /
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      expires 24h;
+      rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
+      rewrite ^/docs/$ /docs/index.html;
   hosts:
     - host: REPLACE_BY_APP_URL
       paths:
-        - path: /(assets/(?!images/flags/)|images/|favicon\.ico$|site\.webmanifest$)
+        - path: /(assets/(?!images/flags/)|images/|docs|favicon\.ico$|site\.webmanifest$)
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

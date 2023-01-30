@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-assets
+  labels:
+    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.assets.replicas }}
+  selector:
+    matchLabels:
+      {{- include "osu-web-chart.selectorLabelsAssets" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.assets.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "osu-web-chart.selectorLabelsAssets" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "osu-web-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /app/docker/deployment/entrypoint.sh
+            - assets
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+            # httpGet:
+              # path: /
+              # port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+            # httpGet:
+              # path: /
+              # port: http
