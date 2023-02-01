@@ -20,11 +20,6 @@
     "suffix" "-assets"
     "serviceSuffix" "-assets"
   )
-  (dict
-    "ingressConfig" .Values.ingressFlags
-    "suffix" "-flags"
-    "serviceSuffix" "-assets"
-  )
 -}}
 {{- range $config := $config -}}
 {{- with $ }}
