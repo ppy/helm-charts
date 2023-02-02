@@ -32,6 +32,17 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.509.0/form-auth-chart-2022.509.0.tgz
     version: 2022.509.0
+  - apiVersion: v2
+    appVersion: v0.2.2
+    created: "2023-02-02T23:26:39.01046899Z"
+    description: Web micro-service allowing users to authenticate via osu! before
+      being redirected to Google Forms with pre-filled authentication fields.
+    digest: 28cfe24d05c2a5a594d4435f91d1f6b0bf101cd715afb14cfe3f26df05c1d62a
+    name: form-auth-chart
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/form-auth-chart-2022.203.0/form-auth-chart-2022.203.0.tgz
+    version: 2022.203.0
   kubernetes-cloudflare-certificates-uploader:
   - apiVersion: v2
     appVersion: 2022.1012.0
@@ -2110,4 +2121,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2023-02-01T14:37:06.197486717Z"
+generated: "2023-02-02T23:26:39.011409296Z"
