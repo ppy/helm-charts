@@ -20,6 +20,9 @@ spec:
         {{- range $key, $value := .Values.podAnnotations }}
         {{ $key | quote }}: {{ $value | quote }}
         {{- end }}
+        {{- range $key, $value := .Values.config.laravel.octane.extraPodAnnotations }}
+        {{ $key | quote }}: {{ $value | quote }}
+        {{- end }}
       labels:
         {{- include "osu-web-chart.selectorLabels" . | nindent 8 }}
     spec:
@@ -75,6 +78,9 @@ spec:
               name: pvc-{{ $storageName }}
             {{- end }}
             {{- end }}
+            {{- with .Values.config.laravel.octane.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           env:
             - name: DATADOG_STATSD_HOST
               valueFrom:
@@ -83,6 +89,9 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" . }}-env
+        {{- with .Values.config.laravel.octane.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
         - name: secret-shared-oauth-public-key
           secret:
@@ -96,6 +105,9 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
         {{- end }}
+        {{- end }}
+        {{- with .Values.config.laravel.octane.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

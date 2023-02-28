@@ -17,6 +17,10 @@ config:
 
     octane:
       extraArgs: [] # extra arguments to pass to octane, see `/app/artisan octane:start --help`
+      extraPodAnnotations: {}
+      extraVolumes: []
+      extraVolumeMounts: []
+      extraContainers: []
 
     sentry: {}
       # url: "" # APP_SENTRY
