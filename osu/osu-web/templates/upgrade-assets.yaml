@@ -88,7 +88,7 @@ spec:
             - -c
             - |
               # Skip the patching process if the assets deployment doesn't exist ()
-              DEPLOYMENT=$(kubectl get deploy/osu-web-assets 2>&1)
+              DEPLOYMENT=$(kubectl get deploy/{{ include "osu-web-chart.fullname" . }}-assets 2>&1)
               EXIT_CODE=$?
 
               if [ $EXIT_CODE -ne 0 ] && [[ "$DEPLOYMENT" =~ "NotFound" ]]; then
