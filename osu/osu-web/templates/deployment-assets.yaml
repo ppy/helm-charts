@@ -50,3 +50,5 @@ spec:
             # httpGet:
               # path: /
               # port: http
+          resources:
+            {{- toYaml .Values.assets.resources | nindent 12 }}

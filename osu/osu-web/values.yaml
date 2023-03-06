@@ -383,6 +383,7 @@ ingress:
 assets:
   replicas: 2
   podAnnotations: {}
+  resources: {}
   upgradeJob:
     enabled: true
     image: bitnami/kubectl:1.26
