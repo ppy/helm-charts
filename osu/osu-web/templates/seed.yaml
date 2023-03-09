@@ -52,6 +52,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: DD_ENTITY_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
             - name: OSU_API_KEY
               value: {{ .Values.config.seedingJob.apiKey | quote }}
           envFrom:

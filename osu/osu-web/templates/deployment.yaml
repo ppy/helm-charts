@@ -86,6 +86,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: DD_ENTITY_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" . }}-env
