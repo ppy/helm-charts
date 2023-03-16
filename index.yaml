@@ -2293,4 +2293,15 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/s3-nginx-proxy-chart-2022.509.0/s3-nginx-proxy-chart-2022.509.0.tgz
     version: 2022.509.0
-generated: "2023-03-09T13:33:42.169479373Z"
+  scthumber:
+  - apiVersion: v2
+    appVersion: 2023.316.0
+    created: "2023-03-16T16:18:00.043434449Z"
+    description: Some image thumbnailing daemon thing
+    digest: 56b10d1f94808ee2dabc473e76e9dfcacda4cb791f4ba6001f198de3454a1be6
+    name: scthumber
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
+    version: 2023.316.0
+generated: "2023-03-16T16:18:00.043884845Z"
