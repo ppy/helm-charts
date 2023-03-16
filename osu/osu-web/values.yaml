@@ -259,7 +259,7 @@ config:
     # serverUrl: "" # BEATMAPS_DIFFICULTY_CACHE_SERVER_URL
 
 # If replicaCount is set to 1, blank flags redirection will returns 502s when requesting without an INGRESSCOOKIE; see 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: pppy/osu-web
@@ -295,6 +295,9 @@ osu-queue-score-statistics:
   config:
     queueScoreStatistics:
       schema: 1
+
+scthumber:
+  enabled: true
 
 mysql:
   enabled: true
@@ -381,7 +384,7 @@ ingress:
   #      - chart-example.local
 
 assets:
-  replicas: 2
+  replicas: 1
   podAnnotations: {}
   resources: {}
   upgradeJob:

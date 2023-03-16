@@ -135,7 +135,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "FILESYSTEM_DISK" "value" .Values.config.storage.general.driver) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_MIRRORS" "value" .Values.config.beatmapsProcessor.mirrors) }}
-{{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_THUMBNAILER" "value" .Values.config.beatmapsProcessor.thumbnailer) }}
+{{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_THUMBNAILER" "value" (include "osu-web.thumbnailerUrl" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_SENTRY" "value" .Values.config.beatmapsProcessor.sentry) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "S3_KEY" "value" .Values.config.storage.general.s3.key) }}
@@ -243,6 +243,25 @@ Create the name of the service account to use
 # Extra env
 {{- range $name, $value := .Values.config.laravel.extraEnv }}
 {{ template "osu-web-chart.env-var" (dict "name" $name "value" $value) }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "osu-web.scthumber.fullname" -}}
+{{- printf "%s-%s" .Release.Name "scthumber" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the scthumber url
+*/}}
+{{- define "osu-web.thumbnailerUrl" -}}
+{{- if not (eq nil .Values.config.beatmapsProcessor.thumbnailer) -}}
+  {{- .Values.config.beatmapsProcessor.thumbnailer -}}
+{{- else if .Values.scthumber.enabled -}}
+  {{- printf "http://%s" (include "osu-web.scthumber.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
