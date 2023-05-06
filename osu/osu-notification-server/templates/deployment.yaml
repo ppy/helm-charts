@@ -65,6 +65,9 @@ spec:
               value: /basedir
             - name: NOTIFICATION_SERVER_LISTEN_HOST
               value: 0.0.0.0
+            {{- if .Values.extraEnv }}
+            {{- toYaml .Values.extraEnv | nindent 12 }}
+            {{- end }}
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}

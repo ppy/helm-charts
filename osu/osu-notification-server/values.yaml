@@ -23,9 +23,11 @@ config:
     app: {}
       # host: "" # required
       # port: "" # default to default redis port
-    notification:
+    notification: {}
       # host: "" # required
       # port: "" # default to default redis port
+
+extraEnv: []
 
 replicaCount: 1
 
