@@ -1,4 +1,4 @@
-{{- if and .Values.config.upgradeJob.enabled (or .Values.config.upgradeJob.insertOsuWebBuild.enabled .Values.config.upgradeJob.migrate) -}}
+{{- if and .Values.config.upgradeJob.enabled (or (and .Values.config.upgradeJob.insertOsuWebBuild.enabled (not .Release.IsInstall)) .Values.config.upgradeJob.migrate) -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -34,7 +34,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             {{ $commands := list }}
-            {{- if .Values.config.upgradeJob.insertOsuWebBuild.enabled -}}
+            {{- if and .Values.config.upgradeJob.insertOsuWebBuild.enabled (not .Release.IsInstall) -}}
             {{- $commands = append $commands (printf "%s%s" "/app/artisan builds:create --stream-id=" (toString .Values.config.upgradeJob.insertOsuWebBuild.streamId)) -}}
             {{- end -}}
             {{- if .Values.config.upgradeJob.migrate -}}
