@@ -28,8 +28,18 @@ virtualHosts:
 cache:
   volumeType: hostPath
   hostPath: /var/cache/s3-nginx-proxy
-  # medium: Memory
   sizeLimit: 500M
+
+  # volumeType: pvc
+  # sizeLimit: 500M
+  # accessModes:
+  #   - ReadWriteOnce
+  # storageClassName: ""
+
+  # volumeType: emptyDir
+  # medium: Memory
+  # sizeLimit: 500M
+
   inactiveExpiry: 12h
   minFree: 4G
   defaultCacheLength: 15m
@@ -47,7 +57,7 @@ metrics:
 
 entrypointScripts: {}
 
-kind: Deployment # DaemonSet is also supported
+kind: Deployment # DaemonSet and StatefulSet are also supported
 replicaCount: 1
 
 updateStrategy:

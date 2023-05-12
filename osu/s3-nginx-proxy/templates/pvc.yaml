@@ -1,0 +1,18 @@
+{{- if and (not (eq .Values.kind "StatefulSet")) (eq .Values.cache.volumeType "pvc") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "s3-nginx-proxy-chart.fullname" . }}
+  labels:
+    {{- include "s3-nginx-proxy-chart.labels" . | nindent 4 }}
+spec:
+  resources:
+    requests:
+      storage: {{ .Values.cache.sizeLimit }}
+  volumeMode: Filesystem
+  accessModes:
+    {{- toYaml .Values.cache.accessModes | nindent 4 }}
+  {{- with .Values.cache.storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+{{- end }}

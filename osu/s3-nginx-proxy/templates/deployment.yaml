@@ -43,10 +43,16 @@ spec:
         - name: nginx-confd
           emptyDir:
             sizeLimit: 10Mi
+      {{- if not (and (eq .Values.kind "StatefulSet") (eq .Values.cache.volumeType "pvc")) }}
         - name: nginx-cache
           {{- if eq .Values.cache.volumeType "hostPath" }}
           hostPath:
             path: {{ required "cache.hostPath is missing" .Values.cache.hostPath }}
+          {{- else if eq .Values.cache.volumeType "pvc" }}
+          {{- if not (eq .Values.kind "StatefulSet") }}
+          persistentVolumeClaim:
+            claimName: {{ include "s3-nginx-proxy-chart.fullname" . }}
+          {{- end }}
           {{- else }}
           emptyDir:
             {{- with .Values.cache.medium }}
@@ -56,6 +62,21 @@ spec:
             sizeLimit: {{ . }}
             {{- end }}
           {{- end }}
+      {{- else }}
+      volumeClaimTemplates:
+        - metadata:
+            name: nginx-cache
+          spec:
+            resources:
+              requests:
+                storage: {{ .Values.cache.sizeLimit }}
+            volumeMode: Filesystem
+            accessModes:
+              {{- toYaml .Values.cache.accessModes | nindent 14 }}
+            {{- with .Values.cache.storageClassName }}
+            storageClassName: {{ . }}
+            {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-nginx
           securityContext:
