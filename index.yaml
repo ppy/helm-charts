@@ -184,6 +184,16 @@ entries:
   osu-notification-server:
   - apiVersion: v2
     appVersion: 2022.819.0
+    created: "2023-06-12T15:58:53.35150942Z"
+    description: production osu-notification-server deployment in Kubernetes
+    digest: 2be012f8df573bd8086db761c0bc10ba5c375d36a548bdee1f128cb49446307f
+    name: osu-notification-server
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-notification-server-2023.612.0/osu-notification-server-2023.612.0.tgz
+    version: 2023.612.0
+  - apiVersion: v2
+    appVersion: 2022.819.0
     created: "2023-05-06T15:12:31.969207645Z"
     description: production osu-notification-server deployment in Kubernetes
     digest: 504625f0764ef6a93f0e6599fbe9ad121464e901f285d1ec9645d107bc7f5cb6
@@ -2428,4 +2438,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2023-05-12T21:10:03.937127385Z"
+generated: "2023-06-12T15:58:53.352531039Z"
