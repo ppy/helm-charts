@@ -254,6 +254,16 @@ entries:
     version: 2022.509.0
   osu-queue-score-statistics:
   - apiVersion: v2
+    appVersion: 2023.818.0
+    created: "2023-08-17T18:14:35.278459357Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: a371b85186c96ff9685bdef40d5978159db47f11b61737fda5308d1335ffc407
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2023.818.0/osu-queue-score-statistics-2023.818.0.tgz
+    version: 2023.818.0
+  - apiVersion: v2
     appVersion: 2022.1017.0
     created: "2022-10-22T11:41:02.075864327Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
@@ -2495,4 +2505,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2023-08-17T18:13:30.294975006Z"
+generated: "2023-08-17T18:14:35.279215667Z"
