@@ -33,6 +33,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - dotnet
+            - osu.Server.Queues.ScoreStatisticsProcessor.dll
+            - queue
+            - watch
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
