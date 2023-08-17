@@ -108,6 +108,7 @@ config:
         projectId: "" # XSOLLA_PROJECT_ID
         secretKey: "" # XSOLLA_SECRET_KEY
       centili:
+        # enabled: false # CENTILI_ENABLED
         apiKey: "" # CENTILI_API_KEY
         secretKey: "" # CENTILI_SECRET_KEY
         conversionRate: "" # CENTILI_CONVERSION_RATE

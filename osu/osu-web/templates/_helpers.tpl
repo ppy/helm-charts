@@ -196,6 +196,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "XSOLLA_PROJECT_ID" "value" .Values.config.laravel.payments.xsolla.projectId) }}
 {{ template "osu-web-chart.env-var" (dict "name" "XSOLLA_SECRET_KEY" "value" .Values.config.laravel.payments.xsolla.secretKey) }}
 
+{{ template "osu-web-chart.env-var" (dict "name" "CENTILI_ENABLED" "value" .Values.config.laravel.payments.centili.enabled) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CENTILI_API_KEY" "value" .Values.config.laravel.payments.centili.apiKey) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CENTILI_SECRET_KEY" "value" .Values.config.laravel.payments.centili.secretKey) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CENTILI_CONVERSION_RATE" "value" .Values.config.laravel.payments.centili.conversionRate) }}
