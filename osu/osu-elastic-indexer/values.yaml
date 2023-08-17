@@ -11,9 +11,14 @@ config:
     # prefix: ""
   # config.db, config.elasticsearch and config.redis will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
   db: {}
+    # if connectionString is set, other values are ignored
     # connectionString: ""
-  elasticsearch: {}
     # host: ""
+    # username: ""
+    # password: ""
+    # database: ""
+  elasticsearch: {}
+    # hostUri: "" # eg. http://localhost:9200
   redis: {}
     # host: ""
 
