@@ -40,15 +40,6 @@ spec:
             - watch
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: ES_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "osu-web-chart.fullname" . }}-shared
-                  key: ES_HOST_URI
-            {{- range $extraEnv := .Values.extraEnv }}
-            - {{- toYaml $extraEnv | nindent 14 -}}
-            {{- end }}
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}
@@ -60,6 +51,19 @@ spec:
             - configMapRef:
                 name: {{ include "osu-elastic-indexer-chart.fullname" . }}
                 optional: false
+          {{- if or .Values.useSharedSecretsFromOsuWebChart .Values.extraEnv }}
+          env:
+            {{- if .Values.useSharedSecretsFromOsuWebChart }}
+            - name: ES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "osu-web-chart.fullname" . }}-shared
+                  key: ES_HOST_URI
+            {{- end }}
+            {{- range $extraEnv := .Values.extraEnv }}
+            - {{- toYaml $extraEnv | nindent 14 -}}
+            {{- end }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
