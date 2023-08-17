@@ -132,6 +132,16 @@ entries:
     version: 2022.414.0
   osu-elastic-indexer:
   - apiVersion: v2
+    appVersion: 2023.818.0
+    created: "2023-08-17T18:13:30.294344999Z"
+    description: production osu-elastic-indexer deployment in Kubernetes
+    digest: 8aa9ec2bbdc8a3ab8b52feea62785c381d9ee244c71428a4ef09ccde6b2c703e
+    name: osu-elastic-indexer
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2023.818.0/osu-elastic-indexer-2023.818.0.tgz
+    version: 2023.818.0
+  - apiVersion: v2
     appVersion: 2023.107.0
     created: "2023-01-10T13:27:14.022059775Z"
     description: production osu-elastic-indexer deployment in Kubernetes
@@ -2485,4 +2495,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2023-06-13T14:04:42.497927537Z"
+generated: "2023-08-17T18:13:30.294975006Z"
