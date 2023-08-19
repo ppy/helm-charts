@@ -6,9 +6,9 @@ useSharedSecretsFromOsuWebChart: false
 config:
   queueScoreStatistics: {}
     # beatmapDownloadPath: ""
-    # processUserMedals: false
-    # processUserTotals: false
-    # realtimeDifficulty: false
+    # processUserMedals: true
+    # processUserTotals: true
+    # realtimeDifficulty: true
     # schema: ""
     # usersTable: phpbb_users
   # config.db and config.redis will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart

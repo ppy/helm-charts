@@ -8,14 +8,14 @@ data:
   {{- if not (eq nil .Values.config.queueScoreStatistics.beatmapDownloadPath) }}
   BEATMAP_DOWNLOAD_PATH: {{ .Values.config.queueScoreStatistics.beatmapDownloadPath | quote }}
   {{- end }}
-  {{- if .Values.config.queueScoreStatistics.processUserMedals }}
-  PROCESS_USER_MEDALS: "1"
+  {{- if and (not (eq nil .Values.config.queueScoreStatistics.processUserMedals)) (not .Values.config.queueScoreStatistics.processUserMedals) }}
+  PROCESS_USER_MEDALS: "0"
   {{- end }}
-  {{- if .Values.config.queueScoreStatistics.processUserTotals }}
-  PROCESS_USER_TOTALS: "1"
+  {{- if and (not (eq nil .Values.config.queueScoreStatistics.processUserTotals)) (not .Values.config.queueScoreStatistics.processUserTotals) }}
+  PROCESS_USER_TOTALS: "0"
   {{- end }}
-  {{- if .Values.config.queueScoreStatistics.realtimeDifficulty }}
-  REALTIME_DIFFICULTY: "1"
+  {{- if and (not (eq nil .Values.config.queueScoreStatistics.realtimeDifficulty)) (not .Values.config.queueScoreStatistics.realtimeDifficulty) }}
+  REALTIME_DIFFICULTY: "0"
   {{- end }}
   SCHEMA: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
   {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
