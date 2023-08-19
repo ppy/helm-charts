@@ -5,9 +5,12 @@
 useSharedSecretsFromOsuWebChart: false
 config:
   queueScoreStatistics: {}
-    # usersTable: phpbb_users
-    # schema: ""
+    # beatmapDownloadPath: ""
+    # processUserMedals: false
     # processUserTotals: false
+    # realtimeDifficulty: false
+    # schema: ""
+    # usersTable: phpbb_users
   # config.db and config.redis will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
   db: {}
     # if connectionString is set, other values are ignored

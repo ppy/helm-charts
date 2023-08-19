@@ -5,10 +5,19 @@ metadata:
   labels:
     {{- include "osu-queue-score-statistics-chart.labels" . | nindent 4 }}
 data:
-  {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
-  DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}
+  {{- if not (eq nil .Values.config.queueScoreStatistics.beatmapDownloadPath) }}
+  BEATMAP_DOWNLOAD_PATH: {{ .Values.config.queueScoreStatistics.beatmapDownloadPath | quote }}
   {{- end }}
-  SCHEMA: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
+  {{- if .Values.config.queueScoreStatistics.processUserMedals }}
+  PROCESS_USER_MEDALS: "1"
+  {{- end }}
   {{- if .Values.config.queueScoreStatistics.processUserTotals }}
   PROCESS_USER_TOTALS: "1"
+  {{- end }}
+  {{- if .Values.config.queueScoreStatistics.realtimeDifficulty }}
+  REALTIME_DIFFICULTY: "1"
+  {{- end }}
+  SCHEMA: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
+  {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
+  DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}
   {{- end }}
