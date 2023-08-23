@@ -17,6 +17,9 @@ data:
   {{- if and (not (eq nil .Values.config.queueScoreStatistics.realtimeDifficulty)) (not .Values.config.queueScoreStatistics.realtimeDifficulty) }}
   REALTIME_DIFFICULTY: "0"
   {{- end }}
+  {{- if not (eq nil .Values.config.queueScoreStatistics.sentryDsn) }}
+  SENTRY_DSN: {{ .Values.config.queueScoreStatistics.sentryDsn | quote }}
+  {{- end }}
   SCHEMA: {{ required "Schema version is required" .Values.config.queueScoreStatistics.schema | quote }}
   {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
   DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}

@@ -9,6 +9,7 @@ config:
     # processUserMedals: true
     # processUserTotals: true
     # realtimeDifficulty: true
+    # sentryDsn: ""
     # schema: ""
     # usersTable: phpbb_users
   # config.db and config.redis will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
