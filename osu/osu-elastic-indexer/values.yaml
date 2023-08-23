@@ -7,6 +7,7 @@ config:
   elasticIndexer: {}
     # batchSize: 10000
     # bufferSize: 5
+    # sentryDsn: ""
     # schema: ""
     # prefix: ""
   # config.db, config.elasticsearch and config.redis will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart

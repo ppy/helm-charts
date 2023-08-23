@@ -11,4 +11,7 @@ data:
   {{- if not (eq nil .Values.config.elasticIndexer.bufferSize) }}
   BUFFER_SIZE: {{ .Values.config.elasticIndexer.bufferSize | quote }}
   {{- end }}
+  {{- if not (eq nil .Values.config.elasticIndexer.sentryDsn) }}
+  SENTRY_DSN: {{ .Values.config.elasticIndexer.sentryDsn | quote }}
+  {{- end }}
   SCHEMA: {{ required "Schema version is required" .Values.config.elasticIndexer.schema | quote }}
