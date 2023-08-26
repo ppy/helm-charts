@@ -388,6 +388,10 @@ assets:
   replicas: 1
   podAnnotations: {}
   resources: {}
+  podDisruptionBudget:
+    enabled: true
+    # minAvailable: 1
+    maxUnavailable: 1
   upgradeJob:
     enabled: true
     image: bitnami/kubectl:1.26
@@ -448,6 +452,6 @@ tolerations: []
 affinity: {}
 
 podDisruptionBudget:
-  enabled: false
+  enabled: true
   # minAvailable: 1
   maxUnavailable: 1
