@@ -446,6 +446,53 @@ entries:
     version: 2022.509.0
   osu-web:
   - apiVersion: v2
+    appVersion: 2023.826.0
+    created: "2023-08-26T16:58:57.23746307Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.612.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.1012.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.818.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.818.0
+    - condition: scthumber.enabled
+      name: scthumber
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.316.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: fbf65ca148d7059be2396d4799c81cb4f4dd68b4fc14952b2f5dfc502935bbe5
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2023.826.0/osu-web-2023.826.0.tgz
+    version: 2023.826.0
+  - apiVersion: v2
     appVersion: 2023.816.0
     created: "2023-08-17T19:56:33.995874283Z"
     dependencies:
@@ -2602,4 +2649,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2023-08-23T15:15:36.515806539Z"
+generated: "2023-08-26T16:58:57.238211267Z"
