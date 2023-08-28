@@ -243,7 +243,6 @@ config:
       # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
   elasticsearch:
-    maxUnavailable: 0
     # host: localhost:9200 # ES_HOST
     scores: {}
       # host: localhost:9200 # ES_SCORES_HOST
@@ -345,6 +344,7 @@ elasticsearch:
   - name: ES_JAVA_OPTS
     value: "-Xms512m -Xmx512m"
   replicas: 1
+  maxUnavailable: 0
 
 imagePullSecrets: []
 nameOverride: ""
