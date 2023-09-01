@@ -12,6 +12,8 @@ config:
     # database: "" # default to osu in app
     # username: osuweb # default to osuweb
     # port: 3306
+  redis: {}
+    # host: ""
   laravel:
     oauth: {}
       # publicKey: "" # required
