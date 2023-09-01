@@ -50,5 +50,11 @@ spec:
             # httpGet:
               # path: /
               # port: http
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sleep
+                  - "10"
           resources:
             {{- toYaml .Values.assets.resources | nindent 12 }}
