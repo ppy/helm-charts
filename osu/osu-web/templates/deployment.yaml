@@ -61,6 +61,12 @@ spec:
             # httpGet:
               # path: /home
               # port: http
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sleep
+                  - "10"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
