@@ -389,6 +389,9 @@ assets:
   replicas: 1
   podAnnotations: {}
   resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
   podDisruptionBudget:
     enabled: true
     # minAvailable: 1
