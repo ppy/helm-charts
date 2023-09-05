@@ -91,6 +91,16 @@ entries:
     version: 2022.821.0
   osu-beatmap-difficulty-lookup-cache:
   - apiVersion: v2
+    appVersion: 2022.1017.0
+    created: "2023-09-05T08:50:31.962165824Z"
+    description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
+    digest: 29ea106898c870e5a0a3d09a4a18763d20e45ed10699548247783ed803498d80
+    name: osu-beatmap-difficulty-lookup-cache
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-beatmap-difficulty-lookup-cache-2023.905.0/osu-beatmap-difficulty-lookup-cache-2023.905.0.tgz
+    version: 2023.905.0
+  - apiVersion: v2
     appVersion: 2022.615.1
     created: "2022-08-18T13:26:53.746165843Z"
     description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
@@ -202,6 +212,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-elastic-indexer-2022.727.0/osu-elastic-indexer-2022.727.0.tgz
     version: 2022.727.0
   osu-notification-server:
+  - apiVersion: v2
+    appVersion: 2023.816.0
+    created: "2023-09-05T08:50:32.150044556Z"
+    description: production osu-notification-server deployment in Kubernetes
+    digest: 707b6ada63725e9f497d9d1a046e0fa46e7eb2eb74ab99c176bb124b75d5e7e2
+    name: osu-notification-server
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-notification-server-2023.905.0/osu-notification-server-2023.905.0.tgz
+    version: 2023.905.0
   - apiVersion: v2
     appVersion: 2022.819.0
     created: "2023-06-12T15:58:53.35150942Z"
@@ -356,6 +376,16 @@ entries:
   osu-server-spectator:
   - apiVersion: v2
     appVersion: 2023.716.1
+    created: "2023-09-05T08:50:32.299690278Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: 1cd964630294e85488f98ee16c2d704c4a78a6ea4ec48651f2a0759d5df49351
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2023.905.0/osu-server-spectator-2023.905.0.tgz
+    version: 2023.905.0
+  - apiVersion: v2
+    appVersion: 2023.716.1
     created: "2023-09-01T09:49:38.264478196Z"
     description: production osu-server-spectator deployment in Kubernetes
     digest: ae1ea96ab7264f9e9b155ec4451ea351dc2bf8e404501a16b2987050584206ef
@@ -455,6 +485,53 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
     version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2023.830.3
+    created: "2023-09-05T08:50:32.507295718Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.818.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.612.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2022.1012.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.818.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.818.0
+    - condition: scthumber.enabled
+      name: scthumber
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.316.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: dcf998556bb6b909c5ab7df109965ef4932763f0a3fcf88ccdfebe18eb983b49
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2023.905.0/osu-web-2023.905.0.tgz
+    version: 2023.905.0
   - apiVersion: v2
     appVersion: 2023.830.3
     created: "2023-09-01T07:58:42.043996884Z"
@@ -2904,4 +2981,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2023-09-05T08:47:51.553521886Z"
+generated: "2023-09-05T08:50:32.650587005Z"
