@@ -40,18 +40,18 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
-            {{- if eq $apiVersion "networking.k8s.io/v1" }}
-            pathType: Prefix
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
             {{- end }}
             backend:
-              {{- if not (eq $apiVersion "networking.k8s.io/v1") }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- else }}
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
-                  name: http
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
     {{- end }}
