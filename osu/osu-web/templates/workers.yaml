@@ -7,7 +7,7 @@ kind: Deployment
 metadata:
   name: {{ include "osu-web-chart.fullname" $ }}-workers-{{ $workerName }}
   labels:
-    {{- include "osu-web-chart.labels" $ | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "workers" "worker" $workerName)) | nindent 4 }}
     tier: worker
   annotations:
     checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
@@ -15,7 +15,7 @@ spec:
   replicas: {{ $workerConfig.replicas }}
   selector:
     matchLabels:
-      {{- include "osu-web-chart.selectorLabels" $ | nindent 6 }}
+      {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "workers" "worker" $workerName)) | nindent 6 }}
       tier: worker
   template:
     metadata:
@@ -25,7 +25,7 @@ spec:
         {{ $key | quote }}: {{ $value | quote }}
         {{- end }}
       labels:
-        {{- include "osu-web-chart.selectorLabels" $ | nindent 8 }}
+        {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "workers" "worker" $workerName)) | nindent 8 }}
         tier: worker
     spec:
       {{- with $.Values.imagePullSecrets }}

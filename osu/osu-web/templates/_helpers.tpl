@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "osu-web-chart.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" (default .root.Chart.Name .root.Values.nameOverride) (default "" .options.component) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -34,12 +34,12 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "osu-web-chart.labels" -}}
-helm.sh/chart: {{ include "osu-web-chart.chart" . }}
+helm.sh/chart: {{ include "osu-web-chart.chart" .root }}
 {{ include "osu-web-chart.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- if .root.Chart.AppVersion }}
+app.kubernetes.io/version: {{ .root.Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/managed-by: {{ .root.Release.Service }}
 {{- end }}
 
 {{/*
@@ -47,27 +47,13 @@ Selector labels
 */}}
 {{- define "osu-web-chart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "osu-web-chart.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .root.Release.Name }}
+{{- if .options.component }}
+app.kubernetes.io/component: {{ .options.component }}
+{{- if (and (eq .options.component "workers") (.options.worker)) }}
+osu.io/osu-web-worker: {{ .options.worker }}
 {{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "osu-web-chart.labelsAssets" -}}
-helm.sh/chart: {{ include "osu-web-chart.chart" . }}
-{{ include "osu-web-chart.selectorLabelsAssets" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "osu-web-chart.selectorLabelsAssets" -}}
-app.kubernetes.io/name: {{ include "osu-web-chart.name" . }}-assets
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*

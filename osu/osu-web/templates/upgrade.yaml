@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-upgrade
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade")) | nindent 4 }}
     tier: upgrade
   annotations:
     "helm.sh/hook": post-install,pre-upgrade

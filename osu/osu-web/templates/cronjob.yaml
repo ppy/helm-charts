@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-schedule
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "schedule")) | nindent 4 }}
 spec:
   schedule: {{ .Values.config.laravel.schedule.cron | quote }}
   concurrencyPolicy: {{ .Values.config.laravel.schedule.concurrencyPolicy | quote }}
@@ -18,7 +18,7 @@ spec:
               - podAffinityTerm:
                   labelSelector:
                     matchLabels:
-                      {{- include "osu-web-chart.selectorLabels" . | nindent 22 }}
+                      {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "octane")) | nindent 22 }}
                   topologyKey: kubernetes.io/hostname
                 weight: 50
           restartPolicy: OnFailure

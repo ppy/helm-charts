@@ -7,7 +7,7 @@ metadata:
   name: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
   labels:
     helm.sh/resource-policy: "keep"
-    {{- include "osu-web-chart.labels" $ | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict)) | nindent 4 }}
 spec:
   volumeMode: Filesystem
   {{- with $storage.local.storageClassName }}

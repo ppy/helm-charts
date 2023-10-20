@@ -3,12 +3,12 @@ kind: Deployment
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}
 spec:
   replicas: {{ .Values.assets.replicas }}
   selector:
     matchLabels:
-      {{- include "osu-web-chart.selectorLabelsAssets" . | nindent 6 }}
+      {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "assets")) | nindent 6 }}
   template:
     metadata:
       {{- with .Values.assets.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "osu-web-chart.selectorLabelsAssets" . | nindent 8 }}
+        {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "assets")) | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

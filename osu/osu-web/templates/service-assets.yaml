@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "osu-web-chart.selectorLabelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}

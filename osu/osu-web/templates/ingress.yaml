@@ -14,11 +14,13 @@
     "ingressConfig" .Values.ingress
     "suffix" ""
     "serviceSuffix" ""
+    "includeOptions" (dict "component" "octane")
   )
   (dict
     "ingressConfig" .Values.ingressAssets
     "suffix" "-assets"
     "serviceSuffix" "-assets"
+    "includeOptions" (dict "component" "assets")
   )
 -}}
 {{- range $config := $config -}}
@@ -30,7 +32,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}{{ $config.suffix }}
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" $config.includeOptions) | nindent 4 }}
   {{- with $config.ingressConfig.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

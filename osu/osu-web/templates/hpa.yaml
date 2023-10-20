@@ -4,12 +4,12 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "octane")) | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "osu-web-chart.fullname" . }}
+    name: {{ include "osu-web-chart.fullname" . }}-octane
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

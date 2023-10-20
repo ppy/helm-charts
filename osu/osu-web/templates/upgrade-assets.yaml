@@ -1,12 +1,12 @@
 # This hook ensures the assets deployment is upgraded before octane to avoid serving 404s. Older assets should be cached using ingress-nginx (enable caching in ingress-nginx config and osu-web ingress annotations) or/and by CDN (Cloudflare).
-{{- if .Values.assets.upgradeJob.enabled -}}
+{{- if .Values.assets.upgradeJob.enabled }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-assets")) | nindent 4 }}
     tier: wait-for-deploy
   annotations:
     "helm.sh/hook": pre-upgrade
@@ -18,7 +18,7 @@ kind: Role
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-assets")) | nindent 4 }}
     tier: wait-for-deploy
   annotations:
     "helm.sh/hook": pre-upgrade
@@ -42,7 +42,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-assets")) | nindent 4 }}
     tier: wait-for-deploy
   annotations:
     "helm.sh/hook": pre-upgrade
@@ -62,7 +62,7 @@ kind: Job
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-upgrade-assets
   labels:
-    {{- include "osu-web-chart.labelsAssets" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-assets")) | nindent 4 }}
     tier: wait-for-deploy
   annotations:
     "helm.sh/hook": pre-upgrade

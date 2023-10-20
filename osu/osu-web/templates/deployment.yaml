@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}-octane
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "octane")) | nindent 4 }}
   annotations:
     checksum/config: {{ sha256sum (printf "%s-%s-%s" .Values.config.laravel.oauth.privateKey .Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" .)) }}
 spec:
@@ -12,7 +12,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "osu-web-chart.selectorLabels" . | nindent 6 }}
+      {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "octane")) | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -24,7 +24,7 @@ spec:
         {{ $key | quote }}: {{ $value | quote }}
         {{- end }}
       labels:
-        {{- include "osu-web-chart.selectorLabels" . | nindent 8 }}
+        {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "octane")) | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

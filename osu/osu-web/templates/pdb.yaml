@@ -9,12 +9,12 @@
   (dict
     "pdbConfig" .Values.podDisruptionBudget
     "suffix" ""
-    "selectorLabels" (include "osu-web-chart.selectorLabels" .)
+    "includeOptions" (dict "component" "octane")
   )
   (dict
     "pdbConfig" .Values.assets.podDisruptionBudget
     "suffix" "-assets"
-    "selectorLabels" (include "osu-web-chart.selectorLabelsAssets" .)
+    "includeOptions" (dict "component" "assets")
   )
 -}}
 {{- range $config := $config -}}
@@ -26,7 +26,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "osu-web-chart.fullname" . }}{{ $config.suffix }}
   labels:
-    {{- include "osu-web-chart.labels" . | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" $config.includeOptions) | nindent 4 }}
 spec:
 {{- if $config.pdbConfig.minAvailable }}
   minAvailable: {{ $config.pdbConfig.minAvailable }}
@@ -36,7 +36,7 @@ spec:
 {{- end }}
   selector:
     matchLabels:
-      {{- $config.selectorLabels | nindent 6 }}
+      {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" $config.includeOptions) | nindent 6 }}
 {{- end }}
 {{- end -}}
 {{- end -}}
