@@ -397,6 +397,7 @@ assets:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  topologySpreadConstraints: []
   podDisruptionBudget:
     enabled: true
     # minAvailable: 1
@@ -460,6 +461,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+topologySpreadConstraints: []
 
 podDisruptionBudget:
   enabled: true
