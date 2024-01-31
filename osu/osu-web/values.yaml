@@ -206,7 +206,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
         size: 1Gi
       s3:
         key: "" # S3_KEY
@@ -221,7 +221,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
         size: 1Gi
       s3:
         key: "" # S3_AVATAR_KEY
@@ -238,7 +238,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver 
+          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
         size: 1Gi
       # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
@@ -259,7 +259,7 @@ config:
   beatmapsDifficultyLookupCache: {}
     # serverUrl: "" # BEATMAPS_DIFFICULTY_CACHE_SERVER_URL
 
-# If replicaCount is set to 1, blank flags redirection will returns 502s when requesting without an INGRESSCOOKIE; see 
+# If replicaCount is set to 1, blank flags redirection will returns 502s when requesting without an INGRESSCOOKIE; see
 replicaCount: 1
 
 image:
@@ -422,6 +422,7 @@ assets:
 
 ingressAssets:
   enabled: true
+  className: ""
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
