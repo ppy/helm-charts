@@ -41,6 +41,10 @@ spec:
       {{- with .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ toYaml . }}
       {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -49,7 +53,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.internalPort }}
+              # hostPort is automatically set by Kubernetes when using hostNetwork, but is not automatically unset when turning it off.
+              # This causes the pod to fail to start if it is restarted without hostNetwork.
+              # Setting hostPort to 0 when not using hostNetwork fixes this.
+              {{- if .Values.hostNetwork }}
+              hostPort: {{ .Values.service.internalPort }}
+              {{- else }}
+              hostPort: 0
+              {{- end }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
@@ -65,7 +77,11 @@ spec:
               subPath: oauth-public.key
               readOnly: true
           env:
-            {{- toYaml .Values.extraEnv | nindent 12 }}
+            - name: SERVER_PORT
+              value: "{{ .Values.service.internalPort }}"
+            {{- range .Values.extraEnv }}
+            - {{- toYaml . | nindent 14 }}
+            {{- end }}
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}

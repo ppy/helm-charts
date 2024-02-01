@@ -60,10 +60,13 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
+  internalPort: 80
+
+hostNetwork: false
 
 ingress:
   enabled: true
-  className: ""
+  ingressClassName: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
