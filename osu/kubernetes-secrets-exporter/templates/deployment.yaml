@@ -27,6 +27,15 @@ spec:
       serviceAccountName: {{ include "kubernetes-secrets-exporter.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if eq .Values.server.listenMode "https" }}
+      volumes:
+        - name: ca-certs
+          secret:
+            secretName: {{ include "kubernetes-secrets-exporter.fullname" $ }}-ca
+        - name: tls-certs
+          secret:
+            secretName: {{ .Values.server.https.certificate.existingSecret }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -37,6 +46,7 @@ spec:
             - name: http
               containerPort: 5000
               protocol: TCP
+          {{- if eq .Values.server.listenMode "http" }}
           livenessProbe:
             httpGet:
               path: /
@@ -45,16 +55,41 @@ spec:
             httpGet:
               path: /
               port: http
+          {{- else }}
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            - name: LISTEN_MODE
+              value: {{ .Values.server.listenMode }}
+            {{- with .Values.server.trustProxy }}
+            - name: TRUST_PROXY
+              value: {{ . | toString }}
+            {{- end }}
             - name: CONFIGMAP_NAME
               value: {{ include "kubernetes-secrets-exporter.fullname" . }}
+            {{- if eq .Values.server.listenMode "http" }}
             - name: SSL_CLIENT_SUBJECT_HEADER
-              value: ssl-client-subject-dn
+              value: {{ .Values.server.http.commonNameHeader }}
+            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- if eq .Values.server.listenMode "https" }}
+          volumeMounts:
+            - name: ca-certs
+              mountPath: /ca-certs
+              readOnly: true
+            - name: tls-certs
+              mountPath: /tls-certs
+              readOnly: true
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
