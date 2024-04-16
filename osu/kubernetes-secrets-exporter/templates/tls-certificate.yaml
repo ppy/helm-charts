@@ -1,0 +1,16 @@
+{{- if and (eq .Values.server.listenMode "https") (eq .Values.server.https.certificate.existingSecret nil) }}
+{{- with .Values.server.https.certificate }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "kubernetes-secrets-exporter.fullname" $ }}-tls
+spec:
+  secretName: {{ include "kubernetes-secrets-exporter.fullname" $ }}-tls
+  dnsNames:
+    {{- toYaml (required ".Values.server.https.certificate.dnsNames is required" .dnsNames) | nindent 4 }}
+  issuerRef:
+    {{- toYaml (required ".Values.server.https.certificate.issuerRef is required" .issuerRef) | nindent 4 }}
+  usages:
+    {{- toYaml (required ".Values.server.https.certificate.usages is required" .usages) | nindent 4 }}
+{{- end }}
+{{- end }}

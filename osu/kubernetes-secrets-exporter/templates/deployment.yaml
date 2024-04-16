@@ -34,7 +34,7 @@ spec:
             secretName: {{ include "kubernetes-secrets-exporter.fullname" $ }}-ca
         - name: tls-certs
           secret:
-            secretName: {{ .Values.server.https.certificate.existingSecret }}
+            secretName: {{ .Values.server.https.certificate.existingSecret | default (printf "%s-tls" (include "kubernetes-secrets-exporter.fullname" $)) }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
