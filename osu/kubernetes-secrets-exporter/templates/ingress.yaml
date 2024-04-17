@@ -19,9 +19,13 @@ metadata:
   labels:
     {{- include "kubernetes-secrets-exporter.labels" . | nindent 4 }}
   annotations:
+    {{- if eq .Values.server.listenMode "http" }}
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .Release.Namespace }}/{{ include "kubernetes-secrets-exporter.fullname" $ }}-ca"
     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    {{- else }}
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    {{- end }}
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -29,7 +33,7 @@ spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
+  {{- if and .Values.ingress.tls (eq .Values.server.listenMode "http") }}
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:

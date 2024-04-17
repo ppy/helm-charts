@@ -10,6 +10,21 @@ secrets:
 certificates:
   ca.crt: ""
 
+server:
+  # listenMode: http or https
+  trustProxy: false
+  http:
+    commonNameHeader: ssl-client-subject-dn
+  https:
+    certificate:
+      # existingSecret: ""
+      dnsNames:
+        - chart-example.local
+      usages:
+        - digital signature
+        - key encipherment
+      # issuerRef: {}
+
 extraEnv: {}
 
 replicaCount: 1
@@ -49,6 +64,7 @@ securityContext:
 service:
   type: ClusterIP
   port: 5000
+  # annotations: {}
 
 ingress:
   enabled: true

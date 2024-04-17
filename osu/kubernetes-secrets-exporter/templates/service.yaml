@@ -1,9 +1,16 @@
+{{- if and (eq .Values.server.listenMode "http") (not (eq .Values.service.type "ClusterIP")) }}
+  {{- fail "Service type must be ClusterIP when listenMode is http, as in this configuration, the app should be put behind a reverse proxy internally to handle client authentication." }}
+{{- end }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "kubernetes-secrets-exporter.fullname" . }}
   labels:
     {{- include "kubernetes-secrets-exporter.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
