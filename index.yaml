@@ -68,6 +68,17 @@ entries:
     version: 2022.1012.0
   kubernetes-secrets-exporter:
   - apiVersion: v2
+    appVersion: 2024.419.0
+    created: "2024-04-19T15:10:18.361629505Z"
+    description: Micro-service to expose Kubernetes secrets to clients using client
+      certificates over HTTPS
+    digest: 56b73df29ac1cf2aea994e0e27387f072b568cea7eea99e160a81a1d53e4dc3e
+    name: kubernetes-secrets-exporter
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/kubernetes-secrets-exporter-2024.419.0/kubernetes-secrets-exporter-2024.419.0.tgz
+    version: 2024.419.0
+  - apiVersion: v2
     appVersion: 2022.821.2
     created: "2022-09-03T20:06:42.537054281Z"
     description: Micro-service to expose Kubernetes secrets to clients using client
@@ -3226,4 +3237,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2024-02-01T00:57:17.514817634Z"
+generated: "2024-04-19T15:10:18.362292688Z"
