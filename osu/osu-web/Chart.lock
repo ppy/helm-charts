@@ -18,13 +18,13 @@ dependencies:
   repository: https://ppy.github.io/helm-charts
   version: 2023.316.0
 - name: mysql
-  repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 8.5.6
 - name: redis
-  repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 14.1.0
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:47bb885f6a99899ac4e2e3e93c81b96b57519236e8b72f51f402dd22909874c5
-generated: "2023-09-05T10:55:29.080206115+02:00"
+digest: sha256:95c16f509697521381523ccf1a3669f41a39e81f3eaa40d4e1f7c37fe8de9d94
+generated: "2024-05-15T20:43:03.788587759+02:00"
