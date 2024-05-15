@@ -36,6 +36,21 @@ rules:
       - patch
       - watch
       - list
+  - apiGroups:
+      - apps
+    resources:
+      - replicasets
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -87,7 +102,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              # Skip the patching process if the assets deployment doesn't exist ()
+              # Skip the patching process if the assets deployment doesn't exist
               DEPLOYMENT=$(kubectl get deploy/{{ include "osu-web-chart.fullname" . }}-assets 2>&1)
               EXIT_CODE=$?
 
@@ -100,8 +115,27 @@ spec:
                 exit $EXIT_CODE
               fi
 
-              kubectl patch 'deploy/{{ include "osu-web-chart.fullname" . }}-assets' --type json -p '[{"op": "replace", "path":"/spec/template/spec/containers/0/image", "value": "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"}]' && \
+              set -e
+
+              CURRENT_IMAGE=$(kubectl get deploy/{{ include "osu-web-chart.fullname" . }}-assets -o jsonpath='{.spec.template.spec.containers[0].image}')
+              NEW_IMAGE={{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+
+              if [ "$CURRENT_IMAGE" == "$NEW_IMAGE" ]; then
+                echo "Assets deployment already up-to-date; skipping patching"
+                exit 0
+              fi
+
+              # kubectl rollout status waits for old pods to enter Terminating, where they may still be processing new requests until they're completely dead due to ingress-nginx async config updates.
+              # To work-around this, we're also awaiting old assets pods deletion.
+              CURRENT_ASSETS_POD_TEMPLATE_HASH=$(kubectl describe deploy/{{ include "osu-web-chart.fullname" . }}-assets | grep "NewReplicaSet:" | awk '{print $2}' | awk -F "-" '{print $NF}')
+              CURRENT_ASSETS_PODS=$(kubectl get pods -l app.kubernetes.io/name=osu-web-assets -l pod-template-hash=$CURRENT_ASSETS_POD_TEMPLATE_HASH -o jsonpath='{.items[*].metadata.name}')
+              kubectl wait --for=delete pod $CURRENT_ASSETS_PODS --timeout=-1s &
+
+              kubectl patch 'deploy/{{ include "osu-web-chart.fullname" . }}-assets' --type json -p '[{"op": "replace", "path":"/spec/template/spec/containers/0/image", "value": "'$NEW_IMAGE'"}]'
               kubectl rollout status 'deploy/{{ include "osu-web-chart.fullname" . }}-assets'
+
+              # Wait for old assets pods to be terminated
+              wait
           resources:
             {{- toYaml (.Values.assets.upgradeJob.resources | default .Values.resources) | nindent 12 }}
       {{- with .Values.nodeSelector }}
