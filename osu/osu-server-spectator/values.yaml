@@ -31,6 +31,15 @@ image:
 # Keep old versions in "Terminating" state for much longer until no player is left online on the old instance.
 terminationGracePeriodSeconds: 22500 # 6 hours and 15 minutes
 
+readinessProbe: {}
+#   tcpSocket:
+#     port: 80
+
+livenessProbe: {}
+#   terminationGracePeriodSeconds: 30
+#   tcpSocket:
+#     port: 80
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
