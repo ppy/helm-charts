@@ -33,7 +33,7 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2023.905.0
+    version: 2024.612.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: osu-elastic-indexer
