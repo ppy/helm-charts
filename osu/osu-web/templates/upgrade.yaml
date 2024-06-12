@@ -11,7 +11,7 @@ metadata:
     "helm.sh/hook-weight": "-10"
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
-  backoffLimit: 1
+  backoffLimit: 0
   template:
     {{- with .Values.config.upgradeJob.podAnnotations }}
     metadata:
