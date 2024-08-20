@@ -40,6 +40,7 @@ config:
       driver: redis # SESSION_DRIVER
       # domain: "" # SESSION_DOMAIN
       # secureCookie: false # SESSION_SECURE_COOKIE
+      # prefix: "" # SESSION_PREFIX
 
     legacy: {}
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET

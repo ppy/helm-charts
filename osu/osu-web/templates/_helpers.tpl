@@ -108,6 +108,7 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "SESSION_DRIVER" "value" .Values.config.laravel.session.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "SESSION_DOMAIN" "value" (include "osu-web.laravelSessionDomain" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "SESSION_SECURE_COOKIE" "value" (include "osu-web.laravelSessionSecureCookie" .)) }}
+{{ template "osu-web-chart.env-var" (dict "name" "SESSION_PREFIX" "value" .Values.config.laravel.session.prefix) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "MAIL_DRIVER" "value" .Values.config.mail.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "MAIL_HOST" "value" .Values.config.mail.host) }}
