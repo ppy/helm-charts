@@ -19,6 +19,8 @@ config:
     # appKey: "" # required
     oauth: {}
       # publicKey: "" # required
+    session:
+      # prefix: "" # default to empty
   redis:
     app: {}
       # host: "" # required
