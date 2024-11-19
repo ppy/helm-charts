@@ -13,7 +13,7 @@ dependencies:
   version: 2023.823.0
 - name: osu-queue-score-statistics
   repository: https://ppy.github.io/helm-charts
-  version: 2024.1028.0
+  version: 2024.1119.0
 - name: scthumber
   repository: https://ppy.github.io/helm-charts
   version: 2023.316.0
@@ -26,5 +26,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:0c85475f09f31caf356a67c490833aa571572b4bc0b807bd7ed6a90a8109f0c8
-generated: "2024-10-28T16:31:47.781622799+01:00"
+digest: sha256:a4bbba09e97d6e304c3a0d09c4361d107e73e53fc55d1900bdfd25a93db4df48
+generated: "2024-11-19T21:10:47.181085933+01:00"
