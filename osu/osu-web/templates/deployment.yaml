@@ -50,17 +50,13 @@ spec:
               containerPort: 8000
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /home
               port: http
-            # httpGet:
-              # path: /home
-              # port: http
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /home
               port: http
-            # httpGet:
-              # path: /home
-              # port: http
           lifecycle:
             preStop:
               exec:

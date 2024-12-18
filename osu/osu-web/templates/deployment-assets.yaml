@@ -39,17 +39,13 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /site.webmanifest
               port: http
-            # httpGet:
-              # path: /
-              # port: http
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /site.webmanifest
               port: http
-            # httpGet:
-              # path: /
-              # port: http
           lifecycle:
             preStop:
               exec:
