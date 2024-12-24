@@ -260,7 +260,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
+          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
         size: 1Gi
       s3:
         key: "" # S3_KEY
@@ -275,7 +275,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
+          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
         size: 1Gi
       s3:
         key: "" # S3_AVATAR_KEY
@@ -292,7 +292,7 @@ config:
         # storageClassName:
         # volumeName:
         accessModes:
-          - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver
+          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
         size: 1Gi
       # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
