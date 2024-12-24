@@ -25,7 +25,7 @@ appVersion: "2024.1216.0"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
-    version: 2023.905.0
+    version: 2024.1224.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-beatmap-difficulty-lookup-cache.enabled
   - name: osu-notification-server

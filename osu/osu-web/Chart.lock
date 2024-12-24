@@ -1,7 +1,7 @@
 dependencies:
 - name: osu-beatmap-difficulty-lookup-cache
   repository: https://ppy.github.io/helm-charts
-  version: 2023.905.0
+  version: 2024.1224.0
 - name: osu-notification-server
   repository: https://ppy.github.io/helm-charts
   version: 2024.820.0
@@ -26,5 +26,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:a4bbba09e97d6e304c3a0d09c4361d107e73e53fc55d1900bdfd25a93db4df48
-generated: "2024-11-19T21:10:47.181085933+01:00"
+digest: sha256:9ca5a9974c43448fcae140b8beeaecaa778aa5c1ec7b654f91934ed6b4100981
+generated: "2024-12-24T19:03:45.212440427+01:00"
