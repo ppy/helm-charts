@@ -463,10 +463,10 @@ If the input host is REPLACE_BY_APP_URL, will urlparse defaultHost and return it
   {{- if and (eq .probeType "httpGet") (.httpGet) }}
   httpGet:
     {{- toYaml .httpGet | nindent 4 }}
-  {{- else if and (eq .probeType "httpGet") (.tcpSocket) }}
+  {{- else if and (eq .probeType "tcpSocket") (.tcpSocket) }}
   tcpSocket:
     {{- toYaml .tcpSocket | nindent 4 }}
-  {{- else if and (eq .probeType "httpGet") (.exec) }}
+  {{- else if and (eq .probeType "exec") (.exec) }}
   exec:
     {{- toYaml .exec | nindent 4 }}
   {{- end }}
