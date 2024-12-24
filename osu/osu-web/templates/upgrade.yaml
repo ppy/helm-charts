@@ -45,7 +45,7 @@ spec:
             - -c
             - {{ join " && " $commands }}
           resources:
-            {{- toYaml (.Values.config.upgradeJob.resources | default .Values.resources) | nindent 12 }}
+            {{- toYaml (.Values.config.upgradeJob.resources | default .Values.config.laravel.octane.resources) | nindent 12 }}
           volumeMounts:
             - mountPath: /app/storage/oauth-public.key
               name: secret-shared-oauth-public-key

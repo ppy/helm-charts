@@ -1,0 +1,252 @@
+# This template builds 4 Kubernetes resources for each Octane pool: a Deployment, a Service, an Ingress and a PodDisruptionBudget.
+
+{{- $poolDefaults := .Values.config.laravel.octane -}}
+{{- range $poolName, $pool := .Values.config.laravel.octane.pools -}}
+{{- $suffix := hasKey $pool "suffix" | ternary $pool.suffix (printf "-%s" $poolName) -}}
+{{- $resourceName := printf "%s-octane%s" (include "osu-web-chart.fullname" $) $suffix }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $resourceName }}
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
+  annotations:
+    checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+spec:
+  replicas: {{ default $poolDefaults.replicas $pool.replicas }}
+  selector:
+    matchLabels:
+      {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+        {{- range $key, $value := (default $poolDefaults.extraPodAnnotations $pool.extraPodAnnotations) }}
+        {{ $key | quote }}: {{ $value | quote }}
+        {{- end }}
+      labels:
+        {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 8 }}
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "osu-web-chart.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $.Chart.Name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command:
+            - /app/docker/deployment/entrypoint.sh
+            - octane
+            {{- $workers := (default $poolDefaults.workers $pool.workers) }}
+            {{- $maxRequests := (default $poolDefaults.maxRequests $pool.maxRequests) }}
+            {{- with $workers }}
+            - --workers={{ . }}
+            {{- end }}
+            {{- with $maxRequests }}
+            - --max-requests={{ . }}
+            {{- end }}
+            {{- range $value := (default $poolDefaults.extraArgs $pool.extraArgs) }}
+            - {{ $value | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          {{- include "osu-web.probe" (dict "name" "livenessProbe" "probe" (default $poolDefaults.livenessProbe $pool.livenessProbe)) | nindent 10 }}
+          {{- include "osu-web.probe" (dict "name" "readinessProbe" "probe" (default $poolDefaults.readinessProbe $pool.readinessProbe)) | nindent 10 }}
+          {{- include "osu-web.probe" (dict "name" "startupProbe" "probe" (default $poolDefaults.startupProbe $pool.startupProbe)) | nindent 10 }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sleep
+                  - "10"
+          resources:
+            {{- toYaml (default $poolDefaults.resources $pool.resources) | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/storage/oauth-public.key
+              name: secret-shared-oauth-public-key
+              subPath: oauth-public.key
+              readOnly: true
+            - mountPath: /app/storage/oauth-private.key
+              name: secret-oauth-private-key
+              subPath: oauth-private.key
+              readOnly: true
+            {{- range $storageName, $storage := $.Values.config.storage }}
+            {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
+            - mountPath: /app/public/uploads{{- if not (eq "general" $storageName) -}}-{{ $storageName }}{{- end }}
+              name: pvc-{{ $storageName }}
+            {{- end }}
+            {{- end }}
+            {{- with (default $poolDefaults.extraVolumeMounts $pool.extraVolumeMounts) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          env:
+            - name: DATADOG_STATSD_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_ENTITY_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+          envFrom:
+            - secretRef:
+                name: {{ include "osu-web-chart.fullname" $ }}-env
+        {{- with (default $poolDefaults.extraContainers $pool.extraContainers) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      volumes:
+        - name: secret-shared-oauth-public-key
+          secret:
+            secretName: {{ include "osu-web-chart.fullname" $ }}-shared-oauth-public-key
+        - name: secret-oauth-private-key
+          secret:
+            secretName: {{ include "osu-web-chart.fullname" $ }}-oauth-private-key
+        {{- range $storageName, $storage := $.Values.config.storage }}
+        {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
+        - name: pvc-{{ $storageName }}
+          persistentVolumeClaim:
+            claimName: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
+        {{- end }}
+        {{- end }}
+        {{- with (default $poolDefaults.extraVolumes $pool.extraVolumes) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with (default $poolDefaults.nodeSelector $pool.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default $poolDefaults.affinity $pool.affinity) }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default $poolDefaults.topologySpreadConstraints $pool.topologySpreadConstraints) }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default $poolDefaults.tolerations $pool.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+---
+{{- $svc := (default $poolDefaults.service $pool.service) -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $resourceName }}
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
+  {{- with $svc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $svc.type }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
+
+---
+{{- $ingressApiVersion := "" -}}
+{{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion -}}
+  {{- $ingressApiVersion = "networking.k8s.io/v1" -}}
+{{- else if semverCompare ">=1.14-0" $.Capabilities.KubeVersion.GitVersion -}}
+  {{- $ingressApiVersion = "networking.k8s.io/v1beta1" -}}
+{{- else -}}
+  {{- $ingressApiVersion = "extensions/v1beta1" -}}
+{{- end -}}
+
+{{- $ingress := (default $poolDefaults.ingress $pool.ingress) -}}
+{{- $paths := (default $poolDefaults.paths $pool.paths) -}}
+{{- if $ingress.enabled }}
+apiVersion: {{ $ingressApiVersion }}
+kind: Ingress
+metadata:
+  name: {{ $resourceName }}
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
+  {{- with $ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if $ingress.className }}
+  ingressClassName: {{ $ingress.className }}
+  {{- end }}
+  {{- if $ingress.tls }}
+  tls:
+    {{- range $ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range $ingress.hosts }}
+    - host: {{ (include "osu-web.ingress-host" (dict "host" .host "defaultHost" (include "osu-web.laravelAppUrl" $))) | quote }}
+      http:
+        paths:
+          {{- range $paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $resourceName }}
+                port:
+                  name: http
+              {{- else }}
+              serviceName: {{ $resourceName }}
+              servicePort: {{ $svc.port }}
+              {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+
+---
+{{- $apiVersion := "" -}}
+{{- if semverCompare ">=1.21-0" $.Capabilities.KubeVersion.GitVersion -}}
+  {{- $apiVersion = "policy/v1" -}}
+{{- else -}}
+  {{- $apiVersion = "policy/v1beta1" -}}
+{{- end -}}
+
+{{- $pdb := (default $poolDefaults.podDisruptionBudget $pool.podDisruptionBudget) -}}
+{{- if $pdb.enabled }}
+apiVersion: {{ $apiVersion }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $resourceName }}
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
+spec:
+{{- if $pdb.minAvailable }}
+  minAvailable: {{ $pdb.minAvailable }}
+{{- end }}
+{{- if $pdb.maxUnavailable }}
+  maxUnavailable: {{ $pdb.maxUnavailable }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 6 }}
+{{- end -}}
+
+{{- end -}}

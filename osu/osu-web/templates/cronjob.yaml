@@ -42,7 +42,7 @@ spec:
                 - {{ . }}
                 {{- end }}
               resources:
-                {{- toYaml (.Values.config.laravel.schedule.resources | default .Values.resources) | nindent 16 }}
+                {{- toYaml (.Values.config.laravel.schedule.resources | default .Values.config.laravel.octane.resources) | nindent 16 }}
               volumeMounts:
                 - mountPath: /app/storage/oauth-public.key
                   name: secret-shared-oauth-public-key

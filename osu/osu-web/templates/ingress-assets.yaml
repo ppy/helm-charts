@@ -1,5 +1,5 @@
-{{- $fullName := include "osu-web-chart.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- $fullName := printf "%s-%s" (include "osu-web-chart.fullname" .) "assets" -}}
+{{- $svc := .Values.assets.service -}}
 {{- $apiVersion := "" -}}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
   {{- $apiVersion = "networking.k8s.io/v1" -}}
@@ -9,41 +9,25 @@
   {{- $apiVersion = "extensions/v1beta1" -}}
 {{- end -}}
 
-{{- $config := list
-  (dict
-    "ingressConfig" .Values.ingress
-    "suffix" ""
-    "serviceSuffix" ""
-    "includeOptions" (dict "component" "octane")
-  )
-  (dict
-    "ingressConfig" .Values.ingressAssets
-    "suffix" "-assets"
-    "serviceSuffix" "-assets"
-    "includeOptions" (dict "component" "assets")
-  )
--}}
-{{- range $config := $config -}}
-{{- with $ }}
-{{- if $config.ingressConfig.enabled }}
+{{- if .Values.assets.ingress.enabled }}
 ---
 apiVersion: {{ $apiVersion }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}{{ $config.suffix }}
+  name: {{ $fullName }}
   labels:
-    {{- include "osu-web-chart.labels" (dict "root" . "options" $config.includeOptions) | nindent 4 }}
-  {{- with $config.ingressConfig.annotations }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}
+  {{- with .Values.assets.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if $config.ingressConfig.className }}
-  ingressClassName: {{ $config.ingressConfig.className }}
+  {{- if .Values.assets.ingress.className }}
+  ingressClassName: {{ .Values.assets.ingress.className }}
   {{- end }}
-  {{- if $config.ingressConfig.tls }}
+  {{- if .Values.assets.ingress.tls }}
   tls:
-    {{- range $config.ingressConfig.tls }}
+    {{- range .Values.assets.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -52,7 +36,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range $config.ingressConfig.hosts }}
+    {{- range .Values.assets.ingress.hosts }}
     - host: {{ (include "osu-web.ingress-host" (dict "host" .host "defaultHost" (include "osu-web.laravelAppUrl" $))) | quote }}
       http:
         paths:
@@ -64,15 +48,13 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}{{ $config.serviceSuffix }}
+                name: {{ $fullName }}
                 port:
                   name: http
               {{- else }}
-              serviceName: {{ $fullName }}{{ $config.serviceSuffix }}
-              servicePort: {{ $svcPort }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svc.port }}
               {{- end }}
           {{- end }}
     {{- end }}
-{{- end -}}
-{{- end -}}
 {{- end -}}

@@ -4,10 +4,14 @@ metadata:
   name: {{ include "osu-web-chart.fullname" . }}-assets
   labels:
     {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}
+  {{- with .Values.assets.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.assets.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.assets.service.port }}
       targetPort: http
       protocol: TCP
       name: http

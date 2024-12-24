@@ -16,6 +16,9 @@ config:
     extraEnv: {}
 
     octane:
+      replicas: 1
+      # workers: 0 # set to cpu cores count by default
+      maxRequests: 100
       extraArgs: [] # extra arguments to pass to octane, see `/app/artisan octane:start --help`
       extraPodAnnotations: {}
       extraVolumes: []
@@ -32,6 +35,44 @@ config:
           path: /home
           port: http
       # startupProbe: {}
+      resources: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+      topologySpreadConstraints: []
+      service:
+        type: ClusterIP
+        port: 80
+        annotations: {}
+      ingress:
+        enabled: true
+        className: ""
+        annotations: {}
+          # kubernetes.io/ingress.class: nginx
+        # kubernetes.io/tls-acme: "true"
+        hosts:
+          - host: REPLACE_BY_APP_URL
+            # paths are defined separately, so they can be separately overridden
+        tls: []
+        #  - secretName: chart-example-tls
+        #    hosts:
+        #      - chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+      podDisruptionBudget:
+        enabled: true
+        # minAvailable: 1
+        maxUnavailable: 1
+
+      # any of the above property can be overridden for each pool
+      pools:
+        general:
+          enabled: true
+          suffix: "" # if unspecified is `-{{ $poolName }}`. empty string removes the suffix
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
 
     sentry: {}
       # url: "" # APP_SENTRY
@@ -54,6 +95,7 @@ config:
       # prefix: "" # SESSION_PREFIX
 
     legacy: {}
+      # domain: "" # LEGACY_IO_DOMAIN
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
       # banchoBotUserId: "" # BANCHO_BOT_USER_ID
 
@@ -271,9 +313,6 @@ config:
   beatmapsDifficultyLookupCache: {}
     # serverUrl: "" # BEATMAPS_DIFFICULTY_CACHE_SERVER_URL
 
-# If replicaCount is set to 1, blank flags redirection will returns 502s when requesting without an INGRESSCOOKIE; see
-replicaCount: 1
-
 image:
   repository: pppy/osu-web
   pullPolicy: IfNotPresent
@@ -371,8 +410,6 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
-
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000
@@ -381,10 +418,6 @@ podSecurityContext:
 securityContext:
   runAsUser: 1000
   runAsGroup: 1000
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: true
@@ -421,6 +454,27 @@ assets:
       path: /site.webmanifest
       port: http
   # startupProbe: {}
+  service:
+    type: ClusterIP
+    port: 80
+    annotations: {}
+  ingress:
+    enabled: true
+    className: ""
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
+        rewrite ^/docs/$ /docs/index.html;
+    hosts:
+      - host: REPLACE_BY_APP_URL
+        paths:
+          - path: /(assets/|images/|docs|favicon\.ico$|site\.webmanifest$)
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
   podDisruptionBudget:
     enabled: true
     # minAvailable: 1
@@ -442,53 +496,3 @@ assets:
     securityContext:
       runAsUser: 1001
       runAsGroup: 1001
-
-ingressAssets:
-  enabled: true
-  className: ""
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^/docs$ /docs/ permanent; # 301 redirect as assets are referenced by relative path
-      rewrite ^/docs/$ /docs/index.html;
-  hosts:
-    - host: REPLACE_BY_APP_URL
-      paths:
-        - path: /(assets/|images/|docs|favicon\.ico$|site\.webmanifest$)
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-topologySpreadConstraints: []
-
-podDisruptionBudget:
-  enabled: true
-  # minAvailable: 1
-  maxUnavailable: 1

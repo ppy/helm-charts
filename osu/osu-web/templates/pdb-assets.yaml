@@ -1,0 +1,26 @@
+{{- $apiVersion := "" -}}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
+  {{- $apiVersion = "policy/v1" -}}
+{{- else -}}
+  {{- $apiVersion = "policy/v1beta1" -}}
+{{- end -}}
+
+{{- if .Values.assets.podDisruptionBudget.enabled }}
+---
+apiVersion: {{ $apiVersion }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-assets
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "assets")) | nindent 4 }}
+spec:
+{{- if .Values.assets.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.assets.podDisruptionBudget.minAvailable }}
+{{- end }}
+{{- if .Values.assets.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.assets.podDisruptionBudget.maxUnavailable }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "osu-web-chart.selectorLabels" (dict "root" . "options" (dict "component" "assets")) | nindent 6 }}
+{{- end -}}

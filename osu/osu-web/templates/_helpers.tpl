@@ -52,6 +52,8 @@ app.kubernetes.io/instance: {{ .root.Release.Name }}
 app.kubernetes.io/component: {{ .options.component }}
 {{- if (and (eq .options.component "workers") (.options.worker)) }}
 osu.io/osu-web-worker: {{ .options.worker }}
+{{- else if (and (eq .options.component "octane") (.options.pool)) }}
+osu.io/osu-web-octane-pool: {{ .options.pool }}
 {{- end }}
 {{- end }}
 {{- end }}
