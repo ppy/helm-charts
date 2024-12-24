@@ -21,6 +21,17 @@ config:
       extraVolumes: []
       extraVolumeMounts: []
       extraContainers: []
+      livenessProbe:
+        probeType: httpGet
+        httpGet:
+          path: /home
+          port: http
+      readinessProbe:
+        probeType: httpGet
+        httpGet:
+          path: /home
+          port: http
+      # startupProbe: {}
 
     sentry: {}
       # url: "" # APP_SENTRY
@@ -399,6 +410,17 @@ assets:
   tolerations: []
   affinity: {}
   topologySpreadConstraints: []
+  livenessProbe:
+    probeType: httpGet
+    httpGet:
+      path: /site.webmanifest
+      port: http
+  readinessProbe:
+    probeType: httpGet
+    httpGet:
+      path: /site.webmanifest
+      port: http
+  # startupProbe: {}
   podDisruptionBudget:
     enabled: true
     # minAvailable: 1

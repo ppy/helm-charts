@@ -453,3 +453,41 @@ If the input host is REPLACE_BY_APP_URL, will urlparse defaultHost and return it
 {{- .host -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "osu-web.probe" -}}
+{{- if .probe -}}
+{{ .name }}:
+  {{- with .probe -}}
+  {{- if and (eq .probeType "httpGet") (.httpGet) }}
+  httpGet:
+    {{- toYaml .httpGet | nindent 4 }}
+  {{- else if and (eq .probeType "httpGet") (.tcpSocket) }}
+  tcpSocket:
+    {{- toYaml .tcpSocket | nindent 4 }}
+  {{- else if and (eq .probeType "httpGet") (.exec) }}
+  exec:
+    {{- toYaml .exec | nindent 4 }}
+  {{- end }}
+
+  {{- with .failureThreshold -}}
+  failureThreshold: {{ . }}
+  {{- end }}
+  {{- with .initialDelaySeconds -}}
+  initialDelaySeconds: {{ . }}
+  {{- end }}
+  {{- with .periodSeconds -}}
+  periodSeconds: {{ . }}
+  {{- end }}
+  {{- with .successThreshold -}}
+  successThreshold: {{ . }}
+  {{- end }}
+  {{- with .terminationGracePeriodSeconds -}}
+  terminationGracePeriodSeconds: {{ . }}
+  {{- end }}
+  {{- with .timeoutSeconds -}}
+  timeoutSeconds: {{ . }}
+  {{- end }}
+
+  {{- end }}
+{{- end }}
+{{- end }}

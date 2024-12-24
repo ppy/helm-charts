@@ -49,14 +49,9 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /home
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /home
-              port: http
+          {{- include "osu-web.probe" (dict "name" "livenessProbe" "probe" .Values.config.laravel.octane.livenessProbe) | nindent 10 }}
+          {{- include "osu-web.probe" (dict "name" "readinessProbe" "probe" .Values.config.laravel.octane.readinessProbe) | nindent 10 }}
+          {{- include "osu-web.probe" (dict "name" "startupProbe" "probe" .Values.config.laravel.octane.startupProbe) | nindent 10 }}
           lifecycle:
             preStop:
               exec:
