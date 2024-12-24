@@ -102,6 +102,16 @@ entries:
     version: 2022.821.0
   osu-beatmap-difficulty-lookup-cache:
   - apiVersion: v2
+    appVersion: 2024.1112.0
+    created: "2024-12-24T18:01:54.982669904Z"
+    description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
+    digest: 0fc9c0f64d6b1f0cdabf29e79a1963c1f428b58bf0c090d8a7a1c603c353c234
+    name: osu-beatmap-difficulty-lookup-cache
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-beatmap-difficulty-lookup-cache-2024.1224.0/osu-beatmap-difficulty-lookup-cache-2024.1224.0.tgz
+    version: 2024.1224.0
+  - apiVersion: v2
     appVersion: 2022.1017.0
     created: "2023-09-05T08:50:31.962165824Z"
     description: production osu-beatmap-difficulty-lookup-cache deployment in Kubernetes
@@ -3653,4 +3663,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2024-12-18T15:38:46.171991442Z"
+generated: "2024-12-24T18:01:54.983335159Z"
