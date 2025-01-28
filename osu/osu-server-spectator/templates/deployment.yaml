@@ -81,6 +81,10 @@ spec:
           env:
             - name: SERVER_PORT
               value: "{{ .Values.service.internalPort }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.config.spectatorServer.sentry.url }}"
+            - name: SENTRY_ENVIRONMENT
+              value: "{{ .Values.config.spectatorServer.sentry.environment }}"
             {{- range .Values.extraEnv }}
             - {{- toYaml . | nindent 14 }}
             {{- end }}

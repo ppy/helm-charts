@@ -5,8 +5,11 @@
 # config object will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
 useSharedSecretsFromOsuWebChart: false
 config:
-  spectatorServer: {}
+  spectatorServer:
     # env: Development # ASPNETCORE_ENVIRONMENT
+    sentry:
+      url: "" # SENTRY_DSN
+      # environment: "" # SENTRY_ENVIRONMENT
   db: {}
     # host: "" # required
     # database: "" # default to osu in app
