@@ -426,6 +426,16 @@ entries:
     version: 2022.727.0
   osu-server-spectator:
   - apiVersion: v2
+    appVersion: 2025.119.0
+    created: "2025-01-28T22:33:15.688549642Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: 759beb6839518ff26dc7dff4f82239fd55cef7e19898ec57ebef82597cd3d83e
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2025.128.0/osu-server-spectator-2025.128.0.tgz
+    version: 2025.128.0
+  - apiVersion: v2
     appVersion: 2024.522.0
     created: "2024-06-12T19:00:32.989802942Z"
     description: production osu-server-spectator deployment in Kubernetes
@@ -3757,4 +3767,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2024-12-24T19:26:06.151937842Z"
+generated: "2025-01-28T22:33:15.689358204Z"
