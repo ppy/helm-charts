@@ -13,6 +13,7 @@ config:
     # schema: ""
     # usersTable: phpbb_users
     # legacyIODomain: https://osu.ppy.sh
+    # sharedInteropSecret: ""
   # db, redis and clientCheckVersion will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
   db: {}
     # if connectionString is set, other values are ignored
