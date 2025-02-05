@@ -1,0 +1,25 @@
+{{- if and (not .Values.useSharedSecretsFromOsuWebChart) (eq .Values.config.storage.driver "local") }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "osu-server-beatmap-submission.fullname" $ }}
+  labels:
+    helm.sh/resource-policy: "keep"
+    {{- include "osu-server-beatmap-submission.labels" . | nindent 4 }}
+spec:
+  volumeMode: Filesystem
+  {{- with .Values.config.storage.local.storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.config.storage.local.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+  accessModes:
+    {{- range .Values.config.storage.local.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.config.storage.local.size | quote }}
+{{- end }}

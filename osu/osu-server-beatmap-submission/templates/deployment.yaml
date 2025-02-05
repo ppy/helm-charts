@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osu-server-beatmap-submission.fullname" . }}
+  labels:
+    {{- include "osu-server-beatmap-submission.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "osu-server-beatmap-submission.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "osu-server-beatmap-submission.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "osu-server-beatmap-submission.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if eq .Values.config.storage.driver "local" }}
+            - name: beatmaps
+              mountPath: /storage
+            {{- end }}
+            - name: oauth-public-key
+              mountPath: /app/oauth-public.key
+              subPath: oauth-public.key
+          envFrom:
+            - secretRef:
+                {{- if .Values.useSharedSecretsFromOsuWebChart }}
+                name: {{ include "osu-web-chart.fullname" . }}-shared
+                {{- else }}
+                name: {{ include "osu-server-beatmap-submission.fullname" . }}
+                {{- end }}
+                optional: false
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_ENTITY_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.config.serverBeatmapSubmission.env | quote }}
+            - name: JWT_VALID_AUDIENCE
+              value: {{ .Values.config.serverBeatmapSubmission.jwtValidAudience | quote }}
+            - name: PURGE_BEATMAP_MIRROR_CACHES
+              value: {{ (ternary "1" "0" (eq true .Values.config.serverBeatmapSubmission.purgeBeatmapMirrorCaches)) | quote }}
+            {{- with .Values.config.serverBeatmapSubmission.legacyIoDomain }}
+            - name: LEGACY_IO_DOMAIN
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.config.serverBeatmapSubmission.sentry.url }}
+            - name: SENTRY_DSN
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.config.serverBeatmapSubmission.sentry.environment }}
+            - name: SENTRY_ENVIRONMENT
+              value: {{ . | quote }}
+            {{- end }}
+            {{- range $extraEnv := .Values.extraEnv }}
+            - {{- toYaml $extraEnv | nindent 14 -}}
+            {{- end }}
+      volumes:
+        {{- if eq .Values.config.storage.driver "local" }}
+        - name: beatmaps
+          persistentVolumeClaim:
+            {{- if .Values.useSharedSecretsFromOsuWebChart }}
+            claimName: {{ include "osu-web-chart.fullname" . }}-beatmaps
+            {{- else }}
+            claimName: {{ include "osu-server-beatmap-submission.fullname" . }}
+            {{- end }}
+        {{- end }}
+        - name: oauth-public-key
+          secret:
+            {{- if .Values.useSharedSecretsFromOsuWebChart }}
+            secretName: {{ include "osu-web-chart.fullname" . }}-shared-oauth-public-key
+            {{- else }}
+            secretName: {{ include "osu-server-beatmap-submission.fullname" . }}-oauth-public-key
+            {{- end }}
+            items:
+              - key: oauth-public.key
+                path: oauth-public.key
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
