@@ -296,6 +296,22 @@ config:
         size: 1Gi
       # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
+    # used by osu-server-beatmap-submission
+    beatmaps:
+      driver: local
+      mountedWeb: false
+      local:
+        # storageClassName:
+        # volumeName:
+        accessModes:
+          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
+        size: 1Gi
+      s3:
+        key: "" # S3_ACCESS_KEY
+        secret: "" # S3_SECRET_KEY
+        centralBucketName: "" # S3_CENTRAL_BUCKET_NAME
+        beatmapsBucketName: "" # S3_BEATMAPS_BUCKET_NAME
+
   elasticsearch:
     # host: localhost:9200 # ES_HOST
     scores: {}
@@ -347,6 +363,10 @@ osu-queue-score-statistics:
   config:
     queueScoreStatistics:
       schema: 1
+
+osu-server-beatmap-submission:
+  enabled: true
+  useSharedSecretsFromOsuWebChart: true
 
 scthumber:
   enabled: true

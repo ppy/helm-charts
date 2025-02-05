@@ -60,3 +60,7 @@ dependencies:
     version: 7.16.2
     repository: https://helm.elastic.co
     condition: elasticsearch.enabled
+  - name: osu-server-beatmap-submission
+    version: 2025.205.0
+    repository: https://ppy.github.io/helm-charts
+    condition: osu-server-beatmap-submission.enabled
