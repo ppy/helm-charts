@@ -437,6 +437,17 @@ entries:
   osu-server-beatmap-submission:
   - apiVersion: v2
     appVersion: 2025.202.0
+    created: "2025-02-07T13:25:49.055537899Z"
+    description: Handles submitting new and updating existing beatmaps to the osu!
+      website.
+    digest: 74b0019046ce83379eba62b6ac1a3291185d3c3eba873056a51783dde4617f34
+    name: osu-server-beatmap-submission
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.207.0/osu-server-beatmap-submission-2025.207.0.tgz
+    version: 2025.207.0
+  - apiVersion: v2
+    appVersion: 2025.202.0
     created: "2025-02-05T16:57:10.680187382Z"
     description: Handles submitting new and updating existing beatmaps to the osu!
       website.
@@ -3887,4 +3898,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2025-02-05T17:05:26.530737479Z"
+generated: "2025-02-07T13:25:49.05640366Z"
