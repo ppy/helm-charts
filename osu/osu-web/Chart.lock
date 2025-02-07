@@ -28,6 +28,6 @@ dependencies:
   version: 7.16.2
 - name: osu-server-beatmap-submission
   repository: https://ppy.github.io/helm-charts
-  version: 2025.205.0
-digest: sha256:c62225a1e8cf41284c09c7c24086d6f4d97353a36bbd08f4744ed86667877b60
-generated: "2025-02-05T17:59:13.206214529+01:00"
+  version: 2025.207.0
+digest: sha256:0ce9e41d1bda8d1e1f78a0f52f3320ad748e586eb0321118bce9b8d2bd63a036
+generated: "2025-02-07T14:27:26.582706248+01:00"
