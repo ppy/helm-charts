@@ -54,6 +54,8 @@ spec:
             - name: oauth-public-key
               mountPath: /app/oauth-public.key
               subPath: oauth-public.key
+            - name: tmp
+              mountPath: /tmp
           envFrom:
             - secretRef:
                 {{- if .Values.useSharedSecretsFromOsuWebChart }}
@@ -112,6 +114,8 @@ spec:
             items:
               - key: oauth-public.key
                 path: oauth-public.key
+        - name: tmp
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
