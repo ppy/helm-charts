@@ -315,6 +315,16 @@ entries:
     version: 2022.509.0
   osu-queue-score-statistics:
   - apiVersion: v2
+    appVersion: 2025.130.0
+    created: "2025-02-13T11:37:42.622153136Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: 0a17040c2fd9d34aeb1aaa957044d54fdf865fc3e98b05eb1a836ecf90867b03
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2025.213.0/osu-queue-score-statistics-2025.213.0.tgz
+    version: 2025.213.0
+  - apiVersion: v2
     appVersion: 2025.123.0
     created: "2025-02-05T16:57:10.524609021Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
@@ -437,6 +447,17 @@ entries:
   osu-server-beatmap-submission:
   - apiVersion: v2
     appVersion: 2025.202.0
+    created: "2025-02-13T11:37:42.747441531Z"
+    description: Handles submitting new and updating existing beatmaps to the osu!
+      website.
+    digest: ce1386895cabcf9fa606fff7aa023fe8ba37302d6de74883dbd3b74bd22b1c03
+    name: osu-server-beatmap-submission
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.213.0/osu-server-beatmap-submission-2025.213.0.tgz
+    version: 2025.213.0
+  - apiVersion: v2
+    appVersion: 2025.202.0
     created: "2025-02-07T13:25:49.055537899Z"
     description: Handles submitting new and updating existing beatmaps to the osu!
       website.
@@ -458,6 +479,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.205.0/osu-server-beatmap-submission-2025.205.0.tgz
     version: 2025.205.0
   osu-server-spectator:
+  - apiVersion: v2
+    appVersion: 2025.213.2
+    created: "2025-02-13T11:37:42.849227739Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: c4b22fc98c8b4e4e4b57f016e4214ed165ceddf005f78e4243d00615bb73431b
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2025.213.0/osu-server-spectator-2025.213.0.tgz
+    version: 2025.213.0
   - apiVersion: v2
     appVersion: 2025.119.0
     created: "2025-01-28T22:33:15.688549642Z"
@@ -599,6 +630,57 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2022.509.0/osu-server-spectator-2022.509.0.tgz
     version: 2022.509.0
   osu-web:
+  - apiVersion: v2
+    appVersion: 2025.212.0
+    created: "2025-02-13T11:37:42.990879847Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2024.1224.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2024.820.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2025.128.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.823.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2024.1119.0
+    - condition: scthumber.enabled
+      name: scthumber
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.316.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    - condition: osu-server-beatmap-submission.enabled
+      name: osu-server-beatmap-submission
+      repository: https://ppy.github.io/helm-charts
+      version: 2025.207.0
+    description: production osu-web deployment in Kubernetes
+    digest: 8bc02663a46a1fd15cd04585cba7aed8ffc269bfd91d3a9ef08e4ff2ff44dca4
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2025.213.0/osu-web-2025.213.0.tgz
+    version: 2025.213.0
   - apiVersion: v2
     appVersion: 2025.131.0
     created: "2025-02-07T13:55:28.07773553Z"
@@ -4000,4 +4082,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2025-02-07T13:55:28.078773121Z"
+generated: "2025-02-13T11:37:42.992096954Z"
