@@ -12,8 +12,6 @@ config:
     # sentryDsn: ""
     # schema: ""
     # usersTable: phpbb_users
-    # sharedInteropDomain: https://osu.ppy.sh
-    # sharedInteropSecret: ""
   # db, redis and clientCheckVersion will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
   db: {}
     # if connectionString is set, other values are ignored
@@ -25,6 +23,10 @@ config:
   redis: {}
     # host: ""
   clientCheckVersion: false
+  laravel:
+    legacy: {}
+      # sharedInteropDomain: https://osu.ppy.sh
+      # sharedInteropSecret: ""
 
 extraEnv: []
 

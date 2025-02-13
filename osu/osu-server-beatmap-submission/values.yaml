@@ -8,8 +8,6 @@ config:
     env: Development # ASPNETCORE_ENVIRONMENT
     jwtValidAudience: 5 # osu! client id, adjust as required
     # purgeBeatmapMirrorCaches: false
-    # sharedInteropDomain: https://osu.ppy.sh
-    # sharedInteropSecret: ""
     # sentry: {}
       # url: ""
       # environment: development
@@ -23,6 +21,9 @@ config:
   laravel:
     oauth: {}
       # publicKey: "" # required
+    legacy: {}
+      # sharedInteropDomain: https://osu.ppy.sh
+      # sharedInteropSecret: ""
   storage:
     driver: local
     local:
