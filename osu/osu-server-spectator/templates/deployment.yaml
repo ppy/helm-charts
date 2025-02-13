@@ -85,6 +85,13 @@ spec:
               value: "{{ .Values.config.spectatorServer.sentry.url }}"
             - name: SENTRY_ENVIRONMENT
               value: "{{ .Values.config.spectatorServer.sentry.environment }}"
+            {{- with .Values.config.laravel.legacy.sharedInteropDomain }}
+            - name: SHARED_IO_DOMAIN
+              value: {{ . | quote }}
+            # old name (was replaced as of 20250213)
+            - name: LEGACY_IO_DOMAIN
+              value: {{ . | quote }}
+            {{- end }}
             {{- range .Values.extraEnv }}
             - {{- toYaml . | nindent 14 }}
             {{- end }}

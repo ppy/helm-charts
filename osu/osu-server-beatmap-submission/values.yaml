@@ -8,7 +8,7 @@ config:
     env: Development # ASPNETCORE_ENVIRONMENT
     jwtValidAudience: 5 # osu! client id, adjust as required
     # purgeBeatmapMirrorCaches: false
-    # legacyIODomain: https://osu.ppy.sh
+    # sharedInteropDomain: https://osu.ppy.sh
     # sharedInteropSecret: ""
     # sentry: {}
       # url: ""

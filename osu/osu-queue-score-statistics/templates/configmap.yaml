@@ -24,6 +24,8 @@ data:
   {{- if not (eq nil .Values.config.queueScoreStatistics.usersTable) }}
   DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}
   {{- end }}
-  {{- if not (eq nil .Values.config.queueScoreStatistics.legacyIODomain) }}
-  LEGACY_IO_DOMAIN: {{ .Values.config.queueScoreStatistics.legacyIODomain | quote }}
+  {{- if not (eq nil .Values.config.queueScoreStatistics.sharedInteropDomain) }}
+  SHARED_IO_DOMAIN: {{ .Values.config.queueScoreStatistics.sharedInteropDomain | quote }}
+  # old name (was replaced as of 20250213)
+  LEGACY_IO_DOMAIN: {{ .Values.config.queueScoreStatistics.sharedInteropDomain | quote }}
   {{- end }}

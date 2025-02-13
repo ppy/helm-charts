@@ -79,7 +79,10 @@ spec:
               value: {{ .Values.config.serverBeatmapSubmission.jwtValidAudience | quote }}
             - name: PURGE_BEATMAP_MIRROR_CACHES
               value: {{ (ternary "1" "0" (eq true .Values.config.serverBeatmapSubmission.purgeBeatmapMirrorCaches)) | quote }}
-            {{- with .Values.config.serverBeatmapSubmission.legacyIoDomain }}
+            {{- with .Values.config.serverBeatmapSubmission.sharedInteropDomain }}
+            - name: SHARED_IO_DOMAIN
+              value: {{ . | quote }}
+            # old name (was replaced as of 20250213)
             - name: LEGACY_IO_DOMAIN
               value: {{ . | quote }}
             {{- end }}

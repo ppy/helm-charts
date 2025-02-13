@@ -20,6 +20,9 @@ config:
   laravel:
     oauth: {}
       # publicKey: "" # required
+    legacy: {}
+      # sharedInteropDomain: "" # SHARED_IO_DOMAIN
+      # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
 
 extraEnv: []
 

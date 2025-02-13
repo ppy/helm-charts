@@ -12,7 +12,7 @@ config:
     # sentryDsn: ""
     # schema: ""
     # usersTable: phpbb_users
-    # legacyIODomain: https://osu.ppy.sh
+    # sharedInteropDomain: https://osu.ppy.sh
     # sharedInteropSecret: ""
   # db, redis and clientCheckVersion will be ignored if useSharedSecretsFromOsuWebChart, using secrets from parent chart
   db: {}
