@@ -316,6 +316,16 @@ entries:
   osu-queue-score-statistics:
   - apiVersion: v2
     appVersion: 2025.130.0
+    created: "2025-02-13T22:18:09.506052359Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: acccbecfb079e2dbdc749a10f3256f178b6db7d02e1bdc9599f4020b70391bb6
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2025.213.1/osu-queue-score-statistics-2025.213.1.tgz
+    version: 2025.213.1
+  - apiVersion: v2
+    appVersion: 2025.130.0
     created: "2025-02-13T11:37:42.622153136Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
     digest: 0a17040c2fd9d34aeb1aaa957044d54fdf865fc3e98b05eb1a836ecf90867b03
@@ -445,6 +455,17 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2022.727.0/osu-queue-score-statistics-2022.727.0.tgz
     version: 2022.727.0
   osu-server-beatmap-submission:
+  - apiVersion: v2
+    appVersion: 2025.202.0
+    created: "2025-02-13T22:18:09.657193049Z"
+    description: Handles submitting new and updating existing beatmaps to the osu!
+      website.
+    digest: 8c5dd5b504d75fa8b7c2b199871f3ad3d0232c1c98e4fdd8daf9bd898d85002f
+    name: osu-server-beatmap-submission
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.213.1/osu-server-beatmap-submission-2025.213.1.tgz
+    version: 2025.213.1
   - apiVersion: v2
     appVersion: 2025.202.0
     created: "2025-02-13T11:37:42.747441531Z"
@@ -4082,4 +4103,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2025-02-13T11:37:42.992096954Z"
+generated: "2025-02-13T22:18:09.657970457Z"
