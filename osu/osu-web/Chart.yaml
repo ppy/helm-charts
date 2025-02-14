@@ -33,7 +33,7 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2025.128.0
+    version: 2025.213.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: osu-elastic-indexer
@@ -41,9 +41,13 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-elastic-indexer.enabled
   - name: osu-queue-score-statistics
-    version: 2024.1119.0
+    version: 2025.213.1
     repository: https://ppy.github.io/helm-charts
     condition: osu-queue-score-statistics.enabled
+  - name: osu-server-beatmap-submission
+    version: 2025.213.2
+    repository: https://ppy.github.io/helm-charts
+    condition: osu-server-beatmap-submission.enabled
   - name: scthumber
     version: 2023.316.0
     repository: https://ppy.github.io/helm-charts
@@ -60,7 +64,3 @@ dependencies:
     version: 7.16.2
     repository: https://helm.elastic.co
     condition: elasticsearch.enabled
-  - name: osu-server-beatmap-submission
-    version: 2025.207.0
-    repository: https://ppy.github.io/helm-charts
-    condition: osu-server-beatmap-submission.enabled
