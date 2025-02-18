@@ -310,7 +310,9 @@ config:
         key: "" # S3_ACCESS_KEY
         secret: "" # S3_SECRET_KEY
         centralBucketName: "" # S3_CENTRAL_BUCKET_NAME
+        centralBucketRegion: "" # S3_CENTRAL_BUCKET_REGION
         beatmapsBucketName: "" # S3_BEATMAPS_BUCKET_NAME
+        beatmapsBucketRegion: "" # S3_BEATMAPS_BUCKET_REGION
 
   elasticsearch:
     # host: localhost:9200 # ES_HOST

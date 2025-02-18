@@ -16,7 +16,7 @@ dependencies:
   version: 2025.213.1
 - name: osu-server-beatmap-submission
   repository: https://ppy.github.io/helm-charts
-  version: 2025.213.2
+  version: 2025.218.0
 - name: scthumber
   repository: https://ppy.github.io/helm-charts
   version: 2023.316.0
@@ -29,5 +29,5 @@ dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.16.2
-digest: sha256:300792ea2fd732b430306b03523553b054f19888f24ccef536c5d37d6fcad54a
-generated: "2025-02-14T10:17:43.63425796+01:00"
+digest: sha256:462d04f9b0af3b994408e64cfe6b312f81d8dcb8b031f707497009b8b03c739f
+generated: "2025-02-18T17:20:17.927386882+01:00"
