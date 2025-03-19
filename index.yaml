@@ -315,6 +315,16 @@ entries:
     version: 2022.509.0
   osu-queue-score-statistics:
   - apiVersion: v2
+    appVersion: 2025.314.0
+    created: "2025-03-19T16:46:16.971591976Z"
+    description: production osu-queue-score-statistics deployment in Kubernetes
+    digest: f56b751b3051063871c745db7d32cbe979be5c0155ee31fa2e9722bbc5fa22bb
+    name: osu-queue-score-statistics
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-queue-score-statistics-2025.319.0/osu-queue-score-statistics-2025.319.0.tgz
+    version: 2025.319.0
+  - apiVersion: v2
     appVersion: 2025.130.0
     created: "2025-02-13T22:18:09.506052359Z"
     description: production osu-queue-score-statistics deployment in Kubernetes
@@ -456,6 +466,17 @@ entries:
     version: 2022.727.0
   osu-server-beatmap-submission:
   - apiVersion: v2
+    appVersion: 2025.304.2
+    created: "2025-03-19T16:46:17.078332258Z"
+    description: Handles submitting new and updating existing beatmaps to the osu!
+      website.
+    digest: d145a863b2fa2403832585576a95ea039f3dbe1f2cbf77b403faa50647fe8245
+    name: osu-server-beatmap-submission
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.319.0/osu-server-beatmap-submission-2025.319.0.tgz
+    version: 2025.319.0
+  - apiVersion: v2
     appVersion: 2025.202.0
     created: "2025-02-18T16:14:42.93393684Z"
     description: Handles submitting new and updating existing beatmaps to the osu!
@@ -522,6 +543,16 @@ entries:
     - https://github.com/ppy/helm-charts/releases/download/osu-server-beatmap-submission-2025.205.0/osu-server-beatmap-submission-2025.205.0.tgz
     version: 2025.205.0
   osu-server-spectator:
+  - apiVersion: v2
+    appVersion: 2025.315.0
+    created: "2025-03-19T16:46:17.192078181Z"
+    description: production osu-server-spectator deployment in Kubernetes
+    digest: fcd83a615b2a7e30f7684793ecf79836edfedca3794916976d43417079d57fb4
+    name: osu-server-spectator
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-server-spectator-2025.319.0/osu-server-spectator-2025.319.0.tgz
+    version: 2025.319.0
   - apiVersion: v2
     appVersion: 2025.213.2
     created: "2025-02-13T11:37:42.849227739Z"
@@ -4227,4 +4258,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2025-02-18T16:22:28.199344499Z"
+generated: "2025-03-19T16:46:17.193527568Z"
