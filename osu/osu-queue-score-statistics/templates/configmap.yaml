@@ -25,7 +25,7 @@ data:
   DB_USERS_TABLE: {{ .Values.config.queueScoreStatistics.usersTable | quote }}
   {{- end }}
   {{- if not (eq nil .Values.config.laravel.legacy.sharedInteropDomain) }}
-  SHARED_IO_DOMAIN: {{ .Values.config.laravel.legacy.sharedInteropDomain | quote }}
+  SHARED_INTEROP_DOMAIN: {{ .Values.config.laravel.legacy.sharedInteropDomain | quote }}
   # old name (was replaced as of 20250213)
   LEGACY_IO_DOMAIN: {{ .Values.config.laravel.legacy.sharedInteropDomain | quote }}
   {{- end }}

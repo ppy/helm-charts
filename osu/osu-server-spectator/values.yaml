@@ -21,7 +21,7 @@ config:
     oauth: {}
       # publicKey: "" # required
     legacy: {}
-      # sharedInteropDomain: "" # SHARED_IO_DOMAIN
+      # sharedInteropDomain: "" # SHARED_INTEROP_DOMAIN
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
 
 extraEnv: []

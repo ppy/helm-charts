@@ -86,7 +86,7 @@ spec:
             - name: SENTRY_ENVIRONMENT
               value: "{{ .Values.config.spectatorServer.sentry.environment }}"
             {{- with .Values.config.laravel.legacy.sharedInteropDomain }}
-            - name: SHARED_IO_DOMAIN
+            - name: SHARED_INTEROP_DOMAIN
               value: {{ . | quote }}
             # old name (was replaced as of 20250213)
             - name: LEGACY_IO_DOMAIN

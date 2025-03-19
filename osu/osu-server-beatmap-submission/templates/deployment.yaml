@@ -80,7 +80,7 @@ spec:
             - name: PURGE_BEATMAP_MIRROR_CACHES
               value: {{ (ternary "1" "0" (eq true .Values.config.serverBeatmapSubmission.purgeBeatmapMirrorCaches)) | quote }}
             {{- with .Values.config.laravel.legacy.sharedInteropDomain }}
-            - name: SHARED_IO_DOMAIN
+            - name: SHARED_INTEROP_DOMAIN
               value: {{ . | quote }}
             # old name (was replaced as of 20250213)
             - name: LEGACY_IO_DOMAIN
