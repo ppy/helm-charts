@@ -95,7 +95,7 @@ config:
       # prefix: "" # SESSION_PREFIX
 
     legacy: {}
-      # sharedInteropDomain: "" # SHARED_IO_DOMAIN
+      # sharedInteropDomain: "" # SHARED_INTEROP_DOMAIN
       # sharedInteropSecret: "" # SHARED_INTEROP_SECRET
       # banchoBotUserId: "" # BANCHO_BOT_USER_ID
 

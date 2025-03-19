@@ -15,13 +15,13 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2025.218.0
+version: 2025.319.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2025.215.0"
+appVersion: "2025.317.0"
 
 dependencies:
   - name: osu-beatmap-difficulty-lookup-cache
@@ -33,7 +33,7 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-notification-server.enabled
   - name: osu-server-spectator
-    version: 2025.213.0
+    version: 2025.319.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-spectator.enabled
   - name: osu-elastic-indexer
@@ -41,11 +41,11 @@ dependencies:
     repository: https://ppy.github.io/helm-charts
     condition: osu-elastic-indexer.enabled
   - name: osu-queue-score-statistics
-    version: 2025.213.1
+    version: 2025.319.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-queue-score-statistics.enabled
   - name: osu-server-beatmap-submission
-    version: 2025.218.0
+    version: 2025.319.0
     repository: https://ppy.github.io/helm-charts
     condition: osu-server-beatmap-submission.enabled
   - name: scthumber
