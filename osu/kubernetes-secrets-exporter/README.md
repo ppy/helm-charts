@@ -247,12 +247,16 @@ chmod 600 /var/local/lib/fetch-ssl/*
 curl \
   --cert /var/local/lib/fetch-ssl/client.crt \
   --key /var/local/lib/fetch-ssl/client.key \
-  https://kubernetes-secrets-exporter.ppy.sh/secrets/demo-cert/download/tls.crt > /etc/ssl/tls.crt
+  -f \
+  -o /etc/ssl/tls.crt \
+  https://kubernetes-secrets-exporter.ppy.sh/secrets/demo-cert/download/tls.crt
 
 curl \
   --cert /var/local/lib/fetch-ssl/client.crt \
   --key /var/local/lib/fetch-ssl/client.key \
-  https://kubernetes-secrets-exporter.ppy.sh/secrets/demo-cert/download/tls.key > /etc/ssl/tls.key
+  -f \
+  -o /etc/ssl/tls.key \
+  https://kubernetes-secrets-exporter.ppy.sh/secrets/demo-cert/download/tls.key
 
 chown root:root /etc/ssl/tls.key
 chown 600 /etc/ssl/tls.key
