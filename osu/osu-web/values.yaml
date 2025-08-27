@@ -27,12 +27,12 @@ config:
       livenessProbe:
         probeType: httpGet
         httpGet:
-          path: /home
+          path: /
           port: http
       readinessProbe:
         probeType: httpGet
         httpGet:
-          path: /home
+          path: /
           port: http
       # startupProbe: {}
       resources: {}
