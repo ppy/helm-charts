@@ -377,6 +377,15 @@ mysql:
   enabled: true
   architecture: standalone
 
+  image:
+    repository: bitnamilegacy/mysql
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/bitnami-shell
+  metrics:
+    image:
+      repository: bitnamilegacy/mysqld-exporter
+
   auth:
     rootPassword: changeme # required, recommended to use a random string
     forcePassword: false
@@ -407,6 +416,24 @@ redis:
   architecture: standalone
   auth:
     enabled: false
+
+  image:
+    repository: bitnamilegacy/redis
+  sentinel:
+    image:
+      repository: bitnamilegacy/redis-sentinel
+  metrics:
+    image:
+      repository: bitnamilegacy/redis-exporter
+    sentinel:
+      image:
+        repository: bitnamilegacy/redis-sentinel-exporter
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/bitnami-shell
+  sysctl:
+    image:
+      repository: bitnamilegacy/bitnami-shell
 
 elasticsearch:
   enabled: true
