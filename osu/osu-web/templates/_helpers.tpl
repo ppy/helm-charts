@@ -148,9 +148,6 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "S3_CENTRAL_BUCKET_NAME" "value" .Values.config.storage.s3.central.bucket) }}
 {{ template "osu-web-chart.env-var" (dict "name" "S3_CENTRAL_BUCKET_REGION" "value" .Values.config.storage.s3.central.region) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "S3_BEATMAPS_BUCKET_NAME" "value" .Values.config.storage.s3.beatmaps.bucket) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_BEATMAPS_BUCKET_REGION" "value" .Values.config.storage.s3.beatmaps.region) }}
-
 {{ template "osu-web-chart.env-var" (dict "name" "QUEUE_DRIVER" "value" .Values.config.laravel.queue.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CAMO_KEY" "value" .Values.config.laravel.camo.key) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CAMO_PREFIX" "value" .Values.config.laravel.camo.prefix) }}
