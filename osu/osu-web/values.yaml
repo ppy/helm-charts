@@ -363,6 +363,7 @@ mysql:
 
   image:
     repository: bitnamilegacy/mysql
+    tag: 8.0.40-debian-12-r5
   volumePermissions:
     image:
       repository: bitnamilegacy/bitnami-shell
@@ -403,6 +404,12 @@ redis:
 
   image:
     repository: bitnamilegacy/redis
+    tag: 6.2.9-debian-11-r0
+  master:
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
   sentinel:
     image:
       repository: bitnamilegacy/redis-sentinel
