@@ -30,7 +30,7 @@ config:
       # storageClassName:
       # volumeName:
       accessModes:
-        - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
+        - ReadWriteOnce # if replicaCount > 1, must use ReadWriteMany or S3 driver unless running on a single node
       size: 1Gi
     s3:
       key: "" # S3_ACCESS_KEY

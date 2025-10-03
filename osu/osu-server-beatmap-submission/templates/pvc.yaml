@@ -1,9 +1,9 @@
-{{- if and (not .Values.useSharedSecretsFromOsuWebChart) (eq .Values.config.storage.driver "local") }}
+{{- if eq .Values.config.storage.driver "local" }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "osu-server-beatmap-submission.fullname" $ }}
+  name: {{ if .Values.useSharedSecretsFromOsuWebChart -}}{{- include "osu-web-chart.fullname" . -}}-beatmaps{{- else -}}{{ include "osu-server-beatmap-submission.fullname" $ -}}{{- end }}
   labels:
     helm.sh/resource-policy: "keep"
     {{- include "osu-server-beatmap-submission.labels" . | nindent 4 }}
