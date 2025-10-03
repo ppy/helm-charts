@@ -1,27 +1,25 @@
-{{- range $storageName, $storage := .Values.config.storage }}
-{{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
+{{- if eq "local" .Values.config.storage.driver }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
+  name: {{ include "osu-web-chart.fullname" $ }}
   labels:
     helm.sh/resource-policy: "keep"
-    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict)) | nindent 4 }}
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict)) | nindent 4 }}
 spec:
   volumeMode: Filesystem
-  {{- with $storage.local.storageClassName }}
+  {{- with .Values.config.storage.local.storageClassName }}
   storageClassName: {{ . }}
   {{- end }}
-  {{- with $storage.local.volumeName }}
+  {{- with .Values.config.storage.local.volumeName }}
   volumeName: {{ . }}
   {{- end }}
   accessModes:
-    {{- range $storage.local.accessModes }}
+    {{- range .Values.config.storage.local.accessModes }}
     - {{ . | quote }}
     {{- end }}
   resources:
     requests:
-      storage: {{ $storage.local.size | quote }}
-{{- end }}
+      storage: {{ .Values.config.storage.local.size | quote }}
 {{- end }}

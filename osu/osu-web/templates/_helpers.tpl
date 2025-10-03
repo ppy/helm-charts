@@ -121,31 +121,35 @@ Create the name of the service account to use
 
 {{ template "osu-web-chart.env-var" (dict "name" "SHARED_INTEROP_SECRET" "value" .Values.config.laravel.legacy.sharedInteropSecret) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "FILESYSTEM_DISK" "value" .Values.config.storage.general.driver) }}
+{{ template "osu-web-chart.env-var" (dict "name" "FILESYSTEM_DISK" "value" .Values.config.storage.driver) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_MIRRORS" "value" .Values.config.beatmapsProcessor.mirrors) }}
 {{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_THUMBNAILER" "value" (include "osu-web.thumbnailerUrl" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "BM_PROCESSOR_SENTRY" "value" .Values.config.beatmapsProcessor.sentry) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "S3_KEY" "value" .Values.config.storage.general.s3.key) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_SECRET" "value" .Values.config.storage.general.s3.secret) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_REGION" "value" .Values.config.storage.general.s3.region) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_BUCKET" "value" .Values.config.storage.general.s3.bucket) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_BASE_URL" "value" .Values.config.storage.general.s3.baseUrl) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_MINI_URL" "value" .Values.config.storage.general.s3.miniUrl) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_KEY" "value" .Values.config.storage.s3.general.key) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_SECRET" "value" .Values.config.storage.s3.general.secret) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_REGION" "value" .Values.config.storage.s3.general.region) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_BUCKET" "value" .Values.config.storage.s3.general.bucket) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_BASE_URL" "value" .Values.config.storage.s3.general.baseUrl) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_MINI_URL" "value" .Values.config.storage.s3.general.miniUrl) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_KEY" "value" .Values.config.storage.avatar.s3.key) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_SECRET" "value" .Values.config.storage.avatar.s3.secret) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_REGION" "value" .Values.config.storage.avatar.s3.region) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BUCKET" "value" .Values.config.storage.avatar.s3.bucket) }}
-{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BASE_URL" "value" .Values.config.storage.avatar.s3.baseUrl) }}
-{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_STORAGE" "value" .Values.config.storage.avatar.driver) }}
-{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_PREFIX" "value" .Values.config.storage.avatar.s3.cachePurgePrefix) }}
-{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_METHOD" "value" .Values.config.storage.avatar.s3.cachePurgeMethod) }}
-{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_AUTHORIZATION_KEY" "value" .Values.config.storage.avatar.s3.cachePurgeAuthorizationKey) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_KEY" "value" .Values.config.storage.s3.avatar.key) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_SECRET" "value" .Values.config.storage.s3.avatar.secret) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_REGION" "value" .Values.config.storage.s3.avatar.region) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BUCKET" "value" .Values.config.storage.s3.avatar.bucket) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_AVATAR_BASE_URL" "value" .Values.config.storage.s3.avatar.baseUrl) }}
+{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_PREFIX" "value" .Values.config.storage.s3.avatar.cachePurgePrefix) }}
+{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_METHOD" "value" .Values.config.storage.s3.avatar.cachePurgeMethod) }}
+{{ template "osu-web-chart.env-var" (dict "name" "AVATAR_CACHE_PURGE_AUTHORIZATION_KEY" "value" .Values.config.storage.s3.avatar.cachePurgeAuthorizationKey) }}
 
-# Either "s3" or "local".
-{{ template "osu-web-chart.env-var" (dict "name" "SCORE_REPLAYS_STORAGE" "value" .Values.config.storage.replay.driver) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_SOLO_REPLAY_BUCKET" "value" .Values.config.storage.s3.replay.bucket) }}
+
+{{ template "osu-web-chart.env-var" (dict "name" "S3_CENTRAL_BUCKET_NAME" "value" .Values.config.storage.s3.central.bucket) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_CENTRAL_BUCKET_REGION" "value" .Values.config.storage.s3.central.region) }}
+
+{{ template "osu-web-chart.env-var" (dict "name" "S3_BEATMAPS_BUCKET_NAME" "value" .Values.config.storage.s3.beatmaps.bucket) }}
+{{ template "osu-web-chart.env-var" (dict "name" "S3_BEATMAPS_BUCKET_REGION" "value" .Values.config.storage.s3.beatmaps.region) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "QUEUE_DRIVER" "value" .Values.config.laravel.queue.driver) }}
 {{ template "osu-web-chart.env-var" (dict "name" "CAMO_KEY" "value" .Values.config.laravel.camo.key) }}

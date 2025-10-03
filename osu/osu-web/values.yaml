@@ -254,30 +254,27 @@ config:
     # sentry: "" # BM_PROCESSOR_SENTRY
 
   storage:
-    general:
-      driver: local # FILESYSTEM_DISK
-      local:
-        # storageClassName:
-        # volumeName:
-        accessModes:
-          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
-        size: 1Gi
-      s3:
+    driver: local # FILESYSTEM_DISK
+
+    local:
+      # storageClassName:
+      # volumeName:
+      accessModes:
+        - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
+      size: 1Gi
+
+    s3:
+      # everything but avatar, beatmaps, osz packages and replays go into this bucket.
+      # replays share the same credentials, but use hardcoded bucket names `replay-${mode}` (osu, taiko, fruits, mania)
+      general:
         key: "" # S3_KEY
         secret: "" # S3_SECRET
         region: "" # S3_REGION
         bucket: "" # S3_BUCKET
         baseUrl: "" # S3_BASE_URL
         miniUrl: "" # S3_MINI_URL
-    avatar:
-      driver: local-avatar # AVATAR_STORAGE
-      local:
-        # storageClassName:
-        # volumeName:
-        accessModes:
-          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
-        size: 1Gi
-      s3:
+
+      avatar:
         key: "" # S3_AVATAR_KEY
         secret: "" # S3_AVATAR_SECRET
         region: "" # S3_AVATAR_REGION
@@ -286,33 +283,17 @@ config:
         cachePurgePrefix: "" # AVATAR_CACHE_PURGE_PREFIX
         cachePurgeMethod: "" # AVATAR_CACHE_PURGE_METHOD
         cachePurgeAuthorizationKey: "" # AVATAR_CACHE_PURGE_AUTHORIZATION_KEY
-    replay:
-      driver: local # SCORE_REPLAYS_STORAGE
-      local:
-        # storageClassName:
-        # volumeName:
-        accessModes:
-          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
-        size: 1Gi
-      # s3 uses same settings than general storage, however bucket name is hardcoded to `replay-${mode}` (osu, taiko, fruits, mania)
 
-    # used by osu-server-beatmap-submission
-    beatmaps:
-      driver: local
-      mountedWeb: false
-      local:
-        # storageClassName:
-        # volumeName:
-        accessModes:
-          - ReadWriteOnce # if total octane pods > 1, must use ReadWriteMany or S3 driver unless running on a single node
-        size: 1Gi
-      s3:
-        key: "" # S3_ACCESS_KEY
-        secret: "" # S3_SECRET_KEY
-        centralBucketName: "" # S3_CENTRAL_BUCKET_NAME
-        centralBucketRegion: "" # S3_CENTRAL_BUCKET_REGION
-        beatmapsBucketName: "" # S3_BEATMAPS_BUCKET_NAME
-        beatmapsBucketRegion: "" # S3_BEATMAPS_BUCKET_REGION
+      replay:
+        bucket: "" # S3_SOLO_REPLAY_BUCKET
+
+      central:
+        bucket: "" # S3_CENTRAL_BUCKET_NAME
+        region: "" # S3_CENTRAL_BUCKET_REGION
+
+      beatmaps:
+        bucket: "" # S3_BEATMAPS_BUCKET_NAME
+        region: "" # S3_BEATMAPS_BUCKET_REGION
 
   elasticsearch:
     # host: localhost:9200 # ES_HOST
@@ -369,6 +350,9 @@ osu-queue-score-statistics:
 osu-server-beatmap-submission:
   enabled: true
   useSharedSecretsFromOsuWebChart: true
+  config:
+    storage:
+      driver: local
 
 scthumber:
   enabled: true

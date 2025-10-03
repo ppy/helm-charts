@@ -80,13 +80,9 @@ spec:
               name: secret-oauth-private-key
               subPath: oauth-private.key
               readOnly: true
-            {{- range $storageName, $storage := $.Values.config.storage }}
-            {{- if not (eq false $storage.mountedWeb) }}
-            {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
-            - mountPath: /app/public/uploads{{- if not (eq "general" $storageName) -}}-{{ $storageName }}{{- end }}
-              name: pvc-{{ $storageName }}
-            {{- end }}
-            {{- end }}
+            {{- if (eq "local" $.Values.config.storage.driver) }}
+            - mountPath: /app/public/uploads
+              name: pvc
             {{- end }}
             {{- with (default $poolDefaults.extraVolumeMounts $pool.extraVolumeMounts) }}
             {{- toYaml . | nindent 12 }}
@@ -113,14 +109,10 @@ spec:
         - name: secret-oauth-private-key
           secret:
             secretName: {{ include "osu-web-chart.fullname" $ }}-oauth-private-key
-        {{- range $storageName, $storage := $.Values.config.storage }}
-        {{- if not (eq false $storage.mountedWeb) }}
-        {{- if or (eq "local" $storage.driver) (eq "local-avatar" $storage.driver) }}
-        - name: pvc-{{ $storageName }}
+        {{- if (eq "local" $.Values.config.storage.driver) }}
+        - name: pvc
           persistentVolumeClaim:
-            claimName: {{ include "osu-web-chart.fullname" $ }}-{{ $storageName }}
-        {{- end }}
-        {{- end }}
+            claimName: {{ include "osu-web-chart.fullname" $ }}
         {{- end }}
         {{- with (default $poolDefaults.extraVolumes $pool.extraVolumes) }}
         {{- toYaml . | nindent 8 }}
