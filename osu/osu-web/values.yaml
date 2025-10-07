@@ -521,7 +521,7 @@ assets:
     maxUnavailable: 1
   upgradeJob:
     enabled: true
-    image: bitnami/kubectl:1.26
+    image: bitnamisecure/kubectl:latest
     imagePullPolicy: IfNotPresent
     resources:
       requests:
