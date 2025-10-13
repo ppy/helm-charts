@@ -16,6 +16,10 @@ metadata:
     checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
 spec:
   replicas: {{ default $poolDefaults.replicas $pool.replicas }}
+  {{- with (default $poolDefaults.strategy $pool.strategy) }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "osu-web-chart.selectorLabels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 6 }}

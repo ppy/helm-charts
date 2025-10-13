@@ -64,6 +64,8 @@ config:
         enabled: true
         # minAvailable: 1
         maxUnavailable: 1
+      # strategy:
+      #   type: RollingUpdate
 
       # any of the above property can be overridden for each pool
       pools:
