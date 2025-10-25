@@ -727,6 +727,57 @@ entries:
     version: 2022.509.0
   osu-web:
   - apiVersion: v2
+    appVersion: 2025.1025.0
+    created: "2025-10-25T14:06:26.351016208Z"
+    dependencies:
+    - condition: osu-beatmap-difficulty-lookup-cache.enabled
+      name: osu-beatmap-difficulty-lookup-cache
+      repository: https://ppy.github.io/helm-charts
+      version: 2024.1224.0
+    - condition: osu-notification-server.enabled
+      name: osu-notification-server
+      repository: https://ppy.github.io/helm-charts
+      version: 2024.820.0
+    - condition: osu-server-spectator.enabled
+      name: osu-server-spectator
+      repository: https://ppy.github.io/helm-charts
+      version: 2025.319.0
+    - condition: osu-elastic-indexer.enabled
+      name: osu-elastic-indexer
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.823.0
+    - condition: osu-queue-score-statistics.enabled
+      name: osu-queue-score-statistics
+      repository: https://ppy.github.io/helm-charts
+      version: 2025.319.0
+    - condition: osu-server-beatmap-submission.enabled
+      name: osu-server-beatmap-submission
+      repository: https://ppy.github.io/helm-charts
+      version: 2025.1003.0
+    - condition: scthumber.enabled
+      name: scthumber
+      repository: https://ppy.github.io/helm-charts
+      version: 2023.316.0
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 8.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 14.1.0
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.2
+    description: production osu-web deployment in Kubernetes
+    digest: 5e3c992ded25970dc4511098158e642bf44f6728ff03d5fe4b5d586a96c31998
+    name: osu-web
+    type: application
+    urls:
+    - https://github.com/ppy/helm-charts/releases/download/osu-web-2025.1025.0/osu-web-2025.1025.0.tgz
+    version: 2025.1025.0
+  - apiVersion: v2
     appVersion: 2025.1013.0
     created: "2025-10-13T15:33:58.153938072Z"
     dependencies:
@@ -4637,4 +4688,4 @@ entries:
     urls:
     - https://github.com/ppy/helm-charts/releases/download/scthumber-2023.316.0/scthumber-2023.316.0.tgz
     version: 2023.316.0
-generated: "2025-10-13T15:33:58.15469768Z"
+generated: "2025-10-25T14:06:26.351857246Z"
