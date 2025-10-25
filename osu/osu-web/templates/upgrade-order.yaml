@@ -1,0 +1,108 @@
+# This hook sets the `controller.kubernetes.io/pod-deletion-cost` on every pod to the creation timestamp.
+# The Kubernetes rollout will then terminate pods by order of creation, allowing topologySpreadConstraints to succeed in environments with not much nodes headroom.
+{{- if .Values.upgradeOrderJob.enabled }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-order")) | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-order")) | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-order")) | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+  apiGroup: ""
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" . "options" (dict "component" "upgrade-order")) | nindent 4 }}
+    tier: wait-for-deploy
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "osu-web-chart.fullname" . }}-upgrade-order
+      securityContext:
+        {{- toYaml .Values.upgradeOrderJob.podSecurityContext | nindent 8 }}
+      containers:
+        - name: kubectl
+          securityContext:
+            {{- toYaml .Values.upgradeOrderJob.securityContext | nindent 12 }}
+          image: {{ .Values.upgradeOrderJob.image }}
+          {{- with .Values.upgradeOrderJob.imagePullPolicy }}
+          imagePullPolicy: {{ . }}
+          {{- end }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+
+              POD_TIMESTAMPS=$(
+                kubectl get pods --selector=app.kubernetes.io/instance={{ .Release.Name }} -o json \
+                | jq -r '.items[] | "\(.metadata.name) \(.metadata.creationTimestamp | fromdateiso8601)"'
+              )
+
+              echo "$POD_TIMESTAMPS" | while read -r pod timestamp; do
+                kubectl annotate --overwrite pod/"$pod" controller.kubernetes.io/pod-deletion-cost="$timestamp"
+              done
+          resources:
+            {{- toYaml (.Values.upgradeOrderJob.resources | default .Values.resources) | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 12 }}
+      {{- end }}
+{{- end -}}
