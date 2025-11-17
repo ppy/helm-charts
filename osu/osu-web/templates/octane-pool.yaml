@@ -5,6 +5,21 @@
 {{- $suffix := hasKey $pool "suffix" | ternary $pool.suffix (printf "-%s" $poolName) -}}
 {{- $resourceName := printf "%s-octane%s" (include "osu-web-chart.fullname" $) $suffix }}
 
+# Add secret if $pool.extraEnv is defined and has at least one key
+{{- if and $pool.extraEnv (gt (len $pool.extraEnv) 0) }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "osu-web-chart.fullname" $ }}-pool-{{ $poolName }}-env
+  labels:
+    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict)) | nindent 4 }}
+type: Opaque
+stringData:
+  {{- range $key, $value := $pool.extraEnv }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -103,6 +118,10 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" $ }}-env
+            {{- if and $pool.extraEnv (gt (len $pool.extraEnv) 0) }}
+            - secretRef:
+                name: {{ include "osu-web-chart.fullname" $ }}-pool-{{ $poolName }}-env
+            {{- end }}
         {{- with (default $poolDefaults.extraContainers $pool.extraContainers) }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
