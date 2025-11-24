@@ -4,7 +4,6 @@
 {{- range $poolName, $pool := .Values.config.laravel.octane.pools -}}
 {{- $suffix := hasKey $pool "suffix" | ternary $pool.suffix (printf "-%s" $poolName) -}}
 {{- $resourceName := printf "%s-octane%s" (include "osu-web-chart.fullname" $) $suffix }}
-{{- $poolEnvVars := include "osu-web-chart.pool-env-vars" (default (dict) $pool.extraEnv) -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -13,7 +12,7 @@ metadata:
   labels:
     {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
   annotations:
-    checksum/config: {{ sha256sum (printf "%s-%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $) $poolEnvVars) }}
+    checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
 spec:
   replicas: {{ default $poolDefaults.replicas $pool.replicas }}
   {{- with (default $poolDefaults.strategy $pool.strategy) }}
@@ -26,7 +25,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ sha256sum (printf "%s-%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $) $poolEnvVars) }}
+        checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
         {{- range $key, $value := (default $poolDefaults.extraPodAnnotations $pool.extraPodAnnotations) }}
         {{ $key | quote }}: {{ $value | quote }}
         {{- end }}
@@ -92,8 +91,11 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
           env:
-            {{- if gt (len $poolEnvVars) 0 }}
-            {{- $poolEnvVars | nindent 12 }}
+            {{- if and $pool.extraEnv (gt (len $pool.extraEnv) 0) }}
+            {{- range $key, $value := $pool.extraEnv }}
+            - name: {{ $key | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
             {{- end }}
             - name: DATADOG_STATSD_HOST
               valueFrom:

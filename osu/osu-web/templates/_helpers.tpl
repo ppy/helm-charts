@@ -75,15 +75,6 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
-{{- define "osu-web-chart.pool-env-vars" -}}
-{{- range $key, $value := . }}
-{{- if not (kindIs "invalid" $value) -}}
-- name: {{ $key | upper | quote }}
-  value: {{ $value | quote }}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
 {{- define "osu-web-chart.env-vars" -}}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_URL" "value" (include "osu-web.laravelAppUrl" .)) }}
 {{ template "osu-web-chart.env-var" (dict "name" "APP_ENV" "value" .Values.config.laravel.env) }}
