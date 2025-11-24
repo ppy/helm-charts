@@ -4,21 +4,7 @@
 {{- range $poolName, $pool := .Values.config.laravel.octane.pools -}}
 {{- $suffix := hasKey $pool "suffix" | ternary $pool.suffix (printf "-%s" $poolName) -}}
 {{- $resourceName := printf "%s-octane%s" (include "osu-web-chart.fullname" $) $suffix }}
-
-# Add secret if $pool.extraEnv is defined and has at least one key
 {{- $poolEnvVars := include "osu-web-chart.pool-env-vars" (default (dict) $pool.extraEnv) -}}
-{{- if gt (len $poolEnvVars) 0 }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "osu-web-chart.fullname" $ }}-pool-{{ $poolName }}-env
-  labels:
-    {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict)) | nindent 4 }}
-type: Opaque
-stringData:
-  {{- $poolEnvVars | nindent 2 }}
-{{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -106,6 +92,9 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
           env:
+            {{- if gt (len $poolEnvVars) 0 }}
+            {{- $poolEnvVars | nindent 12 }}
+            {{- end }}
             - name: DATADOG_STATSD_HOST
               valueFrom:
                 fieldRef:
@@ -117,10 +106,6 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "osu-web-chart.fullname" $ }}-env
-            {{- if and $pool.extraEnv (gt (len $pool.extraEnv) 0) }}
-            - secretRef:
-                name: {{ include "osu-web-chart.fullname" $ }}-pool-{{ $poolName }}-env
-            {{- end }}
         {{- with (default $poolDefaults.extraContainers $pool.extraContainers) }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

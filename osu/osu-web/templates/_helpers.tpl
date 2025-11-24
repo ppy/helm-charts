@@ -77,7 +77,10 @@ Create the name of the service account to use
 
 {{- define "osu-web-chart.pool-env-vars" -}}
 {{- range $key, $value := . }}
-{{ template "osu-web-chart.env-var" (dict "name" $key "value" $value) }}
+{{- if not (kindIs "invalid" $value) -}}
+- name: {{ $key | upper | quote }}
+  value: {{ $value | quote }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
