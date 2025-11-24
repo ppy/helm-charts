@@ -6,7 +6,8 @@
 {{- $resourceName := printf "%s-octane%s" (include "osu-web-chart.fullname" $) $suffix }}
 
 # Add secret if $pool.extraEnv is defined and has at least one key
-{{- if and $pool.extraEnv (gt (len $pool.extraEnv) 0) }}
+{{- $poolEnvVars := include "osu-web-chart.pool-env-vars" (default (dict) $pool.extraEnv) -}}
+{{- if gt (len $poolEnvVars) 0 }}
 ---
 apiVersion: v1
 kind: Secret
@@ -16,9 +17,7 @@ metadata:
     {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict)) | nindent 4 }}
 type: Opaque
 stringData:
-  {{- range $key, $value := $pool.extraEnv }}
-  {{ $key }}: {{ $value | quote }}
-  {{- end }}
+  {{- $poolEnvVars | nindent 2 }}
 {{- end }}
 ---
 apiVersion: apps/v1
@@ -28,7 +27,7 @@ metadata:
   labels:
     {{- include "osu-web-chart.labels" (dict "root" $ "options" (dict "component" "octane" "pool" $poolName)) | nindent 4 }}
   annotations:
-    checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+    checksum/config: {{ sha256sum (printf "%s-%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $) $poolEnvVars) }}
 spec:
   replicas: {{ default $poolDefaults.replicas $pool.replicas }}
   {{- with (default $poolDefaults.strategy $pool.strategy) }}
@@ -41,7 +40,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ sha256sum (printf "%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $)) }}
+        checksum/config: {{ sha256sum (printf "%s-%s-%s-%s" $.Values.config.laravel.oauth.privateKey $.Values.config.laravel.oauth.publicKey (include "osu-web-chart.env-vars" $) $poolEnvVars) }}
         {{- range $key, $value := (default $poolDefaults.extraPodAnnotations $pool.extraPodAnnotations) }}
         {{ $key | quote }}: {{ $value | quote }}
         {{- end }}
