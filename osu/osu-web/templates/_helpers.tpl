@@ -71,7 +71,7 @@ Create the name of the service account to use
 
 {{- define "osu-web-chart.env-var" -}}
 {{- if not (kindIs "invalid" .value) -}}
-{{- .name | upper | quote -}}: {{ .value | quote }}
+{{- .name | upper | quote -}}: {{ .value | toString | b64enc | quote }}
 {{- end -}}
 {{- end -}}
 
