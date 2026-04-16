@@ -112,7 +112,7 @@ config:
             - beatmap_high
             - default
             - notification
-            - store-notifications
+            - imagesize
           # additionalOptions: []
           # resources: {}
 
@@ -172,10 +172,6 @@ config:
 
     notifications:
       queue: notification # NOTIFICATION_QUEUE
-      store:
-        channel: test # STORE_NOTIFICATION_CHANNEL
-        queue: store-notifications # STORE_NOTIFICATIONS_QUEUE
-
     recaptcha:
       secret: "" # RECAPTCHA_SECRET
       siteKey: "" # RECAPTCHA_SITEKEY

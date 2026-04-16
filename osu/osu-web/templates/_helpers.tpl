@@ -171,8 +171,6 @@ Create the name of the service account to use
 {{ template "osu-web-chart.env-var" (dict "name" "SHOPIFY_STOREFRONT_TOKEN" "value" .Values.config.laravel.payments.shopify.storeFrontToken) }}
 {{ template "osu-web-chart.env-var" (dict "name" "SHOPIFY_WEBHOOK_KEY" "value" .Values.config.laravel.payments.shopify.webhookKey) }}
 
-{{ template "osu-web-chart.env-var" (dict "name" "STORE_NOTIFICATION_CHANNEL" "value" .Values.config.laravel.notifications.store.channel) }}
-{{ template "osu-web-chart.env-var" (dict "name" "STORE_NOTIFICATIONS_QUEUE" "value" .Values.config.laravel.notifications.store.queue) }}
 {{ template "osu-web-chart.env-var" (dict "name" "STORE_STALE_DAYS" "value" .Values.config.laravel.payments.storeStaleDays) }}
 
 {{ template "osu-web-chart.env-var" (dict "name" "PAYPAL_URL" "value" .Values.config.laravel.payments.paypal.url) }}
